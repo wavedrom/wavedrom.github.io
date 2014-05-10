@@ -15,7 +15,7 @@
 
 <h1>Hitchhiker's Guide to the WaveDrom</h1>
 
-<a href="http://wavedrom.googlecode.com">WaveDrom</a> is a JavaScript application. 
+<a href="http://wavedrom.github.io">WaveDrom</a> is a JavaScript application. 
 WaveJSON is a format that describes Digital Timing Diagrams.
 WaveDrom renders the diagrmas directly inside the browser.
 Element <span class="fixed">"signal"</span> is an array of WaveLanes.
@@ -40,7 +40,7 @@ Here is how it looks:
 { "signal" : [{ "name": "Alfa", "wave": "01.zx=ud.23.45" }] }
 </script>
 
-<a href="http://wavedrom.googlecode.com/svn/trunk/editor.html?%7B%20%22signal%22%20%3A%20%5B%7B%20%22name%22%3A%20%22Alfa%22%2C%20%22wave%22%3A%20%2201.zx%3Dud.23.45%22%20%7D%5D%20%7D%0A">Edit Me &gt;&gt;</a>
+<a href="http://wavedrom.github.io/editor.html?%7B%20%22signal%22%20%3A%20%5B%7B%20%22name%22%3A%20%22Alfa%22%2C%20%22wave%22%3A%20%2201.zx%3Dud.23.45%22%20%7D%5D%20%7D%0A">Edit Me &gt;&gt;</a>
 
 
 <h2>Step 2. Adding Clock</h2>
@@ -107,7 +107,7 @@ Multi-bit signals will try to grab the labels from <span class="fixed">"data"</s
 ]}
 </script>
 
-<a href="http://wavedrom.googlecode.com/svn/trunk/editor.html?%7B%20%22signal%22%20%3A%20%5B%0A%20%20%7B%20%22name%22%3A%20%22clk%22%2C%20%20%22wave%22%3A%20%22P......%22%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22bus%22%2C%20%20%22wave%22%3A%20%22x.%3D%3D.%3Dx%22%2C%20%22data%22%3A%20%5B%22head%22%2C%20%22body%22%2C%20%22tail%22%2C%20%22data%22%5D%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22wire%22%2C%20%22wave%22%3A%20%220.1..0.%22%20%7D%0A%5D%7D%0A">Edit Me &gt;&gt;</a>
+<a href="http://wavedrom.github.io/editor.html?%7B%20%22signal%22%20%3A%20%5B%0A%20%20%7B%20%22name%22%3A%20%22clk%22%2C%20%20%22wave%22%3A%20%22P......%22%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22bus%22%2C%20%20%22wave%22%3A%20%22x.%3D%3D.%3Dx%22%2C%20%22data%22%3A%20%5B%22head%22%2C%20%22body%22%2C%20%22tail%22%2C%20%22data%22%5D%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22wire%22%2C%20%22wave%22%3A%20%220.1..0.%22%20%7D%0A%5D%7D%0A">Edit Me &gt;&gt;</a>
 
 
 <h2>Step 4. Spacers and Gaps</h2>
@@ -131,7 +131,7 @@ Multi-bit signals will try to grab the labels from <span class="fixed">"data"</s
 ]}
 </script>
 
-<a href="http://wavedrom.googlecode.com/svn/trunk/editor.html?%7B%20%22signal%22%20%3A%20%5B%0A%20%20%7B%20%22name%22%3A%20%22clk%22%2C%20%20%20%20%20%20%20%20%20%22wave%22%3A%20%22p.....%7C...%22%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22Data%22%2C%20%20%20%20%20%20%20%20%22wave%22%3A%20%22x.345x%7C%3D.x%22%2C%20%22data%22%3A%20%5B%22head%22%2C%20%22body%22%2C%20%22tail%22%2C%20%22data%22%5D%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22Request%22%2C%20%20%20%20%20%22wave%22%3A%20%220.1..0%7C1.0%22%20%7D%2C%0A%20%20%7B%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22Acknowledge%22%2C%20%22wave%22%3A%20%221.....%7C01.%22%20%7D%0A%5D%7D%0A">Edit Me &gt;&gt;</a>
+<a href="http://wavedrom.github.io/editor.html?%7B%20%22signal%22%20%3A%20%5B%0A%20%20%7B%20%22name%22%3A%20%22clk%22%2C%20%20%20%20%20%20%20%20%20%22wave%22%3A%20%22p.....%7C...%22%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22Data%22%2C%20%20%20%20%20%20%20%20%22wave%22%3A%20%22x.345x%7C%3D.x%22%2C%20%22data%22%3A%20%5B%22head%22%2C%20%22body%22%2C%20%22tail%22%2C%20%22data%22%5D%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22Request%22%2C%20%20%20%20%20%22wave%22%3A%20%220.1..0%7C1.0%22%20%7D%2C%0A%20%20%7B%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22Acknowledge%22%2C%20%22wave%22%3A%20%221.....%7C01.%22%20%7D%0A%5D%7D%0A">Edit Me &gt;&gt;</a>
 
 
 <h2>Step 5. The groups</h2>
@@ -186,7 +186,7 @@ The groups can be nested.
 ]}
 </script>
 
-<a href="http://wavedrom.googlecode.com/svn/trunk/editor.html?%7Bsignal%3A%20%5B%0A%20%20%7B%20%20%20%20name%3A%20'clk'%2C%20%20%20wave%3A%20'p..Pp..P'%7D%2C%0A%20%20%5B'Master'%2C%0A%20%20%20%20%5B'ctrl'%2C%0A%20%20%20%20%20%20%7Bname%3A%20'write'%2C%20wave%3A%20'01.0....'%7D%2C%0A%20%20%20%20%20%20%7Bname%3A%20'read'%2C%20%20wave%3A%20'0...1..0'%7D%0A%20%20%20%20%5D%2C%0A%20%20%20%20%7B%20%20name%3A%20'addr'%2C%20%20wave%3A%20'x3.x4..x'%2C%20data%3A%20'A1%20A2'%7D%2C%0A%20%20%20%20%7B%20%20name%3A%20'wdata'%2C%20wave%3A%20'x3.x....'%2C%20data%3A%20'D1'%20%20%20%7D%2C%0A%20%20%5D%2C%0A%20%20%7B%7D%2C%0A%20%20%5B'Slave'%2C%0A%20%20%20%20%5B'ctrl'%2C%0A%20%20%20%20%20%20%7Bname%3A%20'ack'%2C%20%20%20wave%3A%20'x01x0.1x'%7D%2C%0A%20%20%20%20%5D%2C%0A%20%20%20%20%7B%20%20name%3A%20'rdata'%2C%20wave%3A%20'x.....4x'%2C%20data%3A%20'Q2'%7D%2C%0A%20%20%5D%0A%5D%7D">Edit Me &gt;&gt;</a>
+<a href="http://wavedrom.github.io/editor.html?%7Bsignal%3A%20%5B%0A%20%20%7B%20%20%20%20name%3A%20'clk'%2C%20%20%20wave%3A%20'p..Pp..P'%7D%2C%0A%20%20%5B'Master'%2C%0A%20%20%20%20%5B'ctrl'%2C%0A%20%20%20%20%20%20%7Bname%3A%20'write'%2C%20wave%3A%20'01.0....'%7D%2C%0A%20%20%20%20%20%20%7Bname%3A%20'read'%2C%20%20wave%3A%20'0...1..0'%7D%0A%20%20%20%20%5D%2C%0A%20%20%20%20%7B%20%20name%3A%20'addr'%2C%20%20wave%3A%20'x3.x4..x'%2C%20data%3A%20'A1%20A2'%7D%2C%0A%20%20%20%20%7B%20%20name%3A%20'wdata'%2C%20wave%3A%20'x3.x....'%2C%20data%3A%20'D1'%20%20%20%7D%2C%0A%20%20%5D%2C%0A%20%20%7B%7D%2C%0A%20%20%5B'Slave'%2C%0A%20%20%20%20%5B'ctrl'%2C%0A%20%20%20%20%20%20%7Bname%3A%20'ack'%2C%20%20%20wave%3A%20'x01x0.1x'%7D%2C%0A%20%20%20%20%5D%2C%0A%20%20%20%20%7B%20%20name%3A%20'rdata'%2C%20wave%3A%20'x.....4x'%2C%20data%3A%20'Q2'%7D%2C%0A%20%20%5D%0A%5D%7D">Edit Me &gt;&gt;</a>
 
 
 
@@ -215,7 +215,7 @@ The groups can be nested.
 ]}
 </script>
 
-<a href="http://wavedrom.googlecode.com/svn/trunk/editor.html?%7B%20%22signal%22%20%3A%20%5B%0A%20%20%7B%20%22name%22%3A%20%22CK%22%2C%20%20%22wave%22%3A%20%22P.......%22%2C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22period%22%3A2%20%20%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22CMD%22%2C%20%22wave%22%3A%20%22x.3x%3Dx4x%3Dx%3Dx%3Dx%3Dx%22%2C%20%22data%22%20%3A%20%22RAS%20NOP%20CAS%20NOP%20NOP%20NOP%20NOP%22%2C%20%22phase%22%20%3A0.5%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22ADDR%22%2C%22wave%22%3A%20%22x.%3Dx..%3Dx........%22%2C%20%22data%22%20%3A%20%22ROW%20COL%22%2C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22phase%22%20%3A0.5%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22DQS%22%2C%20%22wave%22%3A%20%22z.......0.1010z.%22%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22DQ%22%2C%20%20%22wave%22%3A%20%22z.........5555z.%22%2C%20%22data%22%20%3A%20%22D0%20D1%20D2%20D3%22%20%7D%0A%5D%7D%0A">Edit Me &gt;&gt;</a>
+<a href="http://wavedrom.github.io/editor.html?%7B%20%22signal%22%20%3A%20%5B%0A%20%20%7B%20%22name%22%3A%20%22CK%22%2C%20%20%22wave%22%3A%20%22P.......%22%2C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22period%22%3A2%20%20%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22CMD%22%2C%20%22wave%22%3A%20%22x.3x%3Dx4x%3Dx%3Dx%3Dx%3Dx%22%2C%20%22data%22%20%3A%20%22RAS%20NOP%20CAS%20NOP%20NOP%20NOP%20NOP%22%2C%20%22phase%22%20%3A0.5%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22ADDR%22%2C%22wave%22%3A%20%22x.%3Dx..%3Dx........%22%2C%20%22data%22%20%3A%20%22ROW%20COL%22%2C%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22phase%22%20%3A0.5%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22DQS%22%2C%20%22wave%22%3A%20%22z.......0.1010z.%22%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22DQ%22%2C%20%20%22wave%22%3A%20%22z.........5555z.%22%2C%20%22data%22%20%3A%20%22D0%20D1%20D2%20D3%22%20%7D%0A%5D%7D%0A">Edit Me &gt;&gt;</a>
 
 
 <h2>Step 7.The config{} property</h2>
@@ -248,7 +248,7 @@ The <span class="fixed">config:{...}</span> property controls different aspects 
 }
 </script>
 
-<a href="http://wavedrom.googlecode.com/svn/trunk/editor.html?%7B%20%22signal%22%20%3A%20%5B%0A%20%20%7B%20%22name%22%3A%20%22clk%22%2C%20%20%20%20%20%20%20%20%20%22wave%22%3A%20%22p....%22%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22Data%22%2C%20%20%20%20%20%20%20%20%22wave%22%3A%20%22x345x%22%2C%20%22data%22%3A%20%5B%22head%22%2C%20%22body%22%2C%20%22tail%22%5D%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22Request%22%2C%20%20%20%20%20%22wave%22%3A%20%2201..0%22%20%7D%0A%5D%2C%0A%20%20%22config%22%20%3A%20%7B%20%22hscale%22%20%3A%201%20%7D%0A%7D%0A">Edit Me &gt;&gt;</a>
+<a href="http://wavedrom.github.io/editor.html?%7B%20%22signal%22%20%3A%20%5B%0A%20%20%7B%20%22name%22%3A%20%22clk%22%2C%20%20%20%20%20%20%20%20%20%22wave%22%3A%20%22p....%22%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22Data%22%2C%20%20%20%20%20%20%20%20%22wave%22%3A%20%22x345x%22%2C%20%22data%22%3A%20%5B%22head%22%2C%20%22body%22%2C%20%22tail%22%5D%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22Request%22%2C%20%20%20%20%20%22wave%22%3A%20%2201..0%22%20%7D%0A%5D%2C%0A%20%20%22config%22%20%3A%20%7B%20%22hscale%22%20%3A%201%20%7D%0A%7D%0A">Edit Me &gt;&gt;</a>
 
 <h3>hscale = 2</h3>
 
@@ -262,7 +262,7 @@ The <span class="fixed">config:{...}</span> property controls different aspects 
 }
 </script>
 
-<a href="http://wavedrom.googlecode.com/svn/trunk/editor.html?%7B%20%22signal%22%20%3A%20%5B%0A%20%20%7B%20%22name%22%3A%20%22clk%22%2C%20%20%20%20%20%20%20%20%20%22wave%22%3A%20%22p....%22%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22Data%22%2C%20%20%20%20%20%20%20%20%22wave%22%3A%20%22x345x%22%2C%20%22data%22%3A%20%5B%22head%22%2C%20%22body%22%2C%20%22tail%22%5D%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22Request%22%2C%20%20%20%20%20%22wave%22%3A%20%2201..0%22%20%7D%0A%5D%2C%0A%20%20%22config%22%20%3A%20%7B%20%22hscale%22%20%3A%202%20%7D%0A%7D%0A">Edit Me &gt;&gt;</a>
+<a href="http://wavedrom.github.io/editor.html?%7B%20%22signal%22%20%3A%20%5B%0A%20%20%7B%20%22name%22%3A%20%22clk%22%2C%20%20%20%20%20%20%20%20%20%22wave%22%3A%20%22p....%22%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22Data%22%2C%20%20%20%20%20%20%20%20%22wave%22%3A%20%22x345x%22%2C%20%22data%22%3A%20%5B%22head%22%2C%20%22body%22%2C%20%22tail%22%5D%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22Request%22%2C%20%20%20%20%20%22wave%22%3A%20%2201..0%22%20%7D%0A%5D%2C%0A%20%20%22config%22%20%3A%20%7B%20%22hscale%22%20%3A%202%20%7D%0A%7D%0A">Edit Me &gt;&gt;</a>
 
 <h3>hscale = 3</h3>
 
@@ -276,13 +276,13 @@ The <span class="fixed">config:{...}</span> property controls different aspects 
 }
 </script>
 
-<a href="http://wavedrom.googlecode.com/svn/trunk/editor.html?%7B%20%22signal%22%20%3A%20%5B%0A%20%20%7B%20%22name%22%3A%20%22clk%22%2C%20%20%20%20%20%20%20%20%20%22wave%22%3A%20%22p....%22%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22Data%22%2C%20%20%20%20%20%20%20%20%22wave%22%3A%20%22x345x%22%2C%20%22data%22%3A%20%5B%22head%22%2C%20%22body%22%2C%20%22tail%22%5D%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22Request%22%2C%20%20%20%20%20%22wave%22%3A%20%2201..0%22%20%7D%0A%5D%2C%0A%20%20%22config%22%20%3A%20%7B%20%22hscale%22%20%3A%203%20%7D%0A%7D%0A">Edit Me &gt;&gt;</a>
+<a href="http://wavedrom.github.io/editor.html?%7B%20%22signal%22%20%3A%20%5B%0A%20%20%7B%20%22name%22%3A%20%22clk%22%2C%20%20%20%20%20%20%20%20%20%22wave%22%3A%20%22p....%22%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22Data%22%2C%20%20%20%20%20%20%20%20%22wave%22%3A%20%22x345x%22%2C%20%22data%22%3A%20%5B%22head%22%2C%20%22body%22%2C%20%22tail%22%5D%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22Request%22%2C%20%20%20%20%20%22wave%22%3A%20%2201..0%22%20%7D%0A%5D%2C%0A%20%20%22config%22%20%3A%20%7B%20%22hscale%22%20%3A%203%20%7D%0A%7D%0A">Edit Me &gt;&gt;</a>
 
 <h3>skin</h3>
 
 <span class="fixed">config:{skin:'...'}</span> property can be used to select the <a href="https://code.google.com/p/wavedrom/wiki/WaveDromSkin">WaveDrom skin</a>.
 The property works only inside the first timing diagram on the page.
-<a href="http://wavedrom.googlecode.com/svn/trunk/editor.html">WaveDrom Editor<a> includes two standard skins: <span class="fixed">'default'</span> and <span class="fixed">'narrow'</span>
+<a href="http://wavedrom.github.io/editor.html">WaveDrom Editor<a> includes two standard skins: <span class="fixed">'default'</span> and <span class="fixed">'narrow'</span>
 
 <h3>head/foot</h3>
 
@@ -331,7 +331,7 @@ The property works only inside the first timing diagram on the page.
 }
 </script>
 
-<a href="http://wavedrom.googlecode.com/svn/trunk/editor.html?%7Bsignal%3A%20%5B%0A%20%20%7Bname%3A'clk'%2C%20%20%20%20%20%20%20%20%20wave%3A%20'p....'%20%7D%2C%0A%20%20%7Bname%3A'Data'%2C%20%20%20%20%20%20%20%20wave%3A%20'x345x'%2C%20data%3A%20'a%20b%20c'%20%7D%2C%0A%20%20%7Bname%3A'Request'%2C%20%20%20%20%20wave%3A%20'01..0'%20%7D%0A%5D%2C%0A%20head%3A%7B%0A%20%20%20text%3A'WaveDrom%20example'%2C%0A%20%20%20tick%3A0%2C%0A%20%7D%2C%0A%20foot%3A%7B%0A%20%20%20text%3A'Figure%20100'%2C%0A%20%20%20tock%3A9%0A%20%7D%2C%0A%7D%0A">Edit Me &gt;&gt;</a>
+<a href="http://wavedrom.github.io/editor.html?%7Bsignal%3A%20%5B%0A%20%20%7Bname%3A'clk'%2C%20%20%20%20%20%20%20%20%20wave%3A%20'p....'%20%7D%2C%0A%20%20%7Bname%3A'Data'%2C%20%20%20%20%20%20%20%20wave%3A%20'x345x'%2C%20data%3A%20'a%20b%20c'%20%7D%2C%0A%20%20%7Bname%3A'Request'%2C%20%20%20%20%20wave%3A%20'01..0'%20%7D%0A%5D%2C%0A%20head%3A%7B%0A%20%20%20text%3A'WaveDrom%20example'%2C%0A%20%20%20tick%3A0%2C%0A%20%7D%2C%0A%20foot%3A%7B%0A%20%20%20text%3A'Figure%20100'%2C%0A%20%20%20tock%3A9%0A%20%7D%2C%0A%7D%0A">Edit Me &gt;&gt;</a>
 
 <p>
 <span class="fixed">head</span>/
@@ -420,7 +420,7 @@ foot: {text:
 }
 </script>
 
-<a href="http://wavedrom.googlecode.com/svn/trunk/editor.html?%7Bsignal%3A%20%5B%0A%20%20%7Bname%3A'clk'%2C%20wave%3A%20'p.....PPPPp....'%20%7D%2C%0A%20%20%7Bname%3A'dat'%2C%20wave%3A%20'x....2345x.....'%2C%20data%3A%20'a%20b%20c%20d'%20%7D%2C%0A%20%20%7Bname%3A'req'%2C%20wave%3A%20'0....1...0.....'%20%7D%0A%5D%2C%0Ahead%3A%20%7Btext%3A%0A%20%20%5B'tspan'%2C%0A%20%20%20%20%5B'tspan'%2C%20%7Bclass%3A'error%20h1'%7D%2C%20'error%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7Bclass%3A'warning%20h2'%7D%2C%20'warning%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7Bclass%3A'info%20h3'%7D%2C%20'info%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7Bclass%3A'success%20h4'%7D%2C%20'success%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7Bclass%3A'muted%20h5'%7D%2C%20'muted%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7Bclass%3A'h6'%7D%2C%20'h6%20'%5D%2C%0A%20%20%20%20'default%20'%2C%0A%20%20%20%20%5B'tspan'%2C%20%7Bfill%3A'pink'%2C%20'font-weight'%3A'bold'%2C%20'font-style'%3A'italic'%7D%2C%20'pink-bold-italic'%5D%0A%20%20%5D%0A%7D%2C%0Afoot%3A%20%7Btext%3A%0A%20%20%5B'tspan'%2C%20'E%3Dmc'%2C%0A%20%20%20%20%5B'tspan'%2C%20%7Bdy%3A'-5'%7D%2C%20'2'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7Bdy%3A%20'5'%7D%2C%20'.%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7B'font-size'%3A'25'%7D%2C%20'B%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7B'text-decoration'%3A'overline'%7D%2C'over%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7B'text-decoration'%3A'underline'%7D%2C'under%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7B'baseline-shift'%3A'sub'%7D%2C%20'sub%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7B'baseline-shift'%3A'super'%7D%2C%20'super%20'%5D%0A%20%20%5D%2Ctock%3A-5%0A%7D%0A%7D%0A">Edit Me &gt;&gt;</a>
+<a href="http://wavedrom.github.io/editor.html?%7Bsignal%3A%20%5B%0A%20%20%7Bname%3A'clk'%2C%20wave%3A%20'p.....PPPPp....'%20%7D%2C%0A%20%20%7Bname%3A'dat'%2C%20wave%3A%20'x....2345x.....'%2C%20data%3A%20'a%20b%20c%20d'%20%7D%2C%0A%20%20%7Bname%3A'req'%2C%20wave%3A%20'0....1...0.....'%20%7D%0A%5D%2C%0Ahead%3A%20%7Btext%3A%0A%20%20%5B'tspan'%2C%0A%20%20%20%20%5B'tspan'%2C%20%7Bclass%3A'error%20h1'%7D%2C%20'error%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7Bclass%3A'warning%20h2'%7D%2C%20'warning%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7Bclass%3A'info%20h3'%7D%2C%20'info%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7Bclass%3A'success%20h4'%7D%2C%20'success%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7Bclass%3A'muted%20h5'%7D%2C%20'muted%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7Bclass%3A'h6'%7D%2C%20'h6%20'%5D%2C%0A%20%20%20%20'default%20'%2C%0A%20%20%20%20%5B'tspan'%2C%20%7Bfill%3A'pink'%2C%20'font-weight'%3A'bold'%2C%20'font-style'%3A'italic'%7D%2C%20'pink-bold-italic'%5D%0A%20%20%5D%0A%7D%2C%0Afoot%3A%20%7Btext%3A%0A%20%20%5B'tspan'%2C%20'E%3Dmc'%2C%0A%20%20%20%20%5B'tspan'%2C%20%7Bdy%3A'-5'%7D%2C%20'2'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7Bdy%3A%20'5'%7D%2C%20'.%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7B'font-size'%3A'25'%7D%2C%20'B%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7B'text-decoration'%3A'overline'%7D%2C'over%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7B'text-decoration'%3A'underline'%7D%2C'under%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7B'baseline-shift'%3A'sub'%7D%2C%20'sub%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7B'baseline-shift'%3A'super'%7D%2C%20'super%20'%5D%0A%20%20%5D%2Ctock%3A-5%0A%7D%0A%7D%0A">Edit Me &gt;&gt;</a>
 
 <h2>Step 8. Arrows</h2>
 
@@ -456,7 +456,7 @@ edge: ['a~b t1', 'c-~a t2', 'c-~>d time 3', 'd~-e', 'e~>f', 'f->g', 'g-~>h', 'h~
 }
 </script>
 
-<a href="http://wavedrom.googlecode.com/svn/trunk/editor.html?%7B%20signal%3A%20%5B%0A%20%20%7B%20name%3A%20'A'%2C%20wave%3A%20'01........0....'%2C%20%20node%3A%20'.a........j'%20%7D%2C%0A%20%20%7B%20name%3A%20'B'%2C%20wave%3A%20'0.1.......0.1..'%2C%20%20node%3A%20'..b.......i'%20%7D%2C%0A%20%20%7B%20name%3A%20'C'%2C%20wave%3A%20'0..1....0...1..'%2C%20%20node%3A%20'...c....h..'%20%7D%2C%0A%20%20%7B%20name%3A%20'D'%2C%20wave%3A%20'0...1..0.....1.'%2C%20%20node%3A%20'....d..g...'%20%7D%2C%0A%20%20%7B%20name%3A%20'E'%2C%20wave%3A%20'0....10.......1'%2C%20%20node%3A%20'.....ef....'%20%7D%0A%5D%2C%0Aedge%3A%20%5B'a~b%20t1'%2C%20'c-~a%20t2'%2C%20'c-~%3Ed%20time%203'%2C%20'd~-e'%2C%20'e~%3Ef'%2C%20'f-%3Eg'%2C%20'g-~%3Eh'%2C%20'h~%3Ei%20some%20text'%2C%20'h~-%3Ej'%5D%0A%7D%0A">Edit Me &gt;&gt;</a>
+<a href="http://wavedrom.github.io/editor.html?%7B%20signal%3A%20%5B%0A%20%20%7B%20name%3A%20'A'%2C%20wave%3A%20'01........0....'%2C%20%20node%3A%20'.a........j'%20%7D%2C%0A%20%20%7B%20name%3A%20'B'%2C%20wave%3A%20'0.1.......0.1..'%2C%20%20node%3A%20'..b.......i'%20%7D%2C%0A%20%20%7B%20name%3A%20'C'%2C%20wave%3A%20'0..1....0...1..'%2C%20%20node%3A%20'...c....h..'%20%7D%2C%0A%20%20%7B%20name%3A%20'D'%2C%20wave%3A%20'0...1..0.....1.'%2C%20%20node%3A%20'....d..g...'%20%7D%2C%0A%20%20%7B%20name%3A%20'E'%2C%20wave%3A%20'0....10.......1'%2C%20%20node%3A%20'.....ef....'%20%7D%0A%5D%2C%0Aedge%3A%20%5B'a~b%20t1'%2C%20'c-~a%20t2'%2C%20'c-~%3Ed%20time%203'%2C%20'd~-e'%2C%20'e~%3Ef'%2C%20'f-%3Eg'%2C%20'g-~%3Eh'%2C%20'h~%3Ei%20some%20text'%2C%20'h~-%3Ej'%5D%0A%7D%0A">Edit Me &gt;&gt;</a>
 
 
 <h3>Sharp lines</h3>
@@ -489,25 +489,22 @@ edge: ['a~b t1', 'c-~a t2', 'c-~>d time 3', 'd~-e', 'e~>f', 'f->g', 'g-~>h', 'h~
 }
 </script>
 
-<a href="http://wavedrom.googlecode.com/svn/trunk/editor.html?%7B%20signal%3A%20%5B%0A%20%20%7B%20name%3A%20'A'%2C%20wave%3A%20'01..0..'%2C%20%20node%3A%20'.a..e..'%20%7D%2C%0A%20%20%7B%20name%3A%20'B'%2C%20wave%3A%20'0.1..0.'%2C%20%20node%3A%20'..b..d.'%2C%20phase%3A0.5%20%7D%2C%0A%20%20%7B%20name%3A%20'C'%2C%20wave%3A%20'0..1..0'%2C%20%20node%3A%20'...c..f'%20%7D%2C%0A%20%20%7B%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20node%3A%20'...g..h'%20%7D%0A%5D%2C%0A%20%20edge%3A%20%5B'b-%7Ca%20t1'%2C%20'a-%7Cc%20t2'%2C%20'b-%7C-c%20t3'%2C%20'c-%7C-%3Ee%20t4'%2C%20'e-%7C%3Ef%20more%20text'%2C%20'e%7C-%3Ed%20t6'%2C%20'c-g'%2C%20'f-h'%2C%20'g%3C-%3Eh%203%20ms'%5D%0A%7D%0A">Edit Me &gt;&gt;</a>
+<a href="http://wavedrom.github.io/editor.html?%7B%20signal%3A%20%5B%0A%20%20%7B%20name%3A%20'A'%2C%20wave%3A%20'01..0..'%2C%20%20node%3A%20'.a..e..'%20%7D%2C%0A%20%20%7B%20name%3A%20'B'%2C%20wave%3A%20'0.1..0.'%2C%20%20node%3A%20'..b..d.'%2C%20phase%3A0.5%20%7D%2C%0A%20%20%7B%20name%3A%20'C'%2C%20wave%3A%20'0..1..0'%2C%20%20node%3A%20'...c..f'%20%7D%2C%0A%20%20%7B%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20node%3A%20'...g..h'%20%7D%0A%5D%2C%0A%20%20edge%3A%20%5B'b-%7Ca%20t1'%2C%20'a-%7Cc%20t2'%2C%20'b-%7C-c%20t3'%2C%20'c-%7C-%3Ee%20t4'%2C%20'e-%7C%3Ef%20more%20text'%2C%20'e%7C-%3Ed%20t6'%2C%20'c-g'%2C%20'f-h'%2C%20'g%3C-%3Eh%203%20ms'%5D%0A%7D%0A">Edit Me &gt;&gt;</a>
 
 </div>
 
 <script>(function(){ window.addEventListener("load", WaveDrom.ProcessAll, false); })();</script>
 
-<script type="text/javascript">
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-21660728-1']);
-  _gaq.push(['_setDomainName', 'wavedrom.googlecode.com']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
+  ga('create', 'UA-21660728-3', 'wavedrom.github.io');
+  ga('send', 'pageview');
 
 </script>
+
 </body>
 </html>
