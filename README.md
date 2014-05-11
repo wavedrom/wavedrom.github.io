@@ -1,6 +1,6 @@
-![alt text](https://github.com/drom/wavedrom/raw/master/images/logo.png "logo")
+![alt text](images/logo.png "logo")
 
-| [EDITOR](http://wavedrom.github.io/editor.html) | [TUTORIAL](http://wavedrom.googlecode.com/svn/trunk/tutorial.html) |
+| [EDITOR](http://wavedrom.github.io/editor.html) | [TUTORIAL](http://wavedrom.github.io/tutorial.html) |
 
 [WaveDrom] is Free and Open Source online digital timing diagram (waveform) rendering engine that uses javascript, HTML5 and SVG to convert [WaveJSON] input text description into SVG vector graphics.
 
@@ -8,15 +8,15 @@
 
 [WaveDromEditor](http://wavedrom.github.io/editor.html) is online real-time editor of digital timing diagrams based on [WaveDrom] engine and [WaveJSON] format. The engine using [WaveDromSkin] skin mechanism to render complete picture. Multiple timing diagrams can be embedded into your HTML page as described in [WaveDromPlugins].
 
-![alt text](https://github.com/drom/wavedrom/raw/master/images/firefox_22.gif "firefox") 4+
-![alt text](https://github.com/drom/wavedrom/raw/master/images/chrome_22.gif "chrome") 10+
-![alt text](https://github.com/drom/wavedrom/raw/master/images/safari_22.gif "safari") 5.1+
-![alt text](https://github.com/drom/wavedrom/raw/master/images/opera_22.gif "opera") 12+
-![alt text](https://github.com/drom/wavedrom/raw/master/images/ie_22.gif "ie") 11
+![alt text](images/firefox_22.gif "firefox") 4+
+![alt text](images/chrome_22.gif "chrome") 10+
+![alt text](images/safari_22.gif "safari") 5.1+
+![alt text](images/opera_22.gif "opera") 12+
+![alt text](images/ie_22.gif "ie") 11
 
 ## Screenshot
 
-![alt text](http://wavedrom.github.io/images/screenshot.png "screenshot")
+![alt text](images/screenshot.png "screenshot")
 
 ## Community
 
