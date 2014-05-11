@@ -13,7 +13,7 @@
    height="55"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.1 r9760"
+   inkscape:version="0.48.4 r9939"
    sodipodi:docname="logo.svg"
    inkscape:export-filename="/home/alex_drom/work/wavedrom/trunk/images/logo.png"
    inkscape:export-xdpi="90"
@@ -27,18 +27,18 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1"
-     inkscape:cx="31.308009"
-     inkscape:cy="30.052467"
+     inkscape:zoom="5.6568542"
+     inkscape:cx="35.189965"
+     inkscape:cy="38.263063"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
      showguides="true"
      inkscape:guide-bbox="true"
-     inkscape:window-width="1855"
-     inkscape:window-height="1178"
-     inkscape:window-x="-4"
-     inkscape:window-y="-1"
+     inkscape:window-width="1875"
+     inkscape:window-height="1060"
+     inkscape:window-x="-3"
+     inkscape:window-y="-3"
      inkscape:window-maximized="1">
     <inkscape:grid
        type="xygrid"
@@ -56,7 +56,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -92,21 +92,18 @@
        inkscape:export-filename="/home/alex_drom/work/wavedrom/trunk/images/favicon.gif.png"
        inkscape:export-xdpi="35.650627"
        inkscape:export-ydpi="35.650627" />
-    <text
-       xml:space="preserve"
+    <g
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#004855;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
-       x="0"
-       y="1039.3622"
-       id="text4927"
-       sodipodi:linespacing="125%"
-       inkscape:export-filename="/home/alex_drom/work/wavedrom/trunk/images/favicon.gif.png"
-       inkscape:export-xdpi="35.650627"
-       inkscape:export-ydpi="35.650627"><tspan
-         sodipodi:role="line"
-         id="tspan4929"
-         x="0"
-         y="1039.3622"
-         style="font-size:56px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Nimbus Sans L Condensed;-inkscape-font-specification:'Nimbus Sans L Condensed,';fill:#004855;fill-opacity:1">{  }</tspan></text>
+       id="text4927">
+      <path
+         d="m 1.904,1026.2582 c 1.0639989,0.168 1.4560006,0.392 2.016,1.12 1.0639989,1.4 1.68,3.584 1.68,6.16 l 0,9.576 c 0,4.088 2.0160027,7.224 4.704,7.224 l 3.08,0 0,-3.64 -2.016,0 c -1.3999986,0 -2.128,-1.568 -2.128,-4.592 l 0,-9.464 c 0,-3.752 -1.5680026,-6.832 -4.144,-8.064 2.4079976,-1.064 4.144,-4.312 4.144,-7.896 l 0,-9.52 c 0,-3.024 0.7280014,-4.592 2.128,-4.592 l 2.016,0 0,-3.64002 -3.08,0 c -2.6879973,0 -4.704,3.13602 -4.704,7.22402 l 0,9.632 c 0,2.464 -0.5600011,4.592 -1.624,5.992 -0.5599994,0.728 -1.0080011,0.952 -2.072,1.12 l 0,3.36"
+         style="font-size:56px;font-variant:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#004855;font-family:Nimbus Sans L Condensed;-inkscape-font-specification:'Nimbus Sans L Condensed,'"
+         id="path2996" />
+      <path
+         d="m 54.29025,1022.8982 c -1.063999,-0.168 -1.512001,-0.392 -2.072,-1.12 -1.063999,-1.4 -1.624,-3.472 -1.624,-5.992 l 0,-9.632 c 0,-4.088 -2.016003,-7.22402 -4.704,-7.22402 l -3.08,0 0,3.64002 2.016,0 c 1.399999,0 2.128,1.568 2.128,4.592 l 0,9.52 c 0,3.584 1.736002,6.832 4.144,7.896 -2.575997,1.232 -4.144,4.312 -4.144,8.064 l 0,9.464 c 0,2.968 -0.728001,4.592 -2.128,4.592 l -2.016,0 0,3.64 3.08,0 c 2.687997,0 4.704,-3.136 4.704,-7.224 l 0,-9.576 c 0,-2.632 0.560001,-4.76 1.68,-6.16 0.559999,-0.728 0.952001,-0.952 2.016,-1.12 l 0,-3.36"
+         style="font-size:56px;font-variant:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#004855;font-family:Nimbus Sans L Condensed;-inkscape-font-specification:'Nimbus Sans L Condensed,'"
+         id="path2998" />
+    </g>
     <path
        style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        d="m 25,1047.3622 7,-7"
