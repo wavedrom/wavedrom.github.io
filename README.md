@@ -10,6 +10,10 @@
 ![alt text](images/opera_22.gif "opera") 12+
 ![alt text](images/ie_22.gif "ie") 11
 
+## Builds
+
+[![Build Status](https://travis-ci.org/wavedrom/wavedrom.github.io.svg?branch=master)](https://travis-ci.org/wavedrom/wavedrom.github.io)
+
 ## Community
 
 Please use [WaveDrom user group](http://groups.google.com/group/wavedrom) for discussions, questions, ideas, whatever.
