@@ -32,19 +32,19 @@ module.exports = function(grunt) {
     },
     compress: {
       win: {
-        options: {archive: 'nw_builds/<%= pkg.name %>-<%= pkg.version %>-win-ia32.zip'},
+        options: {archive: 'nw_builds/<%= pkg.name %>-v<%= pkg.version %>-win-ia32.zip'},
         files: [{expand: true, cwd: 'nw_builds/releases/WaveDromEditor/win/', src: ['**'], dest: '.'}]
       },
       linux32: {
-        options: {archive: 'nw_builds/<%= pkg.name %>-<%= pkg.version %>-linux-ia32.tar.gz'},
+        options: {archive: 'nw_builds/<%= pkg.name %>-v<%= pkg.version %>-linux-ia32.tar.gz'},
         files: [{expand: true, cwd: 'nw_builds/releases/WaveDromEditor/linux32/', src: ['**'], dest: '.'}]
       },
       linux64: {
-        options: {archive: 'nw_builds/<%= pkg.name %>-<%= pkg.version %>-linux-x64.tar.gz'},
+        options: {archive: 'nw_builds/<%= pkg.name %>-v<%= pkg.version %>-linux-x64.tar.gz'},
         files: [{expand: true, cwd: 'nw_builds/releases/WaveDromEditor/linux64/', src: ['**'], dest: '.'}]
       },
       mac: {
-        options: {archive: 'nw_builds/<%= pkg.name %>-<%= pkg.version %>-osx-ia32.zip'},
+        options: {archive: 'nw_builds/<%= pkg.name %>-v<%= pkg.version %>-osx-ia32.zip'},
         files: [{expand: true, cwd: 'nw_builds/releases/WaveDromEditor/mac/', src: ['**'], dest: '.'}]
       },
     }
