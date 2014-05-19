@@ -22,22 +22,40 @@ module.exports = function(grunt) {
     nodewebkit: {
       options: {
         build_dir: './nw_builds',
-        keep_nw: true,    
+        keep_nw: true,
         mac: true,
         win: true,
         linux32: true,
         linux64: true
       },
-      src: ['./WaveDromEditor_build/*']
+      src: ['./WaveDromEditor_build/**']
+    },
+    compress: {
+      win: {
+        options: {archive: 'nw_builds/<%= pkg.name %>-<%= pkg.version %>-win-ia32.zip'},
+        files: [{expand: true, cwd: 'nw_builds/releases/WaveDromEditor/win/', src: ['**'], dest: '.'}]
+      },
+      linux32: {
+        options: {archive: 'nw_builds/<%= pkg.name %>-<%= pkg.version %>-linux-ia32.tar.gz'},
+        files: [{expand: true, cwd: 'nw_builds/releases/WaveDromEditor/linux32/', src: ['**'], dest: '.'}]
+      },
+      linux64: {
+        options: {archive: 'nw_builds/<%= pkg.name %>-<%= pkg.version %>-linux-x64.tar.gz'},
+        files: [{expand: true, cwd: 'nw_builds/releases/WaveDromEditor/linux64/', src: ['**'], dest: '.'}]
+      },
+      mac: {
+        options: {archive: 'nw_builds/<%= pkg.name %>-<%= pkg.version %>-osx-ia32.zip'},
+        files: [{expand: true, cwd: 'nw_builds/releases/WaveDromEditor/mac/', src: ['**'], dest: '.'}]
+      },
     }
   });
 
   // Load the plugin that provides the "uglify" task.
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-copy');
-//  grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-node-webkit-builder');
+  grunt.loadNpmTasks('grunt-contrib-compress');
 
   // Default task(s).
-  grunt.registerTask('default', ['jshint', 'copy', 'nodewebkit']);
+  grunt.registerTask('default', ['jshint', 'copy', 'nodewebkit', 'compress']);
 };
