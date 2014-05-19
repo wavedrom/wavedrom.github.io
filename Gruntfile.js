@@ -17,6 +17,9 @@ module.exports = function(grunt) {
           ], dest: 'WaveDromEditor_build/', filter: 'isFile'},
           {expand: true, flatten: true, src:['WaveDromEditor/package.json'], dest: 'WaveDromEditor_build/', filter: 'isFile'},
         ]
+      },
+      nw: {
+        files: [{src:'nw_builds/releases/WaveDromEditor/WaveDromEditor.nw', dest:'nw_builds/<%= pkg.name %>-v<%= pkg.version %>.nw'}]
       }
     },
     nodewebkit: {
@@ -57,5 +60,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-compress');
 
   // Default task(s).
-  grunt.registerTask('default', ['jshint', 'copy', 'nodewebkit', 'compress']);
+  grunt.registerTask('default', ['jshint', 'copy:editor', 'nodewebkit', 'compress', 'copy:nw']);
 };
