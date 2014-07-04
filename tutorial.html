@@ -6,7 +6,7 @@
   <!--script type="text/javascript" src="skins/narrow.js"></script-->
   <script type="text/javascript" src="WaveDrom.js"></script>
   <link href='http://fonts.googleapis.com/css?family=Inconsolata|Varela+Round' rel='stylesheet' type='text/css'>
-  <link href="tutorial.css" media="screen" rel="Stylesheet" type="text/css" /> 
+  <link href="tutorial.css" media="screen" rel="Stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -15,7 +15,7 @@
 
 <h1>Hitchhiker's Guide to the WaveDrom</h1>
 
-<a href="http://wavedrom.github.io">WaveDrom</a> is a JavaScript application. 
+<a href="http://wavedrom.github.io">WaveDrom</a> is a JavaScript application.
 WaveJSON is a format that describes Digital Timing Diagrams.
 WaveDrom renders the diagrmas directly inside the browser.
 Element <span class="fixed">"signal"</span> is an array of WaveLanes.
@@ -143,7 +143,7 @@ WaveLanes can be united in named groups that are represented in form of arrays.
 The first entry of array is the group's name.
 
 The groups can be nested.
- 
+
 <pre>
 {signal: [
   {    name: 'clk',   wave: 'p..Pp..P'},
@@ -288,7 +288,7 @@ The property works only inside the first timing diagram on the page.
 
 <span class="fixed">head:{...}</span> and <span class="fixed">foot:{...}</span> properties define the content of the area above and below the timing diagram.
 
-<h4>tick</h4> 
+<h4>tick</h4>
 -adds timeline labels aligned to vertical markers.
 
 <h4>tock</h4>
@@ -492,6 +492,8 @@ edge: ['a~b t1', 'c-~a t2', 'c-~>d time 3', 'd~-e', 'e~>f', 'f->g', 'g-~>h', 'h~
 <a href="http://wavedrom.github.io/editor.html?%7B%20signal%3A%20%5B%0A%20%20%7B%20name%3A%20'A'%2C%20wave%3A%20'01..0..'%2C%20%20node%3A%20'.a..e..'%20%7D%2C%0A%20%20%7B%20name%3A%20'B'%2C%20wave%3A%20'0.1..0.'%2C%20%20node%3A%20'..b..d.'%2C%20phase%3A0.5%20%7D%2C%0A%20%20%7B%20name%3A%20'C'%2C%20wave%3A%20'0..1..0'%2C%20%20node%3A%20'...c..f'%20%7D%2C%0A%20%20%7B%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20node%3A%20'...g..h'%20%7D%0A%5D%2C%0A%20%20edge%3A%20%5B'b-%7Ca%20t1'%2C%20'a-%7Cc%20t2'%2C%20'b-%7C-c%20t3'%2C%20'c-%7C-%3Ee%20t4'%2C%20'e-%7C%3Ef%20more%20text'%2C%20'e%7C-%3Ed%20t6'%2C%20'c-g'%2C%20'f-h'%2C%20'g%3C-%3Eh%203%20ms'%5D%0A%7D%0A">Edit Me &gt;&gt;</a>
 
 </div>
+
+<a href="https://github.com/drom/wavedrom"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
 
 <script>(function(){ window.addEventListener("load", WaveDrom.ProcessAll, false); })();</script>
 
