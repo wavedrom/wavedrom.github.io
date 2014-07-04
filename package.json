@@ -32,6 +32,7 @@
     "grunt-contrib-jshint": "~0.10.0",
     "grunt-node-webkit-builder": "*",
     "codemirror" : "*",
-    "grunt-contrib-compress": "*"
+    "grunt-contrib-compress": "*",
+    "syntaxhighlighter": "*"
   }
 }

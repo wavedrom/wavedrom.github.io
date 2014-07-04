@@ -6,6 +6,12 @@
   <!--script type="text/javascript" src="skins/narrow.js"></script-->
   <script type="text/javascript" src="WaveDrom.js"></script>
   <link href='http://fonts.googleapis.com/css?family=Inconsolata|Varela+Round' rel='stylesheet' type='text/css'>
+
+  <script type="text/javascript" src="scripts/shCore.min.js"></script>
+  <script type="text/javascript" src="scripts/shBrushJScript.js"></script>
+  <link href="scripts/shCore.css" rel="stylesheet" type="text/css" />
+  <link href="scripts/shThemeDefault.css" rel="stylesheet" type="text/css" />
+
   <link href="tutorial.css" media="screen" rel="Stylesheet" type="text/css" />
 </head>
 
@@ -28,8 +34,8 @@ Lets start with a quick example.
 Following code will create 1-bit signal named <span class="fixed">"Alfa"</span>
  that changes its state over time.
 
-<pre>
-{ "signal" : [{ "name": "Alfa", "wave": "01.zx=ud.23.45" }] }
+<pre class="brush: js">
+{ signal: [{ name: "Alfa", wave: "01.zx=ud.23.45" }] }
 </pre>
 
 Every character in the <span class="fixed">"wave"</span> string represents a single time period.
@@ -37,7 +43,7 @@ Symbol <span class="fixed">"."</span> extends previous state for one more period
 Here is how it looks:
 
 <script type="WaveDrom">
-{ "signal" : [{ "name": "Alfa", "wave": "01.zx=ud.23.45" }] }
+{ signal: [{ name: "Alfa", wave: "01.zx=ud.23.45" }] }
 </script>
 
 <a href="http://wavedrom.github.io/editor.html?%7B%20%22signal%22%20%3A%20%5B%7B%20%22name%22%3A%20%22Alfa%22%2C%20%22wave%22%3A%20%2201.zx%3Dud.23.45%22%20%7D%5D%20%7D%0A">Edit Me &gt;&gt;</a>
@@ -51,7 +57,7 @@ It also can have an optional marker on the working edge.
 The clock's blocks can be mixed with other signal states to create the clock gating effects.
 Here is the code:
 
-<pre class="WaveDrom">
+<pre class="brush: js">
 { signal: [
   { name: "pclk", wave: 'p.......' },
   { name: "Pclk", wave: 'P.......' },
@@ -92,18 +98,18 @@ and the rendered diagram:
 Typical timing diagram would have the clock and signals (wires).
 Multi-bit signals will try to grab the labels from <span class="fixed">"data"</span> array.
 
-<pre>
-{ "signal" : [
-  { "name": "clk",  "wave": "P......" },
-  { "name": "bus",  "wave": "x.==.=x", "data": ["head", "body", "tail", "data"] },
-  { "name": "wire", "wave": "0.1..0." }
+<pre class="brush: js">
+{ signal: [
+  { name: "clk",  wave: "P......" },
+  { name: "bus",  wave: "x.==.=x", data: ["head", "body", "tail", "data"] },
+  { name: "wire", wave: "0.1..0." }
 ]}
 </pre>
 <script type="WaveDrom">
-{ "signal" : [
-  { "name": "clk",  "wave": "P......" },
-  { "name": "bus",  "wave": "x.==.=x", "data": ["head", "body", "tail", "data"] },
-  { "name": "wire", "wave": "0.1..0." }
+{ signal: [
+  { name: "clk",  wave: "P......" },
+  { name: "bus",  wave: "x.==.=x", data: ["head", "body", "tail", "data"] },
+  { name: "wire", wave: "0.1..0." }
 ]}
 </script>
 
@@ -112,22 +118,22 @@ Multi-bit signals will try to grab the labels from <span class="fixed">"data"</s
 
 <h2>Step 4. Spacers and Gaps</h2>
 
-<pre>
-{ "signal" : [
-  { "name": "clk",         "wave": "p.....|..." },
-  { "name": "Data",        "wave": "x.345x|=.x", "data": ["head", "body", "tail", "data"] },
-  { "name": "Request",     "wave": "0.1..0|1.0" },
+<pre class="brush: js">
+{ signal: [
+  { name: "clk",         wave: "p.....|..." },
+  { name: "Data",        wave: "x.345x|=.x", data: ["head", "body", "tail", "data"] },
+  { name: "Request",     wave: "0.1..0|1.0" },
   {},
-  { "name": "Acknowledge", "wave": "1.....|01." }
+  { name: "Acknowledge", wave: "1.....|01." }
 ]}
 </pre>
 <script type="WaveDrom">
-{ "signal" : [
-  { "name": "clk",         "wave": "p.....|..." },
-  { "name": "Data",        "wave": "x.345x|=.x", "data": ["head", "body", "tail", "data"] },
-  { "name": "Request",     "wave": "0.1..0|1.0" },
+{ signal: [
+  { name: "clk",         wave: "p.....|..." },
+  { name: "Data",        wave: "x.345x|=.x", data: ["head", "body", "tail", "data"] },
+  { name: "Request",     wave: "0.1..0|1.0" },
   {},
-  { "name": "Acknowledge", "wave": "1.....|01." }
+  { name: "Acknowledge", wave: "1.....|01." }
 ]}
 </script>
 
@@ -144,8 +150,8 @@ The first entry of array is the group's name.
 
 The groups can be nested.
 
-<pre>
-{signal: [
+<pre class="brush: js">
+{ signal: [
   {    name: 'clk',   wave: 'p..Pp..P'},
   ['Master',
     ['ctrl',
@@ -166,7 +172,7 @@ The groups can be nested.
 </pre>
 
 <script type="WaveDrom">
-{signal: [
+{ signal: [
   {    name: 'clk',   wave: 'p..Pp..P'},
   ['Master',
     ['ctrl',
@@ -196,22 +202,22 @@ The groups can be nested.
 
 <h3>DDR Read transaction</h3>
 
-<pre>
-{ "signal" : [
-  { "name": "CK",  "wave": "P.......",                                                 "period":2   },
-  { "name": "CMD", "wave": "x.3x=x4x=x=x=x=x", "data" : "RAS NOP CAS NOP NOP NOP NOP", "phase" :0.5 },
-  { "name": "ADDR","wave": "x.=x..=x........", "data" : "ROW COL",                     "phase" :0.5 },
-  { "name": "DQS", "wave": "z.......0.1010z." },
-  { "name": "DQ",  "wave": "z.........5555z.", "data" : "D0 D1 D2 D3" }
+<pre class="brush: js">
+{ signal: [
+  { name: "CK",   wave: "P.......",                                              period: 2  },
+  { name: "CMD",  wave: "x.3x=x4x=x=x=x=x", data: "RAS NOP CAS NOP NOP NOP NOP", phase: 0.5 },
+  { name: "ADDR", wave: "x.=x..=x........", data: "ROW COL",                     phase: 0.5 },
+  { name: "DQS",  wave: "z.......0.1010z." },
+  { name: "DQ",   wave: "z.........5555z.", data: "D0 D1 D2 D3" }
 ]}
 </pre>
 <script type="WaveDrom">
-{ "signal" : [
-  { "name": "CK",  "wave": "P.......",                                                 "period":2   },
-  { "name": "CMD", "wave": "x.3x=x4x=x=x=x=x", "data" : "RAS NOP CAS NOP NOP NOP NOP", "phase" :0.5 },
-  { "name": "ADDR","wave": "x.=x..=x........", "data" : "ROW COL",                     "phase" :0.5 },
-  { "name": "DQS", "wave": "z.......0.1010z." },
-  { "name": "DQ",  "wave": "z.........5555z.", "data" : "D0 D1 D2 D3" }
+{ signal: [
+  { name: "CK",   wave: "P.......",                                              period: 2  },
+  { name: "CMD",  wave: "x.3x=x4x=x=x=x=x", data: "RAS NOP CAS NOP NOP NOP NOP", phase: 0.5 },
+  { name: "ADDR", wave: "x.=x..=x........", data: "ROW COL",                     phase: 0.5 },
+  { name: "DQS",  wave: "z.......0.1010z." },
+  { name: "DQ",   wave: "z.........5555z.", data: "D0 D1 D2 D3" }
 ]}
 </script>
 
@@ -226,25 +232,25 @@ The <span class="fixed">config:{...}</span> property controls different aspects 
 
 <span class="fixed">config:{hscale:#}</span> property controls the horizontal scale of the diagram. User can put any integer number greater than 0.
 
-<pre>
-{ "signal" : [
-  { "name": "clk",         "wave": "p...." },
-  { "name": "Data",        "wave": "x345x", "data": ["head", "body", "tail"] },
-  { "name": "Request",     "wave": "01..0" }
-],
-  "config" : { "hscale" : # }
+<pre class="brush: js">
+{ signal: [
+  { name: "clk",     wave: "p...." },
+  { name: "Data",    wave: "x345x",  data: ["head", "body", "tail"] },
+  { name: "Request", wave: "01..0" }
+  ],
+  config: { hscale: 1 }
 }
 </pre>
 
 <h3>hscale = 1 (default)</h3>
 
 <script type="WaveDrom">
-{ "signal" : [
-  { "name": "clk",         "wave": "p...." },
-  { "name": "Data",        "wave": "x345x", "data": ["head", "body", "tail"] },
-  { "name": "Request",     "wave": "01..0" }
-],
-  "config" : { "hscale" : 1 }
+{ signal: [
+  { name: "clk",     wave: "p...." },
+  { name: "Data",    wave: "x345x",  data: ["head", "body", "tail"] },
+  { name: "Request", wave: "01..0" }
+  ],
+  config: { hscale: 1 }
 }
 </script>
 
@@ -297,7 +303,7 @@ The property works only inside the first timing diagram on the page.
 <h4>text</h4>
 -adds title / caption text.
 
-<pre>
+<pre class="brush: js">
 {signal: [
   {name:'clk',         wave: 'p....' },
   {name:'Data',        wave: 'x345x', data: 'a b c' },
@@ -356,7 +362,7 @@ The property works only inside the first timing diagram on the page.
 <p>
 Other SVG <span class="fixed">tspan</span> attributes can be used in freestyle as shown below.
 
-<pre>
+<pre class="brush: js">
 {signal: [
   {name:'clk', wave: 'p.....PPPPp....' },
   {name:'dat', wave: 'x....2345x.....', data: 'a b c d' },
@@ -432,15 +438,18 @@ foot: {text:
  ~>   -~>  ~->
 </pre>
 
-<pre>
+<pre class="brush: js">
 { signal: [
   { name: 'A', wave: '01........0....',  node: '.a........j' },
   { name: 'B', wave: '0.1.......0.1..',  node: '..b.......i' },
   { name: 'C', wave: '0..1....0...1..',  node: '...c....h..' },
   { name: 'D', wave: '0...1..0.....1.',  node: '....d..g...' },
   { name: 'E', wave: '0....10.......1',  node: '.....ef....' }
-],
-edge: ['a~b t1', 'c-~a t2', 'c-~>d time 3', 'd~-e', 'e~>f', 'f->g', 'g-~>h', 'h~>i some text', 'h~->j']
+  ],
+  edge: [
+    'a~b t1', 'c-~a t2', 'c-~>d time 3', 'd~-e',
+    'e~>f', 'f->g', 'g-~>h', 'h~>i some text', 'h~->j'
+  ]
 }
 </pre>
 
@@ -451,8 +460,11 @@ edge: ['a~b t1', 'c-~a t2', 'c-~>d time 3', 'd~-e', 'e~>f', 'f->g', 'g-~>h', 'h~
   { name: 'C', wave: '0..1....0...1..',  node: '...c....h..' },
   { name: 'D', wave: '0...1..0.....1.',  node: '....d..g...' },
   { name: 'E', wave: '0....10.......1',  node: '.....ef....' }
-],
-edge: ['a~b t1', 'c-~a t2', 'c-~>d time 3', 'd~-e', 'e~>f', 'f->g', 'g-~>h', 'h~>i some text', 'h~->j']
+  ],
+  edge: [
+    'a~b t1', 'c-~a t2', 'c-~>d time 3', 'd~-e',
+    'e~>f', 'f->g', 'g-~>h', 'h~>i some text', 'h~->j'
+  ]
 }
 </script>
 
@@ -467,14 +479,17 @@ edge: ['a~b t1', 'c-~a t2', 'c-~>d time 3', 'd~-e', 'e~>f', 'f->g', 'g-~>h', 'h~
  ->  -|>  -|->  |->
 </pre>
 
-<pre>
+<pre class="brush: js">
 { signal: [
   { name: 'A', wave: '01..0..',  node: '.a..e..' },
   { name: 'B', wave: '0.1..0.',  node: '..b..d.', phase:0.5 },
   { name: 'C', wave: '0..1..0',  node: '...c..f' },
   {                              node: '...g..h' }
-],
-  edge: ['b-|a t1', 'a-|c t2', 'b-|-c t3', 'c-|->e t4', 'e-|>f more text', 'e|->d t6', 'c-g', 'f-h', 'g<->h 3 ms']
+  ],
+  edge: [
+    'b-|a t1', 'a-|c t2', 'b-|-c t3', 'c-|->e t4', 'e-|>f more text',
+    'e|->d t6', 'c-g', 'f-h', 'g<->h 3 ms'
+  ]
 }
 </pre>
 
@@ -484,8 +499,11 @@ edge: ['a~b t1', 'c-~a t2', 'c-~>d time 3', 'd~-e', 'e~>f', 'f->g', 'g-~>h', 'h~
   { name: 'B', wave: '0.1..0.',  node: '..b..d.', phase:0.5 },
   { name: 'C', wave: '0..1..0',  node: '...c..f' },
   {                              node: '...g..h' }
-],
-  edge: ['b-|a t1', 'a-|c t2', 'b-|-c t3', 'c-|->e t4', 'e-|>f more text', 'e|->d t6', 'c-g', 'f-h', 'g<->h 3 ms']
+  ],
+  edge: [
+    'b-|a t1', 'a-|c t2', 'b-|-c t3', 'c-|->e t4', 'e-|>f more text',
+    'e|->d t6', 'c-g', 'f-h', 'g<->h 3 ms'
+  ]
 }
 </script>
 
@@ -496,7 +514,7 @@ edge: ['a~b t1', 'c-~a t2', 'c-~>d time 3', 'd~-e', 'e~>f', 'f->g', 'g-~>h', 'h~
 <a href="https://github.com/drom/wavedrom"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
 
 <script>(function(){ window.addEventListener("load", WaveDrom.ProcessAll, false); })();</script>
-
+<script>SyntaxHighlighter.all()</script>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
