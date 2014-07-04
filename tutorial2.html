@@ -6,7 +6,7 @@
   <!--script type="text/javascript" src="skins/narrow.js"></script-->
   <script type="text/javascript" src="WaveDrom.js"></script>
   <link href='http://fonts.googleapis.com/css?family=Inconsolata|Varela+Round' rel='stylesheet' type='text/css'>
-  <link href="tutorial.css" media="screen" rel="Stylesheet" type="text/css" /> 
+  <link href="tutorial.css" media="screen" rel="Stylesheet" type="text/css" />
 
 </head>
 
@@ -16,52 +16,23 @@
 
 <h1>Hitchhiker's Guide to the WaveDrom (Part 2)</h1>
 
-Logic schematic.
+<h2>Logic Circuit Diagram</h2>
 
-<h2>Step 1. Timing diagram</h2>
+Element <span class="fixed">"assign"</span> is an array of logic circuit diagrams.
+Each diagram by itself is an array, where first element is the name of circuit output,
+and the second element is the tree of logical operators.
 
 <pre>
-{ "signal" : [{ "name": "Alfa", "wave": "01.zx=ud.23.45" }] }
-</pre>
-
-<script type="WaveDrom">
-{ "signal" : [{ "name": "Alfa", "wave": "01.zx=ud.23.45" }] }
-</script>
-
-<h2>Step 2. Circuit diagram</h2>
-
-<h3>74LS688</h3>
-
-<div>
-<div>
-<pre>
 { assign:[
-  ["z", ["~&",
-    ["~^", ["~", "p0"], ["~", "q0"]],
-    ["~^", ["~", "p1"], ["~", "q1"]],
-    ["~^", ["~", "p2"], ["~", "q2"]],
-    "...",
-    ["~^", ["~", "p7"], ["~", "q7"]],
-    ["~","~en"]
-  ]]
+  ["o0", [Tree0]],
+  ["o1", [Tree1]],
+  ...
 ]}
 </pre>
-</div>
-<div>
-<script type="WaveDrom">
-{ assign:[
-  ["z", ["~&",
-    ["~^", ["~", "p0"], ["~", "q0"]],
-    ["~^", ["~", "p1"], ["~", "q1"]],
-    ["~^", ["~", "p2"], ["~", "q2"]],
-    "...",
-    ["~^", ["~", "p7"], ["~", "q7"]],
-    ["~","~en"]
-  ]]
-]}
-</script>
-</div>
-</div>
+
+Tree of logical operators has operator string as first element
+and operands for the each next element. Operand by itself can be a tree.
+See some examples below.
 
 <h3>XOR Gate</h3>
 
@@ -126,6 +97,39 @@ Logic schematic.
   ["b0", ["^", "b1", "g0"]]
 ]}
 </script>
+
+<h3>74LS688</h3>
+
+<div>
+<div>
+<pre>
+{ assign:[
+  ["z", ["~&",
+    ["~^", ["~", "p0"], ["~", "q0"]],
+    ["~^", ["~", "p1"], ["~", "q1"]],
+    ["~^", ["~", "p2"], ["~", "q2"]],
+    "...",
+    ["~^", ["~", "p7"], ["~", "q7"]],
+    ["~","~en"]
+  ]]
+]}
+</pre>
+</div>
+<div>
+<script type="WaveDrom">
+{ assign:[
+  ["z", ["~&",
+    ["~^", ["~", "p0"], ["~", "q0"]],
+    ["~^", ["~", "p1"], ["~", "q1"]],
+    ["~^", ["~", "p2"], ["~", "q2"]],
+    "...",
+    ["~^", ["~", "p7"], ["~", "q7"]],
+    ["~","~en"]
+  ]]
+]}
+</script>
+</div>
+</div>
 
 </div>
 
