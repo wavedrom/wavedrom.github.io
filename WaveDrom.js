@@ -1176,8 +1176,9 @@ WaveDrom.RenderAssign = function (index, source) {
 		state.x--;
 		return state;
 	}
-	function draw_body (type, inputs) {
-		var e, l,
+	function draw_body (type, ymin, ymax) {
+		console.log(ymin, ymax);
+		var e, l, iecs,
 			circle = ' M 4,0 C 4,1.1 3.1,2 2,2 0.9,2 0,1.1 0,0 c 0,-1.1 0.9,-2 2,-2 1.1,0 2,0.9 2,2 z',
 			gates = {
 				"~":  'M -11,-6 -11,6 0,0 z m -5,6 5,0' + circle,
@@ -1190,6 +1191,7 @@ WaveDrom.RenderAssign = function (index, source) {
 				"~^": 'm -21,-10 c 1,3 2,6 2,10 m 0,0 c 0,4 -1,7 -2,10 m 3,-20 4,0 c 6,0 12,5 14,10 -2,5 -8,10 -14,10 l -4,0 c 1,-3 2,-6 2,-10 0,-4 -1,-7 -2,-10 z' +circle,
 				"+":  'm -8,5 0,-10 m -5,5 10,0 m 3,0 c 0,4.418278 -3.581722,8 -8,8 -4.418278,0 -8,-3.581722 -8,-8 0,-4.418278 3.581722,-8 8,-8 4.418278,0 8,3.581722 8,8 z',
 				"*":  'm -4,4 -8,-8 m 0,8 8,-8 m 4,4 c 0,4.418278 -3.581722,8 -8,8 -4.418278,0 -8,-3.581722 -8,-8 0,-4.418278 3.581722,-8 8,-8 4.418278,0 8,3.581722 8,8 z',
+				/*
 				BUF:  'm -16,-10 16,0 0,20 -16,0 z',
 				INV:  'm -16,-10 16,0 0,20 -16,0 z' + circle,
 				AND:  'm -16,-10 16,0 0,20 -16,0 z',
@@ -1198,38 +1200,58 @@ WaveDrom.RenderAssign = function (index, source) {
 				NOR:  'm -16,-10 16,0 0,20 -16,0 z' + circle,
 				XOR:  'm -16,-10 16,0 0,20 -16,0 z',
 				XNOR: 'm -16,-10 16,0 0,20 -16,0 z' + circle,
+				*/
 				box:  'm -16,-10 16,0 0,20 -16,0 z'
 			},
-			gatelabels = {
-				BUF:  '1',  INV:  '1',
-				AND:  '&',  NAND: '&',
-				OR:   '\u22651', NOR:  '\u22651',
-				XOR:  '=1', XNOR: '=1',
-			};
+			iec = {
+				BUF: 1, INV: 1, AND: '&',  NAND: '&',
+				OR: '\u22651', NOR: '\u22651', XOR: '=1', XNOR: '=1'
+			},
+			circled = { INV: 1, NAND: 1, NOR: 1, XNOR: 1 };
 
+		if (ymax==ymin) {
+			ymax = 4; ymin = -4;
+		}
 		e = gates[type];
-		l = gatelabels[type];
+		iecs = iec[type];
 		if (e) {
-			if (l) {
-				return ['g', ['path', {class:'gate', d: e}], ['text', ['tspan', {x:"-14", y:"4", class:"wirename"}, l]]];
-			} else {
-				return ['path', {class:'gate', d: e}];
-			}
+			return ['path', {class:'gate', d: e}];
 		} else {
-			return ['text', ['tspan', {x:"-14", y:"4", class:"wirename"}, type+'']];
+			if (iecs) {
+				return [
+					'g', [
+						'path', {
+							class:'gate',
+							d: 'm -16,'+(ymin-3)+' 16,0 0,'+(ymax-ymin+6)+' -16,0 z' + (circled[type] ? circle : '')
+						}], [
+						'text', [
+							'tspan', {x:"-14", y:"4", class:"wirename"}, iecs+''
+						]
+					]
+				];
+			} else {
+				return ['text', ['tspan', {x:"-14", y:"4", class:"wirename"}, type+'']];
+			}
 		}
 	}
 	function draw_gate (spec) { // ['type', [x,y], [x,y] ... ]
-		var i, ilen, ret = ['g'], ys = [];
-		ilen = spec.length;
+		var i,
+			ret = ['g'],
+			ys = [],
+			ymin,
+			ymax,
+			ilen = spec.length;
+
 		for (i = 2; i < ilen; i++) {
 			ys.push(spec[i][1]);
 		}
+		ymin = Math.min.apply(null, ys);
+		ymax = Math.max.apply(null, ys);
 		ret.push(
 			['g',
 				{transform:"translate(16,0)"},
 				['path', {
-					d: 'M  '+spec[2][0]+','+Math.min.apply(null, ys)+' '+spec[2][0]+','+Math.max.apply(null, ys),
+					d: 'M  ' + spec[2][0] + ',' + ymin + ' '+spec[2][0]+',' + ymax,
 					class: 'wire'
 				}]
 			]
@@ -1252,7 +1274,7 @@ WaveDrom.RenderAssign = function (index, source) {
 					transform:'translate('+spec[1][0]+','+spec[1][1]+')'
 				},
 				['title', spec[0]],
-				draw_body(spec[0], ilen-2)
+				draw_body(spec[0], ymin-spec[1][1], ymax-spec[1][1])
 			]
 		);
 		return ret;
