@@ -1,7 +1,7 @@
 {
   "name": "wavedrom-editor",
   "description": "",
-  "version": "0.9.5",
+  "version": "0.9.7",
   "main": "index.js",
   "directories": {
     "doc": "doc"
@@ -23,7 +23,7 @@
   "bugs": {
     "url": "https://github.com/wavedrom/wavedrom.github.io/issues"
   },
-  "homepage": "http://wavedrom.github.io",
+  "homepage": "http://wavedrom.com",
   "devDependencies": {
     "jshint": "*",
     "grunt": "*",
