@@ -24,12 +24,9 @@ module.exports = function(grunt) {
     },
     nodewebkit: {
       options: {
-        build_dir: './nw_builds',
-        keep_nw: true,
-        mac: true,
-        win: true,
-        linux32: true,
-        linux64: true
+        buildDir: './nw_builds',
+        platforms: ['win', 'osx', 'linux32', 'linux64'],
+        keep_nw: true
       },
       src: ['./WaveDromEditor_build/**']
     },
@@ -55,7 +52,8 @@ module.exports = function(grunt) {
         nw_builds:['nw_builds'],
         build: ['build'],
         node: ['node_modules'],
-        WaveDromEditor_build: ['WaveDromEditor_build']
+        WaveDromEditor_build: ['WaveDromEditor_build'],
+        cache: ['cache']
     }
   });
 
