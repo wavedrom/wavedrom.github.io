@@ -56,18 +56,61 @@ act {
 .toolbar {
     position:absolute;
     z-index:99;
-    bottom:25px;
-    right:25px;
+    bottom:27px;
+    right:27px;
+    cursor:pointer;
+        border:0px;
+    -webkit-transition:opacity 0.3s ease;
+    transition:opacity 0.3s ease;
+    visibility: visible;
+    width: 27px;
+    height: 27px;
+    max-height: 27px;
+    max-width: 27px;
+    overflow: hidden;
+}
+
+.mmenu {
+    position:absolute;
+    z-index:99;
+    bottom:52px;
+    right:27px;
     cursor:pointer;
     border:0px;
     -webkit-transition:opacity 0.3s ease;
     transition:opacity 0.3s ease;
     visibility: visible;
-    width: 215px;
-    height: 27px;
-    max-height: 27px;
-    max-width: 215px;
     overflow: hidden;
+}
+
+div.menu {
+    padding:2 2px;
+    border-radius: 5px;
+    position:absolute;
+    z-index:99;
+    bottom:60px;
+    right:27px;
+    border:solid 1pt#CCC;
+    background-color:white;
+    box-shadow:0px 10px 20px #48B;
+    cursor:default;
+    margin:0px;
+    font-family: 'Varela Round', Arial, sans-serif;
+    overflow: hidden;
+}
+
+div.menu > ul {
+    margin:0px;
+    padding:0px;
+}
+
+div.menu > ul > li {
+    padding:2px 10px;
+    list-style:none;
+}
+
+div.menu>ul>li:hover {
+    background-color:#b5d5ff;
 }
 
 #WaveDrom_Display_0 {

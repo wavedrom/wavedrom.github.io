@@ -83,36 +83,155 @@
           cm.setValue(decodeURIComponent(window.location.search.substr(1)));
 //          document.getElementById ('InputJSON_0').value = decodeURIComponent(window.location.search.substr(1));
         }
+        window.ondragover = function(e) { e.preventDefault(); return false };
+        window.ondrop = function(e) { e.preventDefault(); return false };
+
+        if (typeof process == "object") { // nodewebkit detection
+          var holder = document.getElementById('content');
+          holder.ondragover = function () { this.className = 'hover'; return false; };
+          holder.ondragend = function () { this.className = ''; return false; };
+          holder.ondrop = function (e) {
+            e.preventDefault();
+
+            for (var i = 0; i < e.dataTransfer.files.length; ++i) {
+              console.log(e.dataTransfer.files[i].path);
+            }
+            return false;
+          };
+        }
         editorState ();
     }
     function setFullURL () {
         "use strict";
         document.location.search = encodeURIComponent(document.getElementById ('InputJSON_0').value);
     }
+    function menuOpen (e) {
+      "use strict";
+      function closestById(el, id) {
+        while (el.id != id) {
+          el = el.parentNode;
+          if (!el) {
+              return null;
+          }
+        }
+        return el;
+      }
+
+      var doc = document.getElementById ('menux');
+      if ( closestById ( e.target, 'Menu' ) && ( doc.style.display === "none" ) ) {
+        doc.style.display = "inline";
+      } else {
+        doc.style.display = "none";
+      }
+    }
+    function gotoWaveDromHome (e) {
+      window.open("https://github.com/drom/wavedrom").focus();
+    }
+    function gotoWaveDromGuide (e) {
+      window.open("tutorial.html").focus();
+    }
+
+    function saveJSON (e) {
+      var sjson = localStorage.waveform,
+          a = document.createElement('a');
+
+      function chooseFile(name) {
+        var chooser = document.querySelector(name);
+
+        chooser.addEventListener("change", function(evt) {
+          var fs = require('fs');
+          var filename = this.value;
+          if (!filename) { return }
+          fs.writeFile(filename, sjson, function(err) {
+            if(err) {
+              alert("error");
+            }
+          });
+          this.value = '';
+        }, false);
+
+        chooser.click();
+      }
+
+      if (typeof process == "object") { // nodewebkit detection
+        chooseFile('#fileDialog');
+      } else {
+        a.href = 'data:text/json;base64,' + btoa(sjson);;
+        a.download = 'wavedrom.json';
+        a.click();
+      }
+    }
+
+    function saveSVG (e) {
+      var svg, ser, ssvg;
+
+      svg = document.getElementById("svgcontent_0");
+      ser = new XMLSerializer();
+      ssvg = '<?xml version="1.0" standalone="no"?>\n' +
+          '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n' +
+          '<!-- Created with WaveDrom -->\n' +
+          ser.serializeToString(svg);
+
+      var a = document.createElement('a');
+      a.href = 'data:image/svg+xml;base64,' + btoa(ssvg);
+      a.download = 'wavedrom.svg';
+      a.click();
+    }
+
+    function savePNG (e) {
+      var svg, ser, ssvg;
+
+      svg = document.getElementById("svgcontent_0");
+      ser = new XMLSerializer();
+      ssvg = '<?xml version="1.0" standalone="no"?>\n' +
+          '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n' +
+          '<!-- Created with WaveDrom -->\n' +
+          ser.serializeToString(svg);
+
+      var svgdata = 'data:image/svg+xml;base64,' + btoa(ssvg);
+      var img = new Image ();
+      img.src = svgdata;
+      var canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      var context = canvas.getContext('2d');
+      context.drawImage(img, 0, 0);
+
+      var pngdata = canvas.toDataURL('image/png');
+
+      var a = document.createElement('a');
+      a.href = pngdata;
+      a.download = 'wavedrom.png';
+      a.click();
+    }
+
   </script>
  </head>
 
-  <body onload="editorInit()">
+  <body onload="editorInit()" onclick="menuOpen(event)">
     <div id="content">
       <div class="toolbar">
-        <img class="button" title="rotate layout" src="images/ic_rot.png" onclick="editorState({rot:1})"/>
-
-        <img class="button" title="change proportions" src="images/ic_persent.png" onclick="editorState({per:1})"/>
-
-        <a id="download_svg" href="data:image/svg+xml,<xml>" download="mywave.svg">
-          <img class="button" title="Save SVG file" src="images/ic_download_svg.png"/>
-        </a>
-
-        <a id="download_json" href="data:text/plain,{}" download="mywave.json">
-          <img class="button" title="Save JSON file" src="images/ic_download_json.png"/>
-        </a>
-
-        <img class="button" title="expand full URL" src="images/ic_url.png" onclick="setFullURL()"/>
-
-        <a href="tutorial.html"><img class="button" title="Guide to the WaveDrom" src="images/ic_guide.png"/></a>
-
-        <a href="https://github.com/drom/wavedrom"><img class="button" title="Powered by WaveDrom" src="images/ic_logo.png"/></a>
+        <img class="button" alt="Memu" id="Menu" title="Menu" src="images/ic_menu.png"/>
       </div>
+      <div style="display:none;" class="menu" id="menux">
+        <ul>
+          <!--li>New</li>
+          <li>Open...</li>
+          <li>Save</li-->
+          <li onclick="saveJSON(event)"> <img class="button" src="images/ic_download_json.png"/> Save As... </li>
+          <li onclick="saveSVG(event)"> <img class="button" src="images/ic_download_svg.png"/> Export SVG... </li>
+          <li onclick="savePNG(event)"> <img class="button" src="images/ic_download_png.png"/> Export PNG... </li>
+        </ul>
+        <ul>
+          <li onclick="editorState({rot:1})"> <img class="button" src="images/ic_rot.png" /> Rotate Layout </li>
+          <li onclick="editorState({per:1})"> <img class="button" src="images/ic_persent.png" /> Proportions </li>
+          <li onclick="setFullURL()"> <img class="button" src="images/ic_url.png"/> Expand URL </li>
+          <li onclick="gotoWaveDromGuide()" id="WaveDromGuide"> <img class="button" src="images/ic_guide.png"/> WaveDrom Guide </li>
+          <li onclick="gotoWaveDromHome()"  id="WaveDromHome"> <img class="button" src="images/ic_logo.png"/> on GitHub </li>
+          <li style="display:none;">Exit</li>
+        </ul>
+      </div>
+      <input style="display:none;" id="fileDialog" type="file" nwsaveas="wavedrom.json" />
       <div id='SVG'><div id="WaveDrom_Display_0"></div></div>
       <div id='TXT'><textarea id="InputJSON_0"></textarea></div>
     </div>
@@ -128,10 +247,13 @@
     })();
   </script>
   <script>
-    var e, val, timer;
+    var e, val, timer, isNodeWebkit;
     e = document.getElementById ('InputJSON_0');
     val = localStorage ['waveform'];
-    if (val === undefined || val === '') {
+            // node-webkit detection
+    isNodeWebkit = (typeof process == "object");
+
+    if (isNodeWebkit || val === undefined || val === '') {
         val = "{signal: [\n  {name: 'clk', wave: 'p.....|...'},\n  {name: 'dat', wave: 'x.345x|=.x', data: ['head', 'body', 'tail', 'data']},\n  {name: 'req', wave: '0.1..0|1.0'},\n  {},\n  {name: 'ack', wave: '1.....|01.'}\n]}\n";
         localStorage ['waveform'] = val;
     }

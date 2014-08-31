@@ -1,14 +1,14 @@
 {
 	"name": "WaveDromEditor",
 	"main": "editor.html",
-	"version": "1.0.1-alpha",
+	"version": "1.0.2-alpha",
 	"window": {
 		"icon":"images/logo.png",
 		"toolbar": false,
 		"width": 1024,
 		"height": 768,
-		"min_width": 640,
-		"min_height": 480,
+		"min_width": 256,
+		"min_height": 256,
 		"position": "center"
 	}
 }

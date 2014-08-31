@@ -12,14 +12,14 @@ module.exports = function(grunt) {
           {expand: true, src: [
             'WaveDrom.js',
             'editor.html', 'tutorial.html',
-            'images/ic_*.png', 'images/favicon.ico', 'logo.png',
+            'images/ic_*.png', 'images/favicon.ico', 'images/logo.png',
             'skins/*', 'css/*', 'scripts/*'
           ], dest: 'WaveDromEditor_build/', filter: 'isFile'},
           {expand: true, flatten: true, src:['WaveDromEditor/package.json'], dest: 'WaveDromEditor_build/', filter: 'isFile'},
         ]
       },
       nw: {
-        files: [{src:'nw_builds/releases/WaveDromEditor/WaveDromEditor.nw', dest:'nw_builds/<%= pkg.name %>-v<%= pkg.version %>.nw'}]
+        files: [{src:'nw_builds/WaveDromEditor/WaveDromEditor.nw', dest:'nw_builds/<%= pkg.name %>-v<%= pkg.version %>.nw'}]
       }
     },
     nodewebkit: {
@@ -36,20 +36,26 @@ module.exports = function(grunt) {
     compress: {
       win: {
         options: {archive: 'nw_builds/<%= pkg.name %>-v<%= pkg.version %>-win-ia32.zip'},
-        files: [{expand: true, cwd: 'nw_builds/releases/WaveDromEditor/win/', src: ['**'], dest: '.'}]
+        files: [{expand: true, cwd: 'nw_builds/WaveDromEditor/win/', src: ['**'], dest: '.'}]
       },
       linux32: {
         options: {archive: 'nw_builds/<%= pkg.name %>-v<%= pkg.version %>-linux-ia32.tar.gz'},
-        files: [{expand: true, cwd: 'nw_builds/releases/WaveDromEditor/linux32/', src: ['**'], dest: '.'}]
+        files: [{expand: true, cwd: 'nw_builds/WaveDromEditor/linux32/', src: ['**'], dest: '.'}]
       },
       linux64: {
         options: {archive: 'nw_builds/<%= pkg.name %>-v<%= pkg.version %>-linux-x64.tar.gz'},
-        files: [{expand: true, cwd: 'nw_builds/releases/WaveDromEditor/linux64/', src: ['**'], dest: '.'}]
+        files: [{expand: true, cwd: 'nw_builds/WaveDromEditor/linux64/', src: ['**'], dest: '.'}]
       },
       mac: {
         options: {archive: 'nw_builds/<%= pkg.name %>-v<%= pkg.version %>-osx-ia32.zip'},
-        files: [{expand: true, cwd: 'nw_builds/releases/WaveDromEditor/mac/', src: ['**'], dest: '.'}]
+        files: [{expand: true, cwd: 'nw_builds/WaveDromEditor/osx/', src: ['**'], dest: '.'}]
       },
+    },
+    clean: {
+        nw_builds:['nw_builds'],
+        build: ['build'],
+        node: ['node_modules'],
+        WaveDromEditor_build: ['WaveDromEditor_build']
     }
   });
 
@@ -58,7 +64,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-node-webkit-builder');
   grunt.loadNpmTasks('grunt-contrib-compress');
+  grunt.loadNpmTasks('grunt-contrib-clean');
 
   // Default task(s).
-  grunt.registerTask('default', ['jshint', 'copy:editor', 'nodewebkit', 'compress', 'copy:nw']);
+  grunt.registerTask('build', ['jshint', 'copy:editor', 'nodewebkit']);
+  grunt.registerTask('default', ['build', 'compress', 'copy:nw']);
 };
