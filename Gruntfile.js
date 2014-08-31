@@ -17,9 +17,6 @@ module.exports = function(grunt) {
           ], dest: 'WaveDromEditor_build/', filter: 'isFile'},
           {expand: true, flatten: true, src:['WaveDromEditor/package.json'], dest: 'WaveDromEditor_build/', filter: 'isFile'},
         ]
-      },
-      nw: {
-        files: [{src:'nw_builds/WaveDromEditor/WaveDromEditor.nw', dest:'nw_builds/<%= pkg.name %>-v<%= pkg.version %>.nw'}]
       }
     },
     nodewebkit: {
@@ -47,6 +44,10 @@ module.exports = function(grunt) {
         options: {archive: 'nw_builds/<%= pkg.name %>-v<%= pkg.version %>-osx-ia32.zip'},
         files: [{expand: true, cwd: 'nw_builds/WaveDromEditor/osx/', src: ['**'], dest: '.'}]
       },
+      nw: {
+        options: {archive: 'nw_builds/<%= pkg.name %>-v<%= pkg.version %>.nw', mode:'zip'},
+        files: [{expand: true, cwd: 'WaveDromEditor_build/', src: ['**'], dest: '.'}]
+      }
     },
     clean: {
         nw_builds:['nw_builds'],
@@ -66,5 +67,5 @@ module.exports = function(grunt) {
 
   // Default task(s).
   grunt.registerTask('build', ['jshint', 'copy:editor', 'nodewebkit']);
-  grunt.registerTask('default', ['build', 'compress', 'copy:nw']);
+  grunt.registerTask('default', ['build', 'compress']);
 };
