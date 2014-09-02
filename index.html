@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>WaveDrom</title>
   <link rel="shortcut icon" href="images/favicon.ico"/>
+  <link href='http://fonts.googleapis.com/css?family=Roboto|Varela+Round' rel='stylesheet' type='text/css'>
   <style type="text/css">
     body {
       background: #eee;
@@ -17,21 +18,61 @@
       background-image: url(images/logo.svg);
       margin-right: auto;
       margin-left: auto;
+      margin-bottom: 35px;
     }
+    .word {
+        font-family: 'Varela Round', helvetica, Arial, sans-serif;
+    }
+    .roboto {
+        font-family: 'Roboto', helvetica, Arial, sans-serif;
+    }
+    .lll {
+        margin-top: 35px;
+        margin-bottom: 35px;
+    }
+    .lll > a {
+        padding: 30px 20px 0px;
+    }
+    .lll a:link    { color: #888; text-decoration: none; }
+    .lll a:visited { color: #888; text-decoration: none; }
+    .lll a:hover   { color: #F88; }
+    .lll a:active  { color: #88F; }
+    .word1 { font-size: 35px; }
+    .word2 {
+        font-size: 25px;
+        color: #999;
+        margin-bottom: 35px;
+    }
+    .word3 {
+        font-size: 18px;
+        margin-bottom: 35px;
+    }
+
   </style>
 </head>
 <body>
-  <div class="logo"></div>
-  <h2><a href='editor.html'>On-line Editor</a></h2>
-  <h2><a href='https://github.com/wavedrom/wavedrom.github.io/releases'>Downloads</a></h2>
-  <h2><a href='tutorial.html'>Tutorial</a></h2>
-  <h2><a href='tutorial2.html'>Tutorial2 (schematic)</a></h2>
-  <h2><a href='impress.html'>Impress.js example</a></h2>
-  <h2><a href='https://github.com/drom/wavedrom'>Get source code</a></h2>
-  <h2><a href='https://github.com/drom/wavedrom/issues'>Submit issue</a></h2>
-  <h2><a href='http://groups.google.com/group/wavedrom'>Discuss on WaveDrom user group</a></h2>
 
-<iframe id="forum_embed"
+  <div class="roboto lll">
+    <a href='tutorial.html'>Tutorial</a>
+    <a href='editor.html'>Editor</a>
+    <a href='https://github.com/drom/wavedrom'>Source</a>
+    <a href='https://twitter.com/wavedrom'>Twitter</a>
+  </div>
+
+  <div class="logo"></div>
+  <div class="word word1">WaveDrom</div>
+  <div class="word word2">Digital timing diagram everywhere</div>
+  <div class="roboto word3">WaveDrom is an open source JavaScript rendering engine for digital timing diagrams.</div>
+
+  <div class="roboto lll">
+    <a href='https://github.com/wavedrom/wavedrom.github.io/releases'>Download editor</a>
+    <a href='https://github.com/drom/wavedrom/issues'>Issues</a>
+    <a href='http://groups.google.com/group/wavedrom'>User group</a>
+    <a href='tutorial2.html'>Tutorial2 (schematic)</a>
+    <a href='impress.html'>Impress.js</a>
+  </div>
+
+<!--iframe id="forum_embed"
  src="javascript:void(0)"
  scrolling="no"
  frameborder="0"
@@ -46,7 +87,7 @@
   encodeURIComponent(window.location.href);
 </script>
 
-<a href="https://github.com/drom/wavedrom"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>
+<a href="https://github.com/drom/wavedrom"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a-->
 
     <!--div id="disqus_thread"></div>
     <script type="text/javascript">
