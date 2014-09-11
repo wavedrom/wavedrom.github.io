@@ -32,7 +32,7 @@
     "grunt-contrib-jshint": "*",
     "grunt-node-webkit-builder": "*",
     "grunt-contrib-clean": "*",
-    "codemirror" : "*",
+    "codemirror": "*",
     "grunt-contrib-compress": "*",
     "syntaxhighlighter": "*"
   }
