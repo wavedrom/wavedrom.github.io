@@ -1,7 +1,7 @@
 {
   "name": "wavedrom-editor",
   "description": "",
-  "version": "0.9.8",
+  "version": "0.9.9",
   "main": "index.js",
   "directories": {
     "doc": "doc"

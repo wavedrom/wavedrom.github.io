@@ -34,13 +34,13 @@ module.exports = function(grunt) {
       },
       linux32: {
         options: {archive: 'nw_builds/<%= pkg.name %>-v<%= pkg.version %>-linux-ia32.tar.gz'},
-        files: [{expand: true, cwd: 'nw_builds/WaveDromEditor/linux32/', src: ['**'], dest: '.'}]
+        files: [{expand: true, cwd: 'nw_builds/', src: ['WaveDromEditor/linux32/**'], dest: '.'}]
       },
       linux64: {
         options: {archive: 'nw_builds/<%= pkg.name %>-v<%= pkg.version %>-linux-x64.tar.gz'},
-        files: [{expand: true, cwd: 'nw_builds/WaveDromEditor/linux64/', src: ['**'], dest: '.'}]
+        files: [{expand: true, cwd: 'nw_builds/', src: ['WaveDromEditor/linux64/**'], dest: '.'}]
       },
-      mac: {
+      osx: {
         options: {archive: 'nw_builds/<%= pkg.name %>-v<%= pkg.version %>-osx-ia32.zip'},
         files: [{expand: true, cwd: 'nw_builds/WaveDromEditor/osx/', src: ['**'], dest: '.'}]
       },
