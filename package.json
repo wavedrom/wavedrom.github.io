@@ -1,7 +1,7 @@
 {
   "name": "wavedrom-editor",
   "description": "",
-  "version": "0.9.11",
+  "version": "0.9.12",
   "main": "index.js",
   "directories": {
     "doc": "doc"
@@ -25,15 +25,14 @@
   },
   "homepage": "http://wavedrom.com",
   "devDependencies": {
-    "jshint": "*",
+    "eslint": "*",
     "grunt": "*",
     "grunt-cli": "*",
     "grunt-contrib-copy": "*",
-    "grunt-contrib-jshint": "*",
+    "grunt-eslint": "*",
     "grunt-node-webkit-builder": "*",
     "grunt-contrib-clean": "*",
     "codemirror": "*",
-    "grunt-contrib-compress": "*",
-    "syntaxhighlighter": "*"
+    "grunt-contrib-compress": "*"
   }
 }

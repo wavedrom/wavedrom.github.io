@@ -1,7 +1,7 @@
 {
 	"name": "WaveDromEditor",
 	"main": "editor.html",
-	"version": "1.0.2-alpha",
+	"version": "1.0.2-beta",
 	"window": {
 		"icon":"images/logo.png",
 		"toolbar": false,
