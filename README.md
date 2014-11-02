@@ -2,13 +2,19 @@
 
 # WaveDrom editor
 
-[WaveDromEditor](http://wavedrom.com/editor.html) is online (offline) real-time editor of digital timing diagrams based on [WaveDrom](https://github.com/drom/wavedrom) engine and [WaveJSON](https://github.com/drom/wavedrom/wiki/WaveJSON) format. See [Tutorial](http://wavedrom.com/tutorial.html) for more examples.
+[WaveDromEditor](http://wavedrom.com/editor.html) is real-time editor of digital timing diagrams based on [WaveDrom](https://github.com/drom/wavedrom) engine and [WaveJSON](https://github.com/drom/wavedrom/wiki/WaveJSON) format.
+
+See [Tutorial](http://wavedrom.com/tutorial.html) for more examples.
+
+[Online editor](http://wavedrom.com/editor.html)
 
 ![alt text](images/firefox_22.gif "firefox") 4+
 ![alt text](images/chrome_22.gif "chrome") 10+
 ![alt text](images/safari_22.gif "safari") 5.1+
 ![alt text](images/opera_22.gif "opera") 12+
-![alt text](images/ie_22.gif "ie") 11
+![alt text](images/ie_22.gif "ie") 11+
+
+[Download editor](https://github.com/wavedrom/wavedrom.github.io/releases)  (Windows, Mac, Linux)
 
 ## Builds
 
