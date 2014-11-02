@@ -161,21 +161,22 @@ function saveJSON () {
     }
 }
 
+function ssvg () {
+    'use strict';
+
+    var svg, ser;
+
+    svg = document.getElementById("svgcontent_0");
+    ser = new XMLSerializer();
+    return '<?xml version="1.0" standalone="no"?>\n'
+        + '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n'
+        + '<!-- Created with WaveDrom -->\n'
+        + ser.serializeToString(svg);
+}
+
 function saveSVG () {
-    "use strict";
-
+    'use strict';
     var a;
-
-    function ssvg () {
-        var svg, ser;
-
-        svg = document.getElementById("svgcontent_0");
-        ser = new XMLSerializer();
-        return '<?xml version="1.0" standalone="no"?>\n'
-            + '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n'
-            + '<!-- Created with WaveDrom -->\n'
-            + ser.serializeToString(svg);
-    }
 
     function chooseFile(name) {
         var chooser = document.querySelector(name);
@@ -207,31 +208,25 @@ function saveSVG () {
     }
 }
 
+function pngdata () {
+    'use strict';
+    var svgdata, img, canvas, context;
+
+    svgdata = 'data:image/svg+xml;base64,' + btoa(ssvg());
+    img = new Image();
+    img.src = svgdata;
+    canvas = document.createElement('canvas');
+    canvas.width = img.width;
+    canvas.height = img.height;
+    context = canvas.getContext('2d');
+    context.drawImage(img, 0, 0);
+    return canvas.toDataURL('image/png');
+}
+
 function savePNG () {
-    "use strict";
+    'use strict';
 
     var a;
-
-    function pngdata () {
-        var svg, ser, ssvg, svgdata, img, canvas, context;
-
-        svg = document.getElementById("svgcontent_0");
-        ser = new XMLSerializer();
-        ssvg = '<?xml version="1.0" standalone="no"?>\n'
-            + '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n'
-            + '<!-- Created with WaveDrom -->\n'
-            + ser.serializeToString(svg);
-
-        svgdata = 'data:image/svg+xml;base64,' + btoa(ssvg);
-        img = new Image();
-        img.src = svgdata;
-        canvas = document.createElement('canvas');
-        canvas.width = img.width;
-        canvas.height = img.height;
-        context = canvas.getContext('2d');
-        context.drawImage(img, 0, 0);
-        return canvas.toDataURL('image/png');
-    }
 
     function chooseFile(name) {
         var chooser = document.querySelector(name);

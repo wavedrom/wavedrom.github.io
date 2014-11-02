@@ -4,13 +4,13 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     eslint: {
-      all: ['Gruntfile.js', 'editor.js']
+      all: ['Gruntfile.js', 'editor.js', 'init.js']
     },
     copy: {
       editor: {
         files: [
           {expand: true, src: [
-            'WaveDrom.js', 'editor.js',
+            'WaveDrom.js', 'editor.js', 'init.js',
             'editor.html', 'tutorial.html',
             'images/ic_*.png', 'images/favicon.ico', 'images/logo.png',
             'skins/*', 'css/*', 'scripts/*'
