@@ -20,6 +20,12 @@ See [Tutorial](http://wavedrom.com/tutorial.html) for more examples.
 
 [![Build Status](https://travis-ci.org/wavedrom/wavedrom.github.io.svg?branch=master)](https://travis-ci.org/wavedrom/wavedrom.github.io)
 
+## How to Build Desktop Application
+
+* Install `nodejs` from http://nodejs.org/
+* `npm install` to install the development environment
+* `node node_modules/.bin/grunt` to build distributable packages
+
 ## Community
 
 Please use [WaveDrom user group](http://groups.google.com/group/wavedrom) for discussions, questions, ideas, whatever.
