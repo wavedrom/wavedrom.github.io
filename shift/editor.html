@@ -3,13 +3,29 @@
         <meta charset="UTF-8">
         <title>Shift Parser Editor</title>
         <link rel="stylesheet" href="codemirror.css">
+        <style type="text/css">
+        .CodeMirror {
+            border-top: 0px;
+            border-bottom: 0px;
+            background: #f7f7f7;
+        }
+        body {
+            margin: 0px;
+            border: 0px;
+        }
+        textarea {
+            margin: 0px;
+            border: 0px;
+            padding: 0px;
+        }
+        </style>
         <script src="codemirror.js"></script>
         <script src="javascript.js"></script>
     </head>
     <body>
         <div id="content">
-            <div><textarea id="input"></textarea></div>
-            <div><div id="output"></div></div>
+            <div style="width: 50%; height: 100%; float: right; overflow: hidden"><textarea id="input"></textarea></div>
+            <div style ="width: 50%; height: 100%"><pre id="output">{}</pre></div>
         </div>
         <script src="bundle.js"></script>
     </body>

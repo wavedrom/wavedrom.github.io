@@ -2,25 +2,24 @@
 (function () {
     'use strict';
 
-    var e, cm, tree, parse;
+    var inp, out, cm, tree, parse;
 
     parse = require('shift-parser').default;
 
-    e = document.getElementById('input');
-    e.value = localStorage.shiftAST || 'function add (a, b) {\n  [x, y] = [a, b];\n}';
+    inp = document.getElementById('input');
+    out = document.getElementById('output');
+    inp.value = localStorage.shiftAST || 'function add (a, b) {\n  [x, y] = [a, b];\n}';
 
     function refresh () {
         var v;
         v = cm.getValue();
         tree = parse(v);
         localStorage.shiftAST = v;
-        /* eslint-disable no-console */
-        console.log(JSON.stringify(tree, null, 2));
-        /* eslint-enable no-console */
+        out.innerHTML = JSON.stringify(tree, null, 2);
     }
 
     cm = CodeMirror.fromTextArea(
-        e,
+        inp,
         {
             mode: 'javascript',
             lineNumbers: true,
