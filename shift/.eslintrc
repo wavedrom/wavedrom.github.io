@@ -1,0 +1,11 @@
+{
+    env: {
+        browser: true,
+        node: true
+    },
+    rules: {
+        quotes: [1, 'single'],
+        camelcase: 1,
+        key-spacing: 0
+    }
+}
