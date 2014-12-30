@@ -1,64 +1,55 @@
 (function () {
     'use strict';
 
-    function wordRegexp(words) {
-        return new RegExp('^((' + words.join(')|(') + '))(\\s+\|\$)', 'i');
+    function toWordList(words) {
+        var ret = [];
+        words.split(' ').forEach(function(e){
+            ret.push({name: e});
+        });
+        return ret;
     }
 
-    var words = wordRegexp(
+    var coreWordList = toWordList(
 'INVERT AND OR XOR\
- 2\\\* 2\\\/ LSHIFT RSHIFT\
- 0\\\= \\\= 0\\\< \\\< \\\> U\\\< MIN MAX\
- 2DROP 2DUP 2OVER 2SWAP \\\?DUP DEPTH DROP DUP OVER ROT SWAP\
- \\\>R R\\\> R\\\@\
- \\\+ \\\- 1\\\+ 1\\\- ABS NEGATE\
- S\\\>D \\\* M\\\* UM\\\*\
- FM\\\/MOD SM\\\/REM UM\\\/MOD \\\*\\\/ \\\*\\\/MOD \\\/ \\\/MOD MOD\
- HERE \\\, \\\@ \\\! CELL\\\+ CELLS C\\\, C\\\@ C\\\! CHARS 2\\\@ 2\\\!\
- ALIGN ALIGNED \\\+\\\! ALLOT\
- CHAR \\\[CHAR\\\] \\\[ \\\] BL\
+ 2* 2/ LSHIFT RSHIFT\
+ 0= = 0< < > U< MIN MAX\
+ 2DROP 2DUP 2OVER 2SWAP ?DUP DEPTH DROP DUP OVER ROT SWAP\
+ >R R> R@\
+ + - 1+ 1- ABS NEGATE\
+ S>D * M* UM*\
+ FM/MOD SM/REM UM/MOD */ */MOD / /MOD MOD\
+ HERE , @ ! CELL+ CELLS C, C@ C! CHARS 2@ 2!\
+ ALIGN ALIGNED +! ALLOT\
+ CHAR [CHAR] [ ] BL\
  FIND EXECUTE IMMEDIATE COUNT LITERAL STATE\
- \\\; DOES> >BODY\
+ ; DOES> >BODY\
  EVALUATE\
- SOURCE \\\>IN\
- \\\<\\\# \\\# \\\#S \\\#\\\> HOLD SIGN BASE \\\>NUMBER HEX DECIMAL\
+ SOURCE >IN\
+ <# # #S #> HOLD SIGN BASE >NUMBER HEX DECIMAL\
  FILL MOVE\
- \\\. CR EMIT SPACE SPACES TYPE U\\\. \\\.R U\\\.R\
+ . CR EMIT SPACE SPACES TYPE U. .R U.R\
  ACCEPT\
  TRUE FALSE\
- \\\<\\\> U\\\> 0\\\<\\\> 0\\\>\
+ <> U> 0<> 0>\
  NIP TUCK ROLL PICK\
- 2\\\>R 2R\\\@ 2R\\\>\
+ 2>R 2R@ 2R>\
  WITHIN UNUSED MARKER\
  I J\
  TO\
- COMPILE, \\\[COMPILE\\\]\
- SAVE\\\-INPUT RESTORE\\\-INPUT\
+ COMPILE, [COMPILE]\
+ SAVE-INPUT RESTORE-INPUT\
  PAD ERASE\
  2LITERAL DNEGATE\
- D\\\- D\\\+ D0\\\< D0\\\= D2\\\* D2\\\/ D\\\< D\\\= DMAX DMIN D\\\>S DABS\
- M\\\+ M\\\*\\\/ D\\\. D\\\.R 2ROT DU\\\<\
+ D- D+ D0< D0= D2* D2/ D< D= DMAX DMIN D>S DABS\
+ M+ M*/ D. D.R 2ROT DU<\
  CATCH THROW\
  FREE RESIZE ALLOCATE\
- CS\\\-PICK CS\\\-ROLL\
- GET\\\-CURRENT SET\\\-CURRENT FORTH\\\-WORDLIST GET\\\-ORDER SET\\\-ORDER\
- PREVIOUS SEARCH\\\-WORDLIST WORDLIST FIND ALSO ONLY FORTH DEFINITIONS ORDER\
- \\\-TRAILING \\\/STRING SEARCH COMPARE CMOVE CMOVE\\\> BLANK SLITERAL'.split(' '));
+ CS-PICK CS-ROLL\
+ GET-CURRENT SET-CURRENT FORTH-WORDLIST GET-ORDER SET-ORDER\
+ PREVIOUS SEARCH-WORDLIST WORDLIST FIND ALSO ONLY FORTH DEFINITIONS ORDER\
+ -TRAILING /STRING SEARCH COMPARE CMOVE CMOVE> BLANK SLITERAL');
 
-    var immediateWords = wordRegexp(
-'IF ELSE THEN BEGIN WHILE REPEAT UNTIL RECURSE\
- \\\[IF\\\] \\\[ELSE\\\] \\\[THEN\\\]\
- \\\?DO DO LOOP \\\+LOOP UNLOOP LEAVE EXIT AGAIN CASE OF ENDOF ENDCASE'.split(' ')
-    );
-
-
-//
-//
-// if (stream.match(/^(\:|\'|\[\'\]|VARIABLE|CONSTANT|CREATE|POSTPONE|VALUE)\s+\S+(\s|$)+/)) {
-//     return 'def' + state;
-// }
-//
-//
+    var immediateWordList = toWordList('IF ELSE THEN BEGIN WHILE REPEAT UNTIL RECURSE [IF] [ELSE] [THEN] ?DO DO LOOP +LOOP UNLOOP LEAVE EXIT AGAIN CASE OF ENDOF ENDCASE');
 
     CodeMirror.defineMode('forth', function() {
         function searchWordList (wordList, word) {
@@ -75,10 +66,9 @@
                 return {
                     state: '',
                     base: 10,
-                    wordList: [
-                        { name: 'HEX' },
-                        { name: 'DECIMAL' }
-                    ]
+                    coreWordList: coreWordList,
+                    immediateWordList: immediateWordList,
+                    wordList: []
                 };
             },
             token: function (stream, stt) {
@@ -97,10 +87,14 @@
                         stt.state = ' compilation';
                         return 'def' + stt.state;
                     }
-                    mat = stream.match(/^(\'|\[\'\]|VARIABLE|2VARIABLE|CONSTANT|2CONSTANT|CREATE|POSTPONE|VALUE|WORD)\s+(\S+)(\s|$)+/)
+                    mat = stream.match(/^(VARIABLE|2VARIABLE|CONSTANT|2CONSTANT|CREATE|POSTPONE|VALUE|WORD)\s+(\S+)(\s|$)+/)
                     if (mat) {
                         stt.wordList.push({name: mat[2].toUpperCase()});
                         return 'def' + stt.state;
+                    }
+                    mat = stream.match(/^(\'|\[\'\])\s+(\S+)(\s|$)+/)
+                    if (mat) {
+                        return 'builtin' + stt.state;
                     }
                 } else { // compilation
                     // ; [
@@ -117,42 +111,56 @@
                         return 'builtin';
                     }
                 }
-                if (stream.match(/^(\\|TESTING)(\s|$)+/)) {
-                    stream.skipToEnd();
-                    return 'comment' + stt.state;
-                }
-                if (stream.match(/^\([^\)]*\)/)) {
-                    return 'comment' + stt.state;
-                }
-                if (stream.match(/^.\((\s|$)+([^\)])*\)/)) {
-                    return 'string' + stt.state;
-                }
-                if (stream.match(/^S\"(\s|$)+([^\"])*\"/)) {
-                    return 'string' + stt.state;
-                }
-                if (stream.match(/^\.\"(\s|$)+([^\"])*\"/)) {
-                    return 'string' + stt.state;
-                }
-                if (stream.match(words)) {
-                    return 'builtin' + stt.state;
-                }
-                if (stream.match(immediateWords)) {
-                    return 'keyword' + stt.state;
-                }
-                if (stream.match(/^[-+]?[0-9]+(\s|$)+/)) {
-                    return 'number' + stt.state;
-                }
-                if (stream.match(/^[-+]?[0-9]+\.[0-9]*(\s|$)+/)) {
-                    return 'number' + stt.state;
-                }
-                mat = stream.match(/^(\S+)(\s|$)+/);
+
+                // dynamic wordlist
+                mat = stream.match(/^(\S+)(\s+|$)/);
                 if (mat) {
-                    if (searchWordList(stt.wordList, mat[1]) === undefined) {
-                        return 'atom' + stt.state;
+                    if (searchWordList(stt.wordList, mat[1]) !== undefined) {
+                        return 'variable' + stt.state;
                     }
-                    return 'variable' + stt.state;
+
+                    // comments
+                    if (mat[1] === '\\') {
+                        stream.skipToEnd();
+                        return 'comment' + stt.state;
+                    }
+
+                    // core words
+                    if (searchWordList(stt.coreWordList, mat[1]) !== undefined) {
+                        return 'builtin' + stt.state;
+                    }
+                    if (searchWordList(stt.immediateWordList, mat[1]) !== undefined) {
+                        return 'keyword' + stt.state;
+                    }
+
+                    if (mat[1] === '(') {
+                        stream.eatWhile(function (s) { return s !== ')'; });
+                        stream.eat(')');
+                        return 'comment' + stt.state;
+                    }
+
+                    // // strings
+                    if (mat[1] === '.(') {
+                        stream.eatWhile(function (s) { return s !== ')'; });
+                        stream.eat(')');
+                        return 'string' + stt.state;
+                    }
+                    if (mat[1] === 'S"' || mat[1] === '."' || mat[1] === 'C"') {
+                        stream.eatWhile(function (s) { return s !== '"'; });
+                        stream.eat('"');
+                        return 'string' + stt.state;
+                    }
+
+                    // numbers
+                    if (mat[1] - 0xfffffffff) {
+                        return 'number' + stt.state;
+                    }
+                    // if (mat[1].match(/^[-+]?[0-9]+\.[0-9]*/)) {
+                    //     return 'number' + stt.state;
+                    // }
+
+                    return 'atom' + stt.state;
                 }
-                return 'error' + stt.state;
             }
         };
     });
