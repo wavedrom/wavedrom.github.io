@@ -4,6 +4,11 @@
     var inp, cm;
 
     inp = document.getElementById('input');
+    inp.value = localStorage.SourceCode || ': nip swap drop ;';
+
+    function refresh () {
+        localStorage.SourceCode = cm.getValue();
+    }
 
     cm = CodeMirror.fromTextArea(
         inp,
@@ -19,6 +24,10 @@
             autofocus: true
         }
     );
+    cm.on('change', function () {
+        setTimeout(refresh, 750);
+    });
+    refresh();
 })();
 
 /* global console, CodeMirror */

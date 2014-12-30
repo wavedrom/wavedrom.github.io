@@ -6,18 +6,19 @@
 .cm-s-colorforth .CodeMirror-linenumber { color: #f8f8f8; }
 .cm-s-colorforth .CodeMirror-cursor { border-left: 1px solid white !important; }
 
-.cm-s-colorforth span.cm-comment { color: #ffffff; }
+.cm-s-colorforth span.cm-comment { color: #ededed; }
 .cm-s-colorforth span.cm-def { color: #c70000; }
 .cm-s-colorforth span.cm-keyword { color: #ffd900; }
-.cm-s-colorforth span.cm-builtin { color: #1f9300; }
-.cm-s-colorforth span.cm-string { color: #25ccff; }
-.cm-s-colorforth span.cm-number { color: #6bb7d6; }
-.cm-s-colorforth span.cm-variable { color: #717171; }
+.cm-s-colorforth span.cm-builtin { color: #006c3d; }
+.cm-s-colorforth span.cm-variable { color: #07a800; }
+
+.cm-s-colorforth span.cm-string { color: #007bff; }
+
+.cm-s-colorforth span.cm-number { color: #25ccff; }
 
 .cm-s-colorforth span.cm-compilation { background: #323232; }
 
-.cm-s-colorforth span.cm-atom {color: #6C8CD5;}
-
+.cm-s-colorforth span.cm-atom {color: #606060;}
 
 
 .cm-s-colorforth span.cm-variable-2 {color: #EEE;}
