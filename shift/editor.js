@@ -1,9 +1,10 @@
 (function () {
     'use strict';
 
-    var inp, out, cm, tree, parse;
+    var inp, out, cm, tree;
 
-    parse = require('shift-parser').default;
+    var parse = require('shift-parser').default,
+        naming = require('./naming');
 
     inp = document.getElementById('input');
     out = document.getElementById('output');
@@ -13,6 +14,7 @@
         var v;
         v = cm.getValue();
         tree = parse(v);
+        naming(tree);
         localStorage.shiftAST = v;
         out.innerHTML = JSON.stringify(tree, null, 2);
     }

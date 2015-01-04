@@ -16,11 +16,13 @@
             mode: 'forth',
             theme: 'colorforth',
             lineNumbers: true,
+            lineWrapping: true,
+            // styleActiveLine: true,
             indentUnit: 2,
             tabSize: 2,
-            matchBrackets: true,
-            autoCloseBrackets: true,
-            highlightSelectionMatche: true,
+            // matchBrackets: true,
+            // autoCloseBrackets: true,
+            // highlightSelectionMatche: true,
             autofocus: true
         }
     );

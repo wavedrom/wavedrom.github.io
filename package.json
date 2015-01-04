@@ -1,7 +1,7 @@
 {
   "name": "wavedrom-editor",
   "description": "",
-  "version": "0.9.13",
+  "version": "0.9.14",
   "main": "index.js",
   "directories": {
     "doc": "doc"
@@ -28,11 +28,15 @@
     "eslint": "*",
     "grunt": "*",
     "grunt-cli": "*",
+    "wavedrom": "*",
     "grunt-contrib-copy": "*",
     "grunt-eslint": "*",
     "grunt-node-webkit-builder": "*",
     "grunt-contrib-clean": "*",
     "codemirror": "*",
     "grunt-contrib-compress": "*"
+  },
+  "dependencies": {
+    "shift-parser": "^1.0.0"
   }
 }

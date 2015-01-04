@@ -8,9 +8,17 @@
   },
   "author": "",
   "license": "MIT",
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
     "browserify": "^7.0.3",
     "codemirror": "^4.9.0",
-    "shift-parser": "^1.0.0"
+    "eslint": "^0.10.2",
+    "grunt": "^0.4.5",
+    "grunt-browserify": "^3.2.1",
+    "grunt-eslint": "^2.1.0",
+    "lodash": "^2.4.1",
+    "shift-ast": "^1.0.1",
+    "shift-parser": "^1.0.0",
+    "shift-traverse": "^1.0.0"
   }
 }
