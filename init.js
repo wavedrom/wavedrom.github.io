@@ -1,7 +1,7 @@
 (function(){
     'use strict';
 
-    var e, val, timer;
+    var e, val;
 
     // die if Enternet Explorer
     function killBill () {
@@ -89,14 +89,14 @@
             autofocus: true
         }
     );
-    cm.on('change', function (cm, change) {
+    cm.on('change', function (cmm, change) {
         function c () {
-            var v = cm.getValue();
+            var v = cmm.getValue();
             e.value = v;
             localStorage.waveform = v;
             WaveDrom.EditorRefresh();
         }
-        timer = setTimeout(c, 750);
+        setTimeout(c, 750);
     });
 })();
 

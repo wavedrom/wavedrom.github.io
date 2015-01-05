@@ -11,11 +11,11 @@ function editorState (op) {
         return 0;
     }
 
-    function ring (name, delta, size, init) {
+    function ring (name, inc, size, init) {
         var res;
         res = parseInt(localStorage [name]);
         if (res || res === 0) {
-            res += delta;
+            res += inc;
             if (res >= size) {
                 res -= size;
             } else if (res < 0) {
