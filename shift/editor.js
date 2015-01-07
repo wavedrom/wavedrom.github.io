@@ -3,8 +3,8 @@
 
     var inp, out, cm, tree;
 
-    var parse = require('shift-parser').default,
-        naming = require('./naming');
+    var parse = require('shift-parser').default;
+        // naming = require('./naming');
 
     inp = document.getElementById('input');
     out = document.getElementById('output');
@@ -14,7 +14,7 @@
         var v;
         v = cm.getValue();
         tree = parse(v);
-        naming(tree);
+        // naming(tree);
         localStorage.shiftAST = v;
         out.innerHTML = JSON.stringify(tree, null, 2);
     }

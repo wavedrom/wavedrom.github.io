@@ -4,8 +4,8 @@
 
     var inp, out, cm, tree;
 
-    var parse = require('shift-parser').default,
-        naming = require('./naming');
+    var parse = require('shift-parser').default;
+        // naming = require('./naming');
 
     inp = document.getElementById('input');
     out = document.getElementById('output');
@@ -15,7 +15,7 @@
         var v;
         v = cm.getValue();
         tree = parse(v);
-        naming(tree);
+        // naming(tree);
         localStorage.shiftAST = v;
         out.innerHTML = JSON.stringify(tree, null, 2);
     }
@@ -41,350 +41,835 @@
 
 /* global console, CodeMirror */
 
-},{"./naming":2,"shift-parser":7}],2:[function(require,module,exports){
-var trav = require('shift-traverse');
+},{"shift-parser":4}],2:[function(require,module,exports){
+"use strict";
 
-// var index = 1;
-
-function naming (tree) {
-    'use strict';
-    // if (tree.name === undefined) {
-    //     tree.name = '__node' + index++;
-    // }
-    // Object.prototype.toString.call(options)
-    // console.log(trav);
-
-    // traverse(tree, {
-    //     enter: function (node) {
-    //         console.log('entering ' + node.type);
-    //     },
-    //     leave: function (node) {
-    //         console.log('leaving ' + node.type);
-    //     }
-    // });
-}
-
-module.exports = naming;
-
-},{"shift-traverse":12}],3:[function(require,module,exports){
-
-},{}],4:[function(require,module,exports){
-(function (process){
-// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-// resolves . and .. elements in a path array with directory names there
-// must be no slashes, empty elements, or device names (c:\) in the array
-// (so also no leading and trailing slashes - it does not distinguish
-// relative and absolute paths)
-function normalizeArray(parts, allowAboveRoot) {
-  // if the path tries to go above the root, `up` ends up > 0
-  var up = 0;
-  for (var i = parts.length - 1; i >= 0; i--) {
-    var last = parts[i];
-    if (last === '.') {
-      parts.splice(i, 1);
-    } else if (last === '..') {
-      parts.splice(i, 1);
-      up++;
-    } else if (up) {
-      parts.splice(i, 1);
-      up--;
+var _extends = function (child, parent) {
+  child.prototype = Object.create(parent.prototype, {
+    constructor: {
+      value: child,
+      enumerable: false,
+      writable: true,
+      configurable: true
     }
-  }
-
-  // if the path is allowed to go above the root, restore leading ..s
-  if (allowAboveRoot) {
-    for (; up--; up) {
-      parts.unshift('..');
-    }
-  }
-
-  return parts;
-}
-
-// Split a filename into [root, dir, basename, ext], unix version
-// 'root' is just a slash, or nothing.
-var splitPathRe =
-    /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
-var splitPath = function(filename) {
-  return splitPathRe.exec(filename).slice(1);
+  });
+  child.__proto__ = parent;
 };
 
-// path.resolve([from ...], to)
-// posix version
-exports.resolve = function() {
-  var resolvedPath = '',
-      resolvedAbsolute = false;
+var Node = function Node() {};
 
-  for (var i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
-    var path = (i >= 0) ? arguments[i] : process.cwd();
+exports.Node = Node;
+var Directive = (function (Node) {
+  var Directive = function Directive() {
+    Node.apply(this, arguments);
+  };
 
-    // Skip empty and invalid entries
-    if (typeof path !== 'string') {
-      throw new TypeError('Arguments to path.resolve must be strings');
-    } else if (!path) {
-      continue;
-    }
+  _extends(Directive, Node);
 
-    resolvedPath = path + '/' + resolvedPath;
-    resolvedAbsolute = path.charAt(0) === '/';
-  }
+  return Directive;
+})(Node);
 
-  // At this point the path should be resolved to a full absolute path, but
-  // handle relative paths to be safe (might happen when process.cwd() fails)
+exports.Directive = Directive;
+var Statement = (function (Node) {
+  var Statement = function Statement() {
+    Node.apply(this, arguments);
+  };
 
-  // Normalize the path
-  resolvedPath = normalizeArray(filter(resolvedPath.split('/'), function(p) {
-    return !!p;
-  }), !resolvedAbsolute).join('/');
+  _extends(Statement, Node);
 
-  return ((resolvedAbsolute ? '/' : '') + resolvedPath) || '.';
-};
+  return Statement;
+})(Node);
 
-// path.normalize(path)
-// posix version
-exports.normalize = function(path) {
-  var isAbsolute = exports.isAbsolute(path),
-      trailingSlash = substr(path, -1) === '/';
+exports.Statement = Statement;
+var IterationStatement = (function (Statement) {
+  var IterationStatement = function IterationStatement() {
+    Statement.apply(this, arguments);
+  };
 
-  // Normalize the path
-  path = normalizeArray(filter(path.split('/'), function(p) {
-    return !!p;
-  }), !isAbsolute).join('/');
+  _extends(IterationStatement, Statement);
 
-  if (!path && !isAbsolute) {
-    path = '.';
-  }
-  if (path && trailingSlash) {
-    path += '/';
-  }
+  return IterationStatement;
+})(Statement);
 
-  return (isAbsolute ? '/' : '') + path;
-};
+exports.IterationStatement = IterationStatement;
+var Expression = (function (Node) {
+  var Expression = function Expression() {
+    Node.apply(this, arguments);
+  };
 
-// posix version
-exports.isAbsolute = function(path) {
-  return path.charAt(0) === '/';
-};
+  _extends(Expression, Node);
 
-// posix version
-exports.join = function() {
-  var paths = Array.prototype.slice.call(arguments, 0);
-  return exports.normalize(filter(paths, function(p, index) {
-    if (typeof p !== 'string') {
-      throw new TypeError('Arguments to path.join must be strings');
-    }
-    return p;
-  }).join('/'));
-};
+  return Expression;
+})(Node);
 
+exports.Expression = Expression;
+var PrimaryExpression = (function (Expression) {
+  var PrimaryExpression = function PrimaryExpression() {
+    Expression.apply(this, arguments);
+  };
 
-// path.relative(from, to)
-// posix version
-exports.relative = function(from, to) {
-  from = exports.resolve(from).substr(1);
-  to = exports.resolve(to).substr(1);
+  _extends(PrimaryExpression, Expression);
 
-  function trim(arr) {
-    var start = 0;
-    for (; start < arr.length; start++) {
-      if (arr[start] !== '') break;
-    }
+  return PrimaryExpression;
+})(Expression);
 
-    var end = arr.length - 1;
-    for (; end >= 0; end--) {
-      if (arr[end] !== '') break;
-    }
+exports.PrimaryExpression = PrimaryExpression;
+var LiteralExpression = (function (PrimaryExpression) {
+  var LiteralExpression = function LiteralExpression() {
+    PrimaryExpression.apply(this, arguments);
+  };
 
-    if (start > end) return [];
-    return arr.slice(start, end - start + 1);
-  }
+  _extends(LiteralExpression, PrimaryExpression);
 
-  var fromParts = trim(from.split('/'));
-  var toParts = trim(to.split('/'));
+  return LiteralExpression;
+})(PrimaryExpression);
 
-  var length = Math.min(fromParts.length, toParts.length);
-  var samePartsLength = length;
-  for (var i = 0; i < length; i++) {
-    if (fromParts[i] !== toParts[i]) {
-      samePartsLength = i;
-      break;
-    }
-  }
+exports.LiteralExpression = LiteralExpression;
+var UnaryExpression = (function (Expression) {
+  var UnaryExpression = function UnaryExpression(operand) {
+    this.operand = operand;
+  };
 
-  var outputParts = [];
-  for (var i = samePartsLength; i < fromParts.length; i++) {
-    outputParts.push('..');
-  }
+  _extends(UnaryExpression, Expression);
 
-  outputParts = outputParts.concat(toParts.slice(samePartsLength));
+  return UnaryExpression;
+})(Expression);
 
-  return outputParts.join('/');
-};
+exports.UnaryExpression = UnaryExpression;
+var MemberExpression = (function (Expression) {
+  var MemberExpression = function MemberExpression(object) {
+    this.object = object;
+  };
 
-exports.sep = '/';
-exports.delimiter = ':';
+  _extends(MemberExpression, Expression);
 
-exports.dirname = function(path) {
-  var result = splitPath(path),
-      root = result[0],
-      dir = result[1];
+  return MemberExpression;
+})(Expression);
 
-  if (!root && !dir) {
-    // No dirname whatsoever
-    return '.';
-  }
+exports.MemberExpression = MemberExpression;
+var ObjectProperty = (function (Node) {
+  var ObjectProperty = function ObjectProperty(name) {
+    this.name = name;
+  };
 
-  if (dir) {
-    // It has a dirname, strip trailing slash
-    dir = dir.substr(0, dir.length - 1);
-  }
+  _extends(ObjectProperty, Node);
 
-  return root + dir;
-};
+  return ObjectProperty;
+})(Node);
 
+exports.ObjectProperty = ObjectProperty;
+var AccessorProperty = (function (ObjectProperty) {
+  var AccessorProperty = function AccessorProperty(name, body) {
+    ObjectProperty.call(this, name);
+    this.body = body;
+  };
 
-exports.basename = function(path, ext) {
-  var f = splitPath(path)[2];
-  // TODO: make this comparison case-insensitive on windows?
-  if (ext && f.substr(-1 * ext.length) === ext) {
-    f = f.substr(0, f.length - ext.length);
-  }
-  return f;
-};
+  _extends(AccessorProperty, ObjectProperty);
 
+  return AccessorProperty;
+})(ObjectProperty);
 
-exports.extname = function(path) {
-  return splitPath(path)[3];
-};
+exports.AccessorProperty = AccessorProperty;
+var FunctionBody = (function (Node) {
+  var FunctionBody = function FunctionBody(directives, statements) {
+    this.type = "FunctionBody";
+    this.directives = directives;
+    this.statements = statements;
+  };
 
-function filter (xs, f) {
-    if (xs.filter) return xs.filter(f);
-    var res = [];
-    for (var i = 0; i < xs.length; i++) {
-        if (f(xs[i], i, xs)) res.push(xs[i]);
-    }
-    return res;
-}
+  _extends(FunctionBody, Node);
 
-// String.prototype.substr - negative index don't work in IE8
-var substr = 'ab'.substr(-1) === 'b'
-    ? function (str, start, len) { return str.substr(start, len) }
-    : function (str, start, len) {
-        if (start < 0) start = str.length + start;
-        return str.substr(start, len);
-    }
-;
+  return FunctionBody;
+})(Node);
 
-}).call(this,require('_process'))
-},{"_process":5}],5:[function(require,module,exports){
-// shim for using process in browser
+exports.FunctionBody = FunctionBody;
+var FunctionDeclaration = (function (Statement) {
+  var FunctionDeclaration = function FunctionDeclaration(name, parameters, body) {
+    this.type = "FunctionDeclaration";
+    this.name = name;
+    this.parameters = parameters;
+    this.body = body;
+  };
 
-var process = module.exports = {};
+  _extends(FunctionDeclaration, Statement);
 
-process.nextTick = (function () {
-    var canSetImmediate = typeof window !== 'undefined'
-    && window.setImmediate;
-    var canMutationObserver = typeof window !== 'undefined'
-    && window.MutationObserver;
-    var canPost = typeof window !== 'undefined'
-    && window.postMessage && window.addEventListener
-    ;
+  return FunctionDeclaration;
+})(Statement);
 
-    if (canSetImmediate) {
-        return function (f) { return window.setImmediate(f) };
-    }
+exports.FunctionDeclaration = FunctionDeclaration;
+var FunctionExpression = (function (PrimaryExpression) {
+  var FunctionExpression = function FunctionExpression(name, parameters, body) {
+    this.type = "FunctionExpression";
+    this.name = name;
+    this.parameters = parameters;
+    this.body = body;
+  };
 
-    var queue = [];
+  _extends(FunctionExpression, PrimaryExpression);
 
-    if (canMutationObserver) {
-        var hiddenDiv = document.createElement("div");
-        var observer = new MutationObserver(function () {
-            var queueList = queue.slice();
-            queue.length = 0;
-            queueList.forEach(function (fn) {
-                fn();
-            });
-        });
+  return FunctionExpression;
+})(PrimaryExpression);
 
-        observer.observe(hiddenDiv, { attributes: true });
+exports.FunctionExpression = FunctionExpression;
+var ObjectExpression = (function (PrimaryExpression) {
+  var ObjectExpression = function ObjectExpression(properties) {
+    this.type = "ObjectExpression";
+    this.properties = properties;
+  };
 
-        return function nextTick(fn) {
-            if (!queue.length) {
-                hiddenDiv.setAttribute('yes', 'no');
-            }
-            queue.push(fn);
-        };
-    }
+  _extends(ObjectExpression, PrimaryExpression);
 
-    if (canPost) {
-        window.addEventListener('message', function (ev) {
-            var source = ev.source;
-            if ((source === window || source === null) && ev.data === 'process-tick') {
-                ev.stopPropagation();
-                if (queue.length > 0) {
-                    var fn = queue.shift();
-                    fn();
-                }
-            }
-        }, true);
+  return ObjectExpression;
+})(PrimaryExpression);
 
-        return function nextTick(fn) {
-            queue.push(fn);
-            window.postMessage('process-tick', '*');
-        };
-    }
+exports.ObjectExpression = ObjectExpression;
+var Getter = (function (AccessorProperty) {
+  var Getter = function Getter(name, body) {
+    this.type = "Getter";
+    AccessorProperty.call(this, name, body);
+  };
 
-    return function nextTick(fn) {
-        setTimeout(fn, 0);
-    };
-})();
+  _extends(Getter, AccessorProperty);
 
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
+  return Getter;
+})(AccessorProperty);
 
-function noop() {}
+exports.Getter = Getter;
+var Setter = (function (AccessorProperty) {
+  var Setter = function Setter(name, parameter, body) {
+    this.type = "Setter";
+    AccessorProperty.call(this, name, body);
+    this.parameter = parameter;
+  };
 
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
+  _extends(Setter, AccessorProperty);
 
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
+  return Setter;
+})(AccessorProperty);
 
-// TODO(shtylman)
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
+exports.Setter = Setter;
+var DataProperty = (function (ObjectProperty) {
+  var DataProperty = function DataProperty(name, expression) {
+    this.type = "DataProperty";
+    ObjectProperty.call(this, name);
+    this.expression = expression;
+  };
 
-},{}],6:[function(require,module,exports){
+  _extends(DataProperty, ObjectProperty);
+
+  return DataProperty;
+})(ObjectProperty);
+
+exports.DataProperty = DataProperty;
+var PropertyName = (function (Node) {
+  var PropertyName = function PropertyName(kind, value) {
+    this.type = "PropertyName";
+    this.kind = kind;
+    this.value = value;
+  };
+
+  _extends(PropertyName, Node);
+
+  return PropertyName;
+})(Node);
+
+exports.PropertyName = PropertyName;
+var LiteralBooleanExpression = (function (LiteralExpression) {
+  var LiteralBooleanExpression = function LiteralBooleanExpression(value) {
+    this.type = "LiteralBooleanExpression";
+    this.value = value;
+  };
+
+  _extends(LiteralBooleanExpression, LiteralExpression);
+
+  return LiteralBooleanExpression;
+})(LiteralExpression);
+
+exports.LiteralBooleanExpression = LiteralBooleanExpression;
+var LiteralNullExpression = (function (LiteralExpression) {
+  var LiteralNullExpression = function LiteralNullExpression() {
+    this.type = "LiteralNullExpression";
+  };
+
+  _extends(LiteralNullExpression, LiteralExpression);
+
+  return LiteralNullExpression;
+})(LiteralExpression);
+
+exports.LiteralNullExpression = LiteralNullExpression;
+var LiteralNumericExpression = (function (LiteralExpression) {
+  var LiteralNumericExpression = function LiteralNumericExpression(value) {
+    this.type = "LiteralNumericExpression";
+    this.value = value;
+  };
+
+  _extends(LiteralNumericExpression, LiteralExpression);
+
+  return LiteralNumericExpression;
+})(LiteralExpression);
+
+exports.LiteralNumericExpression = LiteralNumericExpression;
+var LiteralRegExpExpression = (function (LiteralExpression) {
+  var LiteralRegExpExpression = function LiteralRegExpExpression(value) {
+    this.type = "LiteralRegExpExpression";
+    this.value = value;
+  };
+
+  _extends(LiteralRegExpExpression, LiteralExpression);
+
+  return LiteralRegExpExpression;
+})(LiteralExpression);
+
+exports.LiteralRegExpExpression = LiteralRegExpExpression;
+var LiteralStringExpression = (function (LiteralExpression) {
+  var LiteralStringExpression = function LiteralStringExpression(value) {
+    this.type = "LiteralStringExpression";
+    this.value = value;
+  };
+
+  _extends(LiteralStringExpression, LiteralExpression);
+
+  return LiteralStringExpression;
+})(LiteralExpression);
+
+exports.LiteralStringExpression = LiteralStringExpression;
+var ArrayExpression = (function (PrimaryExpression) {
+  var ArrayExpression = function ArrayExpression(elements) {
+    this.type = "ArrayExpression";
+    this.elements = elements;
+  };
+
+  _extends(ArrayExpression, PrimaryExpression);
+
+  return ArrayExpression;
+})(PrimaryExpression);
+
+exports.ArrayExpression = ArrayExpression;
+var AssignmentExpression = (function (Expression) {
+  var AssignmentExpression = function AssignmentExpression(operator, binding, expression) {
+    this.type = "AssignmentExpression";
+    this.operator = operator;
+    this.binding = binding;
+    this.expression = expression;
+  };
+
+  _extends(AssignmentExpression, Expression);
+
+  return AssignmentExpression;
+})(Expression);
+
+exports.AssignmentExpression = AssignmentExpression;
+var BinaryExpression = (function (Expression) {
+  var BinaryExpression = function BinaryExpression(operator, left, right) {
+    this.type = "BinaryExpression";
+    this.operator = operator;
+    this.left = left;
+    this.right = right;
+  };
+
+  _extends(BinaryExpression, Expression);
+
+  return BinaryExpression;
+})(Expression);
+
+exports.BinaryExpression = BinaryExpression;
+var CallExpression = (function (Expression) {
+  var CallExpression = function CallExpression(callee, args) {
+    this.type = "CallExpression";
+    this.callee = callee;
+    this.arguments = args;
+  };
+
+  _extends(CallExpression, Expression);
+
+  return CallExpression;
+})(Expression);
+
+exports.CallExpression = CallExpression;
+var ComputedMemberExpression = (function (MemberExpression) {
+  var ComputedMemberExpression = function ComputedMemberExpression(object, expression) {
+    this.type = "ComputedMemberExpression";
+    MemberExpression.call(this, object);
+    this.expression = expression;
+  };
+
+  _extends(ComputedMemberExpression, MemberExpression);
+
+  return ComputedMemberExpression;
+})(MemberExpression);
+
+exports.ComputedMemberExpression = ComputedMemberExpression;
+var ConditionalExpression = (function (Expression) {
+  var ConditionalExpression = function ConditionalExpression(test, consequent, alternate) {
+    this.type = "ConditionalExpression";
+    this.test = test;
+    this.consequent = consequent;
+    this.alternate = alternate;
+  };
+
+  _extends(ConditionalExpression, Expression);
+
+  return ConditionalExpression;
+})(Expression);
+
+exports.ConditionalExpression = ConditionalExpression;
+var IdentifierExpression = (function (PrimaryExpression) {
+  var IdentifierExpression = function IdentifierExpression(identifier) {
+    this.type = "IdentifierExpression";
+    this.identifier = identifier;
+  };
+
+  _extends(IdentifierExpression, PrimaryExpression);
+
+  return IdentifierExpression;
+})(PrimaryExpression);
+
+exports.IdentifierExpression = IdentifierExpression;
+var NewExpression = (function (Expression) {
+  var NewExpression = function NewExpression(callee, args) {
+    this.type = "NewExpression";
+    this.callee = callee;
+    this.arguments = args;
+  };
+
+  _extends(NewExpression, Expression);
+
+  return NewExpression;
+})(Expression);
+
+exports.NewExpression = NewExpression;
+var PostfixExpression = (function (UnaryExpression) {
+  var PostfixExpression = function PostfixExpression(operand, operator) {
+    this.type = "PostfixExpression";
+    UnaryExpression.call(this, operand);
+    this.operator = operator;
+  };
+
+  _extends(PostfixExpression, UnaryExpression);
+
+  return PostfixExpression;
+})(UnaryExpression);
+
+exports.PostfixExpression = PostfixExpression;
+var PrefixExpression = (function (UnaryExpression) {
+  var PrefixExpression = function PrefixExpression(operator, operand) {
+    this.type = "PrefixExpression";
+    UnaryExpression.call(this, operand);
+    this.operator = operator;
+  };
+
+  _extends(PrefixExpression, UnaryExpression);
+
+  return PrefixExpression;
+})(UnaryExpression);
+
+exports.PrefixExpression = PrefixExpression;
+var StaticMemberExpression = (function (MemberExpression) {
+  var StaticMemberExpression = function StaticMemberExpression(object, property) {
+    this.type = "StaticMemberExpression";
+    MemberExpression.call(this, object);
+    this.property = property;
+  };
+
+  _extends(StaticMemberExpression, MemberExpression);
+
+  return StaticMemberExpression;
+})(MemberExpression);
+
+exports.StaticMemberExpression = StaticMemberExpression;
+var ThisExpression = (function (PrimaryExpression) {
+  var ThisExpression = function ThisExpression() {
+    this.type = "ThisExpression";
+  };
+
+  _extends(ThisExpression, PrimaryExpression);
+
+  return ThisExpression;
+})(PrimaryExpression);
+
+exports.ThisExpression = ThisExpression;
+var BlockStatement = (function (Statement) {
+  var BlockStatement = function BlockStatement(block) {
+    this.type = "BlockStatement";
+    this.block = block;
+  };
+
+  _extends(BlockStatement, Statement);
+
+  return BlockStatement;
+})(Statement);
+
+exports.BlockStatement = BlockStatement;
+var BreakStatement = (function (Statement) {
+  var BreakStatement = function BreakStatement(label) {
+    this.type = "BreakStatement";
+    this.label = label;
+  };
+
+  _extends(BreakStatement, Statement);
+
+  return BreakStatement;
+})(Statement);
+
+exports.BreakStatement = BreakStatement;
+var ContinueStatement = (function (Statement) {
+  var ContinueStatement = function ContinueStatement(label) {
+    this.type = "ContinueStatement";
+    this.label = label;
+  };
+
+  _extends(ContinueStatement, Statement);
+
+  return ContinueStatement;
+})(Statement);
+
+exports.ContinueStatement = ContinueStatement;
+var DebuggerStatement = (function (Statement) {
+  var DebuggerStatement = function DebuggerStatement() {
+    this.type = "DebuggerStatement";
+  };
+
+  _extends(DebuggerStatement, Statement);
+
+  return DebuggerStatement;
+})(Statement);
+
+exports.DebuggerStatement = DebuggerStatement;
+var DoWhileStatement = (function (IterationStatement) {
+  var DoWhileStatement = function DoWhileStatement(body, test) {
+    this.type = "DoWhileStatement";
+    this.body = body;
+    this.test = test;
+  };
+
+  _extends(DoWhileStatement, IterationStatement);
+
+  return DoWhileStatement;
+})(IterationStatement);
+
+exports.DoWhileStatement = DoWhileStatement;
+var EmptyStatement = (function (Statement) {
+  var EmptyStatement = function EmptyStatement() {
+    this.type = "EmptyStatement";
+  };
+
+  _extends(EmptyStatement, Statement);
+
+  return EmptyStatement;
+})(Statement);
+
+exports.EmptyStatement = EmptyStatement;
+var ExpressionStatement = (function (Statement) {
+  var ExpressionStatement = function ExpressionStatement(expression) {
+    this.type = "ExpressionStatement";
+    this.expression = expression;
+  };
+
+  _extends(ExpressionStatement, Statement);
+
+  return ExpressionStatement;
+})(Statement);
+
+exports.ExpressionStatement = ExpressionStatement;
+var ForInStatement = (function (IterationStatement) {
+  var ForInStatement = function ForInStatement(left, right, body) {
+    this.type = "ForInStatement";
+    this.left = left;
+    this.right = right;
+    this.body = body;
+  };
+
+  _extends(ForInStatement, IterationStatement);
+
+  return ForInStatement;
+})(IterationStatement);
+
+exports.ForInStatement = ForInStatement;
+var ForStatement = (function (IterationStatement) {
+  var ForStatement = function ForStatement(init, test, update, body) {
+    this.type = "ForStatement";
+    this.init = init;
+    this.test = test;
+    this.update = update;
+    this.body = body;
+  };
+
+  _extends(ForStatement, IterationStatement);
+
+  return ForStatement;
+})(IterationStatement);
+
+exports.ForStatement = ForStatement;
+var IfStatement = (function (Statement) {
+  var IfStatement = function IfStatement(test, consequent, alternate) {
+    this.type = "IfStatement";
+    this.test = test;
+    this.consequent = consequent;
+    this.alternate = alternate;
+  };
+
+  _extends(IfStatement, Statement);
+
+  return IfStatement;
+})(Statement);
+
+exports.IfStatement = IfStatement;
+var LabeledStatement = (function (Statement) {
+  var LabeledStatement = function LabeledStatement(label, body) {
+    this.type = "LabeledStatement";
+    this.label = label;
+    this.body = body;
+  };
+
+  _extends(LabeledStatement, Statement);
+
+  return LabeledStatement;
+})(Statement);
+
+exports.LabeledStatement = LabeledStatement;
+var ReturnStatement = (function (Statement) {
+  var ReturnStatement = function ReturnStatement(expression) {
+    this.type = "ReturnStatement";
+    this.expression = expression;
+  };
+
+  _extends(ReturnStatement, Statement);
+
+  return ReturnStatement;
+})(Statement);
+
+exports.ReturnStatement = ReturnStatement;
+var SwitchStatement = (function (Statement) {
+  var SwitchStatement = function SwitchStatement(discriminant, cases) {
+    this.type = "SwitchStatement";
+    this.discriminant = discriminant;
+    this.cases = cases;
+  };
+
+  _extends(SwitchStatement, Statement);
+
+  return SwitchStatement;
+})(Statement);
+
+exports.SwitchStatement = SwitchStatement;
+var SwitchStatementWithDefault = (function (Statement) {
+  var SwitchStatementWithDefault = function SwitchStatementWithDefault(discriminant, preDefaultCases, defaultCase, postDefaultCases) {
+    this.type = "SwitchStatementWithDefault";
+    this.discriminant = discriminant;
+    this.preDefaultCases = preDefaultCases;
+    this.defaultCase = defaultCase;
+    this.postDefaultCases = postDefaultCases;
+  };
+
+  _extends(SwitchStatementWithDefault, Statement);
+
+  return SwitchStatementWithDefault;
+})(Statement);
+
+exports.SwitchStatementWithDefault = SwitchStatementWithDefault;
+var ThrowStatement = (function (Statement) {
+  var ThrowStatement = function ThrowStatement(expression) {
+    this.type = "ThrowStatement";
+    this.expression = expression;
+  };
+
+  _extends(ThrowStatement, Statement);
+
+  return ThrowStatement;
+})(Statement);
+
+exports.ThrowStatement = ThrowStatement;
+var TryCatchStatement = (function (Statement) {
+  var TryCatchStatement = function TryCatchStatement(body, catchClause) {
+    this.type = "TryCatchStatement";
+    this.body = body;
+    this.catchClause = catchClause;
+  };
+
+  _extends(TryCatchStatement, Statement);
+
+  return TryCatchStatement;
+})(Statement);
+
+exports.TryCatchStatement = TryCatchStatement;
+var TryFinallyStatement = (function (Statement) {
+  var TryFinallyStatement = function TryFinallyStatement(body, catchClause, finalizer) {
+    this.type = "TryFinallyStatement";
+    this.body = body;
+    this.catchClause = catchClause;
+    this.finalizer = finalizer;
+  };
+
+  _extends(TryFinallyStatement, Statement);
+
+  return TryFinallyStatement;
+})(Statement);
+
+exports.TryFinallyStatement = TryFinallyStatement;
+var VariableDeclarationStatement = (function (Statement) {
+  var VariableDeclarationStatement = function VariableDeclarationStatement(declaration) {
+    this.type = "VariableDeclarationStatement";
+    this.declaration = declaration;
+  };
+
+  _extends(VariableDeclarationStatement, Statement);
+
+  return VariableDeclarationStatement;
+})(Statement);
+
+exports.VariableDeclarationStatement = VariableDeclarationStatement;
+var WhileStatement = (function (IterationStatement) {
+  var WhileStatement = function WhileStatement(test, body) {
+    this.type = "WhileStatement";
+    this.test = test;
+    this.body = body;
+  };
+
+  _extends(WhileStatement, IterationStatement);
+
+  return WhileStatement;
+})(IterationStatement);
+
+exports.WhileStatement = WhileStatement;
+var WithStatement = (function (Statement) {
+  var WithStatement = function WithStatement(object, body) {
+    this.type = "WithStatement";
+    this.object = object;
+    this.body = body;
+  };
+
+  _extends(WithStatement, Statement);
+
+  return WithStatement;
+})(Statement);
+
+exports.WithStatement = WithStatement;
+var UnknownDirective = (function (Directive) {
+  var UnknownDirective = function UnknownDirective(value) {
+    this.type = "UnknownDirective";
+    this.value = value;
+  };
+
+  _extends(UnknownDirective, Directive);
+
+  return UnknownDirective;
+})(Directive);
+
+exports.UnknownDirective = UnknownDirective;
+var UseStrictDirective = (function (Directive) {
+  var UseStrictDirective = function UseStrictDirective() {
+    this.type = "UseStrictDirective";
+  };
+
+  _extends(UseStrictDirective, Directive);
+
+  return UseStrictDirective;
+})(Directive);
+
+exports.UseStrictDirective = UseStrictDirective;
+var Block = (function (Node) {
+  var Block = function Block(statements) {
+    this.type = "Block";
+    this.statements = statements;
+  };
+
+  _extends(Block, Node);
+
+  return Block;
+})(Node);
+
+exports.Block = Block;
+var CatchClause = (function (Node) {
+  var CatchClause = function CatchClause(binding, body) {
+    this.type = "CatchClause";
+    this.binding = binding;
+    this.body = body;
+  };
+
+  _extends(CatchClause, Node);
+
+  return CatchClause;
+})(Node);
+
+exports.CatchClause = CatchClause;
+var Identifier = (function (Node) {
+  var Identifier = function Identifier(name) {
+    this.type = "Identifier";
+    this.name = name;
+  };
+
+  _extends(Identifier, Node);
+
+  return Identifier;
+})(Node);
+
+exports.Identifier = Identifier;
+var Script = (function (Node) {
+  var Script = function Script(body) {
+    this.type = "Script";
+    this.body = body;
+  };
+
+  _extends(Script, Node);
+
+  return Script;
+})(Node);
+
+exports.Script = Script;
+var SwitchCase = (function (Node) {
+  var SwitchCase = function SwitchCase(test, consequent) {
+    this.type = "SwitchCase";
+    this.test = test;
+    this.consequent = consequent;
+  };
+
+  _extends(SwitchCase, Node);
+
+  return SwitchCase;
+})(Node);
+
+exports.SwitchCase = SwitchCase;
+var SwitchDefault = (function (Node) {
+  var SwitchDefault = function SwitchDefault(consequent) {
+    this.type = "SwitchDefault";
+    this.consequent = consequent;
+  };
+
+  _extends(SwitchDefault, Node);
+
+  return SwitchDefault;
+})(Node);
+
+exports.SwitchDefault = SwitchDefault;
+var VariableDeclaration = (function (Node) {
+  var VariableDeclaration = function VariableDeclaration(kind, declarators) {
+    if (declarators.length < 1) throw new TypeError("VariableDeclaration declarators list must be non-empty.");
+    this.type = "VariableDeclaration";
+    this.kind = kind;
+    this.declarators = declarators;
+  };
+
+  _extends(VariableDeclaration, Node);
+
+  return VariableDeclaration;
+})(Node);
+
+exports.VariableDeclaration = VariableDeclaration;
+var VariableDeclarator = (function (Node) {
+  var VariableDeclarator = function VariableDeclarator(binding, init) {
+    this.type = "VariableDeclarator";
+    this.binding = binding;
+    this.init = init;
+  };
+
+  _extends(VariableDeclarator, Node);
+
+  return VariableDeclarator;
+})(Node);
+
+exports.VariableDeclarator = VariableDeclarator;
+
+},{}],3:[function(require,module,exports){
 "use strict";
 
 var ErrorMessages = exports.ErrorMessages = {
@@ -425,7 +910,7 @@ var ErrorMessages = exports.ErrorMessages = {
   STRICT_RESERVED_WORD: "Use of future reserved word in strict mode"
 };
 
-},{}],7:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 "use strict";
 
 var Parser = require("./parser").Parser;
@@ -434,7 +919,7 @@ function parse(code) {
 }
 exports["default"] = parse;
 
-},{"./parser":8}],8:[function(require,module,exports){
+},{"./parser":5}],5:[function(require,module,exports){
 "use strict";
 
 var _toArray = function (arr) {
@@ -1939,7 +2424,7 @@ var Parser = (function (Tokenizer) {
 
 exports.Parser = Parser;
 
-},{"./errors":6,"./tokenizer":9,"./utils":10,"shift-ast":11}],9:[function(require,module,exports){
+},{"./errors":3,"./tokenizer":6,"./utils":7,"shift-ast":2}],6:[function(require,module,exports){
 "use strict";
 
 var _extends = function (child, parent) {
@@ -2068,7 +2553,6 @@ var TokenType = exports.TokenType = {
   FUTURE_STRICT_RESERVED_WORD: { klass: TokenClass.Keyword, name: "" },
   CONST: { klass: TokenClass.Keyword, name: "const" },
   LET: { klass: TokenClass.Keyword, name: "let" },
-  YIELD: { klass: TokenClass.Keyword, name: "yield" },
   ILLEGAL: { klass: TokenClass.Illegal, name: "" }
 };
 
@@ -2509,7 +2993,7 @@ var Tokenizer = (function () {
             break;
           case "y": // YIELD
             if (Tokenizer.cse4(id, "i", "e", "l", "d")) {
-              return strict ? TokenType.FUTURE_STRICT_RESERVED_WORD : TokenType.YIELD;
+              return strict ? TokenType.FUTURE_STRICT_RESERVED_WORD : TokenType.ILLEGAL;
             }
             break;
           case "s": // SUPER
@@ -3389,7 +3873,7 @@ var Tokenizer = (function () {
 
 exports["default"] = Tokenizer;
 
-},{"./errors":6,"./utils":10}],10:[function(require,module,exports){
+},{"./errors":3,"./utils":7}],7:[function(require,module,exports){
 "use strict";
 
 exports.isRestrictedWord = isRestrictedWord;
@@ -3472,1957 +3956,6 @@ function getHexValue(rune) {
     return rune.charCodeAt(0) - 55;
   }
   return -1;
-}
-
-},{}],11:[function(require,module,exports){
-"use strict";
-
-var _extends = function (child, parent) {
-  child.prototype = Object.create(parent.prototype, {
-    constructor: {
-      value: child,
-      enumerable: false,
-      writable: true,
-      configurable: true
-    }
-  });
-  child.__proto__ = parent;
-};
-
-var Node = function Node() {};
-
-exports.Node = Node;
-var Directive = (function (Node) {
-  var Directive = function Directive() {
-    Node.apply(this, arguments);
-  };
-
-  _extends(Directive, Node);
-
-  return Directive;
-})(Node);
-
-exports.Directive = Directive;
-var Statement = (function (Node) {
-  var Statement = function Statement() {
-    Node.apply(this, arguments);
-  };
-
-  _extends(Statement, Node);
-
-  return Statement;
-})(Node);
-
-exports.Statement = Statement;
-var IterationStatement = (function (Statement) {
-  var IterationStatement = function IterationStatement() {
-    Statement.apply(this, arguments);
-  };
-
-  _extends(IterationStatement, Statement);
-
-  return IterationStatement;
-})(Statement);
-
-exports.IterationStatement = IterationStatement;
-var Expression = (function (Node) {
-  var Expression = function Expression() {
-    Node.apply(this, arguments);
-  };
-
-  _extends(Expression, Node);
-
-  return Expression;
-})(Node);
-
-exports.Expression = Expression;
-var PrimaryExpression = (function (Expression) {
-  var PrimaryExpression = function PrimaryExpression() {
-    Expression.apply(this, arguments);
-  };
-
-  _extends(PrimaryExpression, Expression);
-
-  return PrimaryExpression;
-})(Expression);
-
-exports.PrimaryExpression = PrimaryExpression;
-var LiteralExpression = (function (PrimaryExpression) {
-  var LiteralExpression = function LiteralExpression() {
-    PrimaryExpression.apply(this, arguments);
-  };
-
-  _extends(LiteralExpression, PrimaryExpression);
-
-  return LiteralExpression;
-})(PrimaryExpression);
-
-exports.LiteralExpression = LiteralExpression;
-var UnaryExpression = (function (Expression) {
-  var UnaryExpression = function UnaryExpression(operand) {
-    this.operand = operand;
-  };
-
-  _extends(UnaryExpression, Expression);
-
-  return UnaryExpression;
-})(Expression);
-
-exports.UnaryExpression = UnaryExpression;
-var MemberExpression = (function (Expression) {
-  var MemberExpression = function MemberExpression(object) {
-    this.object = object;
-  };
-
-  _extends(MemberExpression, Expression);
-
-  return MemberExpression;
-})(Expression);
-
-exports.MemberExpression = MemberExpression;
-var ObjectProperty = (function (Node) {
-  var ObjectProperty = function ObjectProperty(name) {
-    this.name = name;
-  };
-
-  _extends(ObjectProperty, Node);
-
-  return ObjectProperty;
-})(Node);
-
-exports.ObjectProperty = ObjectProperty;
-var AccessorProperty = (function (ObjectProperty) {
-  var AccessorProperty = function AccessorProperty(name, body) {
-    ObjectProperty.call(this, name);
-    this.body = body;
-  };
-
-  _extends(AccessorProperty, ObjectProperty);
-
-  return AccessorProperty;
-})(ObjectProperty);
-
-exports.AccessorProperty = AccessorProperty;
-var FunctionBody = (function (Node) {
-  var FunctionBody = function FunctionBody(directives, statements) {
-    this.type = "FunctionBody";
-    this.directives = directives;
-    this.statements = statements;
-  };
-
-  _extends(FunctionBody, Node);
-
-  return FunctionBody;
-})(Node);
-
-exports.FunctionBody = FunctionBody;
-var FunctionDeclaration = (function (Statement) {
-  var FunctionDeclaration = function FunctionDeclaration(name, parameters, body) {
-    this.type = "FunctionDeclaration";
-    this.name = name;
-    this.parameters = parameters;
-    this.body = body;
-  };
-
-  _extends(FunctionDeclaration, Statement);
-
-  return FunctionDeclaration;
-})(Statement);
-
-exports.FunctionDeclaration = FunctionDeclaration;
-var FunctionExpression = (function (PrimaryExpression) {
-  var FunctionExpression = function FunctionExpression(name, parameters, body) {
-    this.type = "FunctionExpression";
-    this.name = name;
-    this.parameters = parameters;
-    this.body = body;
-  };
-
-  _extends(FunctionExpression, PrimaryExpression);
-
-  return FunctionExpression;
-})(PrimaryExpression);
-
-exports.FunctionExpression = FunctionExpression;
-var ObjectExpression = (function (PrimaryExpression) {
-  var ObjectExpression = function ObjectExpression(properties) {
-    this.type = "ObjectExpression";
-    this.properties = properties;
-  };
-
-  _extends(ObjectExpression, PrimaryExpression);
-
-  return ObjectExpression;
-})(PrimaryExpression);
-
-exports.ObjectExpression = ObjectExpression;
-var Getter = (function (AccessorProperty) {
-  var Getter = function Getter(name, body) {
-    AccessorProperty.call(this, name, body);
-    this.type = "Getter";
-  };
-
-  _extends(Getter, AccessorProperty);
-
-  return Getter;
-})(AccessorProperty);
-
-exports.Getter = Getter;
-var Setter = (function (AccessorProperty) {
-  var Setter = function Setter(name, parameter, body) {
-    AccessorProperty.call(this, name, body);
-    this.type = "Setter";
-    this.parameter = parameter;
-  };
-
-  _extends(Setter, AccessorProperty);
-
-  return Setter;
-})(AccessorProperty);
-
-exports.Setter = Setter;
-var DataProperty = (function (ObjectProperty) {
-  var DataProperty = function DataProperty(name, expression) {
-    ObjectProperty.call(this, name);
-    this.type = "DataProperty";
-    this.expression = expression;
-  };
-
-  _extends(DataProperty, ObjectProperty);
-
-  return DataProperty;
-})(ObjectProperty);
-
-exports.DataProperty = DataProperty;
-var PropertyName = (function (Node) {
-  var PropertyName = function PropertyName(kind, value) {
-    this.type = "PropertyName";
-    this.kind = kind;
-    this.value = value;
-  };
-
-  _extends(PropertyName, Node);
-
-  return PropertyName;
-})(Node);
-
-exports.PropertyName = PropertyName;
-var LiteralBooleanExpression = (function (LiteralExpression) {
-  var LiteralBooleanExpression = function LiteralBooleanExpression(value) {
-    this.type = "LiteralBooleanExpression";
-    this.value = value;
-  };
-
-  _extends(LiteralBooleanExpression, LiteralExpression);
-
-  return LiteralBooleanExpression;
-})(LiteralExpression);
-
-exports.LiteralBooleanExpression = LiteralBooleanExpression;
-var LiteralNullExpression = (function (LiteralExpression) {
-  var LiteralNullExpression = function LiteralNullExpression() {
-    this.type = "LiteralNullExpression";
-  };
-
-  _extends(LiteralNullExpression, LiteralExpression);
-
-  return LiteralNullExpression;
-})(LiteralExpression);
-
-exports.LiteralNullExpression = LiteralNullExpression;
-var LiteralNumericExpression = (function (LiteralExpression) {
-  var LiteralNumericExpression = function LiteralNumericExpression(value) {
-    this.type = "LiteralNumericExpression";
-    this.value = value;
-  };
-
-  _extends(LiteralNumericExpression, LiteralExpression);
-
-  return LiteralNumericExpression;
-})(LiteralExpression);
-
-exports.LiteralNumericExpression = LiteralNumericExpression;
-var LiteralRegExpExpression = (function (LiteralExpression) {
-  var LiteralRegExpExpression = function LiteralRegExpExpression(value) {
-    this.type = "LiteralRegExpExpression";
-    this.value = value;
-  };
-
-  _extends(LiteralRegExpExpression, LiteralExpression);
-
-  return LiteralRegExpExpression;
-})(LiteralExpression);
-
-exports.LiteralRegExpExpression = LiteralRegExpExpression;
-var LiteralStringExpression = (function (LiteralExpression) {
-  var LiteralStringExpression = function LiteralStringExpression(value) {
-    this.type = "LiteralStringExpression";
-    this.value = value;
-  };
-
-  _extends(LiteralStringExpression, LiteralExpression);
-
-  return LiteralStringExpression;
-})(LiteralExpression);
-
-exports.LiteralStringExpression = LiteralStringExpression;
-var ArrayExpression = (function (PrimaryExpression) {
-  var ArrayExpression = function ArrayExpression(elements) {
-    this.type = "ArrayExpression";
-    this.elements = elements;
-  };
-
-  _extends(ArrayExpression, PrimaryExpression);
-
-  return ArrayExpression;
-})(PrimaryExpression);
-
-exports.ArrayExpression = ArrayExpression;
-var AssignmentExpression = (function (Expression) {
-  var AssignmentExpression = function AssignmentExpression(operator, binding, expression) {
-    this.type = "AssignmentExpression";
-    this.operator = operator;
-    this.binding = binding;
-    this.expression = expression;
-  };
-
-  _extends(AssignmentExpression, Expression);
-
-  return AssignmentExpression;
-})(Expression);
-
-exports.AssignmentExpression = AssignmentExpression;
-var BinaryExpression = (function (Expression) {
-  var BinaryExpression = function BinaryExpression(operator, left, right) {
-    this.type = "BinaryExpression";
-    this.operator = operator;
-    this.left = left;
-    this.right = right;
-  };
-
-  _extends(BinaryExpression, Expression);
-
-  return BinaryExpression;
-})(Expression);
-
-exports.BinaryExpression = BinaryExpression;
-var CallExpression = (function (Expression) {
-  var CallExpression = function CallExpression(callee, args) {
-    this.type = "CallExpression";
-    this.callee = callee;
-    this.arguments = args;
-  };
-
-  _extends(CallExpression, Expression);
-
-  return CallExpression;
-})(Expression);
-
-exports.CallExpression = CallExpression;
-var ComputedMemberExpression = (function (MemberExpression) {
-  var ComputedMemberExpression = function ComputedMemberExpression(object, expression) {
-    MemberExpression.call(this, object);
-    this.type = "ComputedMemberExpression";
-    this.expression = expression;
-  };
-
-  _extends(ComputedMemberExpression, MemberExpression);
-
-  return ComputedMemberExpression;
-})(MemberExpression);
-
-exports.ComputedMemberExpression = ComputedMemberExpression;
-var ConditionalExpression = (function (Expression) {
-  var ConditionalExpression = function ConditionalExpression(test, consequent, alternate) {
-    this.type = "ConditionalExpression";
-    this.test = test;
-    this.consequent = consequent;
-    this.alternate = alternate;
-  };
-
-  _extends(ConditionalExpression, Expression);
-
-  return ConditionalExpression;
-})(Expression);
-
-exports.ConditionalExpression = ConditionalExpression;
-var IdentifierExpression = (function (PrimaryExpression) {
-  var IdentifierExpression = function IdentifierExpression(identifier) {
-    this.type = "IdentifierExpression";
-    this.identifier = identifier;
-  };
-
-  _extends(IdentifierExpression, PrimaryExpression);
-
-  return IdentifierExpression;
-})(PrimaryExpression);
-
-exports.IdentifierExpression = IdentifierExpression;
-var NewExpression = (function (Expression) {
-  var NewExpression = function NewExpression(callee, args) {
-    this.type = "NewExpression";
-    this.callee = callee;
-    this.arguments = args;
-  };
-
-  _extends(NewExpression, Expression);
-
-  return NewExpression;
-})(Expression);
-
-exports.NewExpression = NewExpression;
-var PostfixExpression = (function (UnaryExpression) {
-  var PostfixExpression = function PostfixExpression(operand, operator) {
-    UnaryExpression.call(this, operand);
-    this.type = "PostfixExpression";
-    this.operator = operator;
-  };
-
-  _extends(PostfixExpression, UnaryExpression);
-
-  return PostfixExpression;
-})(UnaryExpression);
-
-exports.PostfixExpression = PostfixExpression;
-var PrefixExpression = (function (UnaryExpression) {
-  var PrefixExpression = function PrefixExpression(operator, operand) {
-    UnaryExpression.call(this, operand);
-    this.type = "PrefixExpression";
-    this.operator = operator;
-  };
-
-  _extends(PrefixExpression, UnaryExpression);
-
-  return PrefixExpression;
-})(UnaryExpression);
-
-exports.PrefixExpression = PrefixExpression;
-var StaticMemberExpression = (function (MemberExpression) {
-  var StaticMemberExpression = function StaticMemberExpression(object, property) {
-    MemberExpression.call(this, object);
-    this.type = "StaticMemberExpression";
-    this.property = property;
-  };
-
-  _extends(StaticMemberExpression, MemberExpression);
-
-  return StaticMemberExpression;
-})(MemberExpression);
-
-exports.StaticMemberExpression = StaticMemberExpression;
-var ThisExpression = (function (PrimaryExpression) {
-  var ThisExpression = function ThisExpression() {
-    this.type = "ThisExpression";
-  };
-
-  _extends(ThisExpression, PrimaryExpression);
-
-  return ThisExpression;
-})(PrimaryExpression);
-
-exports.ThisExpression = ThisExpression;
-var BlockStatement = (function (Statement) {
-  var BlockStatement = function BlockStatement(block) {
-    this.type = "BlockStatement";
-    this.block = block;
-  };
-
-  _extends(BlockStatement, Statement);
-
-  return BlockStatement;
-})(Statement);
-
-exports.BlockStatement = BlockStatement;
-var BreakStatement = (function (Statement) {
-  var BreakStatement = function BreakStatement(label) {
-    this.type = "BreakStatement";
-    this.label = label;
-  };
-
-  _extends(BreakStatement, Statement);
-
-  return BreakStatement;
-})(Statement);
-
-exports.BreakStatement = BreakStatement;
-var ContinueStatement = (function (Statement) {
-  var ContinueStatement = function ContinueStatement(label) {
-    this.type = "ContinueStatement";
-    this.label = label;
-  };
-
-  _extends(ContinueStatement, Statement);
-
-  return ContinueStatement;
-})(Statement);
-
-exports.ContinueStatement = ContinueStatement;
-var DebuggerStatement = (function (Statement) {
-  var DebuggerStatement = function DebuggerStatement() {
-    this.type = "DebuggerStatement";
-  };
-
-  _extends(DebuggerStatement, Statement);
-
-  return DebuggerStatement;
-})(Statement);
-
-exports.DebuggerStatement = DebuggerStatement;
-var DoWhileStatement = (function (IterationStatement) {
-  var DoWhileStatement = function DoWhileStatement(body, test) {
-    this.type = "DoWhileStatement";
-    this.body = body;
-    this.test = test;
-  };
-
-  _extends(DoWhileStatement, IterationStatement);
-
-  return DoWhileStatement;
-})(IterationStatement);
-
-exports.DoWhileStatement = DoWhileStatement;
-var EmptyStatement = (function (Statement) {
-  var EmptyStatement = function EmptyStatement() {
-    this.type = "EmptyStatement";
-  };
-
-  _extends(EmptyStatement, Statement);
-
-  return EmptyStatement;
-})(Statement);
-
-exports.EmptyStatement = EmptyStatement;
-var ExpressionStatement = (function (Statement) {
-  var ExpressionStatement = function ExpressionStatement(expression) {
-    this.type = "ExpressionStatement";
-    this.expression = expression;
-  };
-
-  _extends(ExpressionStatement, Statement);
-
-  return ExpressionStatement;
-})(Statement);
-
-exports.ExpressionStatement = ExpressionStatement;
-var ForInStatement = (function (IterationStatement) {
-  var ForInStatement = function ForInStatement(left, right, body) {
-    this.type = "ForInStatement";
-    this.left = left;
-    this.right = right;
-    this.body = body;
-  };
-
-  _extends(ForInStatement, IterationStatement);
-
-  return ForInStatement;
-})(IterationStatement);
-
-exports.ForInStatement = ForInStatement;
-var ForStatement = (function (IterationStatement) {
-  var ForStatement = function ForStatement(init, test, update, body) {
-    this.type = "ForStatement";
-    this.init = init;
-    this.test = test;
-    this.update = update;
-    this.body = body;
-  };
-
-  _extends(ForStatement, IterationStatement);
-
-  return ForStatement;
-})(IterationStatement);
-
-exports.ForStatement = ForStatement;
-var IfStatement = (function (Statement) {
-  var IfStatement = function IfStatement(test, consequent, alternate) {
-    this.type = "IfStatement";
-    this.test = test;
-    this.consequent = consequent;
-    this.alternate = alternate;
-  };
-
-  _extends(IfStatement, Statement);
-
-  return IfStatement;
-})(Statement);
-
-exports.IfStatement = IfStatement;
-var LabeledStatement = (function (Statement) {
-  var LabeledStatement = function LabeledStatement(label, body) {
-    this.type = "LabeledStatement";
-    this.label = label;
-    this.body = body;
-  };
-
-  _extends(LabeledStatement, Statement);
-
-  return LabeledStatement;
-})(Statement);
-
-exports.LabeledStatement = LabeledStatement;
-var ReturnStatement = (function (Statement) {
-  var ReturnStatement = function ReturnStatement(expression) {
-    this.type = "ReturnStatement";
-    this.expression = expression;
-  };
-
-  _extends(ReturnStatement, Statement);
-
-  return ReturnStatement;
-})(Statement);
-
-exports.ReturnStatement = ReturnStatement;
-var SwitchStatement = (function (Statement) {
-  var SwitchStatement = function SwitchStatement(discriminant, cases) {
-    this.type = "SwitchStatement";
-    this.discriminant = discriminant;
-    this.cases = cases;
-  };
-
-  _extends(SwitchStatement, Statement);
-
-  return SwitchStatement;
-})(Statement);
-
-exports.SwitchStatement = SwitchStatement;
-var SwitchStatementWithDefault = (function (Statement) {
-  var SwitchStatementWithDefault = function SwitchStatementWithDefault(discriminant, preDefaultCases, defaultCase, postDefaultCases) {
-    this.type = "SwitchStatementWithDefault";
-    this.discriminant = discriminant;
-    this.preDefaultCases = preDefaultCases;
-    this.defaultCase = defaultCase;
-    this.postDefaultCases = postDefaultCases;
-  };
-
-  _extends(SwitchStatementWithDefault, Statement);
-
-  return SwitchStatementWithDefault;
-})(Statement);
-
-exports.SwitchStatementWithDefault = SwitchStatementWithDefault;
-var ThrowStatement = (function (Statement) {
-  var ThrowStatement = function ThrowStatement(expression) {
-    this.type = "ThrowStatement";
-    this.expression = expression;
-  };
-
-  _extends(ThrowStatement, Statement);
-
-  return ThrowStatement;
-})(Statement);
-
-exports.ThrowStatement = ThrowStatement;
-var TryCatchStatement = (function (Statement) {
-  var TryCatchStatement = function TryCatchStatement(body, catchClause) {
-    this.type = "TryCatchStatement";
-    this.body = body;
-    this.catchClause = catchClause;
-  };
-
-  _extends(TryCatchStatement, Statement);
-
-  return TryCatchStatement;
-})(Statement);
-
-exports.TryCatchStatement = TryCatchStatement;
-var TryFinallyStatement = (function (Statement) {
-  var TryFinallyStatement = function TryFinallyStatement(body, catchClause, finalizer) {
-    this.type = "TryFinallyStatement";
-    this.body = body;
-    this.catchClause = catchClause;
-    this.finalizer = finalizer;
-  };
-
-  _extends(TryFinallyStatement, Statement);
-
-  return TryFinallyStatement;
-})(Statement);
-
-exports.TryFinallyStatement = TryFinallyStatement;
-var VariableDeclarationStatement = (function (Statement) {
-  var VariableDeclarationStatement = function VariableDeclarationStatement(declaration) {
-    this.type = "VariableDeclarationStatement";
-    this.declaration = declaration;
-  };
-
-  _extends(VariableDeclarationStatement, Statement);
-
-  return VariableDeclarationStatement;
-})(Statement);
-
-exports.VariableDeclarationStatement = VariableDeclarationStatement;
-var WhileStatement = (function (IterationStatement) {
-  var WhileStatement = function WhileStatement(test, body) {
-    this.type = "WhileStatement";
-    this.test = test;
-    this.body = body;
-  };
-
-  _extends(WhileStatement, IterationStatement);
-
-  return WhileStatement;
-})(IterationStatement);
-
-exports.WhileStatement = WhileStatement;
-var WithStatement = (function (Statement) {
-  var WithStatement = function WithStatement(object, body) {
-    this.type = "WithStatement";
-    this.object = object;
-    this.body = body;
-  };
-
-  _extends(WithStatement, Statement);
-
-  return WithStatement;
-})(Statement);
-
-exports.WithStatement = WithStatement;
-var UnknownDirective = (function (Directive) {
-  var UnknownDirective = function UnknownDirective(value) {
-    this.type = "UnknownDirective";
-    this.value = value;
-  };
-
-  _extends(UnknownDirective, Directive);
-
-  return UnknownDirective;
-})(Directive);
-
-exports.UnknownDirective = UnknownDirective;
-var UseStrictDirective = (function (Directive) {
-  var UseStrictDirective = function UseStrictDirective() {
-    this.type = "UseStrictDirective";
-  };
-
-  _extends(UseStrictDirective, Directive);
-
-  return UseStrictDirective;
-})(Directive);
-
-exports.UseStrictDirective = UseStrictDirective;
-var Block = (function (Node) {
-  var Block = function Block(statements) {
-    this.type = "Block";
-    this.statements = statements;
-  };
-
-  _extends(Block, Node);
-
-  return Block;
-})(Node);
-
-exports.Block = Block;
-var CatchClause = (function (Node) {
-  var CatchClause = function CatchClause(binding, body) {
-    this.type = "CatchClause";
-    this.binding = binding;
-    this.body = body;
-  };
-
-  _extends(CatchClause, Node);
-
-  return CatchClause;
-})(Node);
-
-exports.CatchClause = CatchClause;
-var Identifier = (function (Node) {
-  var Identifier = function Identifier(name) {
-    this.type = "Identifier";
-    this.name = name;
-  };
-
-  _extends(Identifier, Node);
-
-  return Identifier;
-})(Node);
-
-exports.Identifier = Identifier;
-var Script = (function (Node) {
-  var Script = function Script(body) {
-    this.type = "Script";
-    this.body = body;
-  };
-
-  _extends(Script, Node);
-
-  return Script;
-})(Node);
-
-exports.Script = Script;
-var SwitchCase = (function (Node) {
-  var SwitchCase = function SwitchCase(test, consequent) {
-    this.type = "SwitchCase";
-    this.test = test;
-    this.consequent = consequent;
-  };
-
-  _extends(SwitchCase, Node);
-
-  return SwitchCase;
-})(Node);
-
-exports.SwitchCase = SwitchCase;
-var SwitchDefault = (function (Node) {
-  var SwitchDefault = function SwitchDefault(consequent) {
-    this.type = "SwitchDefault";
-    this.consequent = consequent;
-  };
-
-  _extends(SwitchDefault, Node);
-
-  return SwitchDefault;
-})(Node);
-
-exports.SwitchDefault = SwitchDefault;
-var VariableDeclaration = (function (Node) {
-  var VariableDeclaration = function VariableDeclaration(kind, declarators) {
-    if (declarators.length < 1) throw new TypeError("VariableDeclaration declarators list must be non-empty.");
-    this.type = "VariableDeclaration";
-    this.kind = kind;
-    this.declarators = declarators;
-  };
-
-  _extends(VariableDeclaration, Node);
-
-  return VariableDeclaration;
-})(Node);
-
-exports.VariableDeclaration = VariableDeclaration;
-var VariableDeclarator = (function (Node) {
-  var VariableDeclarator = function VariableDeclarator(binding, init) {
-    this.type = "VariableDeclarator";
-    this.binding = binding;
-    this.init = init;
-  };
-
-  _extends(VariableDeclarator, Node);
-
-  return VariableDeclarator;
-})(Node);
-
-exports.VariableDeclarator = VariableDeclarator;
-
-},{}],12:[function(require,module,exports){
-"use strict";
-
-var Spec = require('./spec.js')["default"];
-var objectAssign = require('object-assign');
-
-var requireUncached = require('require-uncached');
-
-var version = require('../package.json').version;
-
-
-// Loading uncached estraverse for changing estraverse.Syntax.
-var estraverse = requireUncached("estraverse");
-if (false /* for browserify */) {
-  require("estraverse");
-}
-
-// Adjust estraverse members.
-
-Object.keys(estraverse.Syntax).forEach(function (key) {
-  delete estraverse.Syntax[key];
-  delete estraverse.VisitorKeys[key];
-});
-
-objectAssign(estraverse.Syntax, Object.keys(Spec).reduce(function (result, key) {
-  result[key] = key;
-  return result;
-}, {}));
-
-objectAssign(estraverse.VisitorKeys, Spec);
-
-estraverse.version = version;
-module.exports = estraverse;
-
-/* vim: set sw=4 ts=4 et tw=80 : */
-},{"../package.json":20,"./spec.js":13,"estraverse":14,"object-assign":15,"require-uncached":16}],13:[function(require,module,exports){
-"use strict";
-
-/*
-  Copyright (C) 2014 Yusuke Suzuki <utatane.tea@gmail.com>
-
-  Redistribution and use in source and binary forms, with or without
-  modification, are permitted provided that the following conditions are met:
-
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright
-      notice, this list of conditions and the following disclaimer in the
-      documentation and/or other materials provided with the distribution.
-
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-  ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
-  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
-
-var SPEC = {
-  ArrayExpression: ["elements"],
-  AssignmentExpression: ["binding", "expression"],
-  BinaryExpression: ["left", "right"],
-  Block: ["statements"],
-  BlockStatement: ["block"],
-  BreakStatement: ["label"],
-  CallExpression: ["callee", "arguments"],
-  CatchClause: ["binding", "body"],
-  ComputedMemberExpression: ["object", "expression"],
-  ConditionalExpression: ["test", "consequent", "alternate"],
-  ContinueStatement: ["label"],
-  DataProperty: ["name", "expression"],
-  DebuggerStatement: [],
-  DoWhileStatement: ["body", "test"],
-  EmptyStatement: [],
-  ExpressionStatement: ["expression"],
-  ForInStatement: ["left", "right", "body"],
-  ForStatement: ["init", "test", "update", "body"],
-  FunctionBody: ["directives", "statements"],
-  FunctionDeclaration: ["name", "parameters", "body"],
-  FunctionExpression: ["name", "parameters", "body"],
-  Getter: ["name", "body"],
-  Identifier: [],
-  IdentifierExpression: ["identifier"],
-  IfStatement: ["test", "consequent", "alternate"],
-  LabeledStatement: ["label", "body"],
-  LiteralBooleanExpression: [],
-  LiteralNullExpression: [],
-  LiteralNumericExpression: [],
-  LiteralRegExpExpression: [],
-  LiteralStringExpression: [],
-  NewExpression: ["callee", "arguments"],
-  ObjectExpression: ["properties"],
-  PostfixExpression: ["operand"],
-  PrefixExpression: ["operand"],
-  PropertyName: [],
-  ReturnStatement: ["expression"],
-  Script: ["body"],
-  Setter: ["name", "parameter", "body"],
-  StaticMemberExpression: ["object", "property"],
-  SwitchCase: ["test", "consequent"],
-  SwitchDefault: ["consequent"],
-  SwitchStatement: ["discriminant", "cases"],
-  SwitchStatementWithDefault: ["discriminant", "preDefaultCases", "defaultCase", "postDefaultCases"],
-  ThisExpression: [],
-  ThrowStatement: ["expression"],
-  TryCatchStatement: ["body", "catchClause"],
-  TryFinallyStatement: ["body", "catchClause", "finalizer"],
-  UnknownDirective: [],
-  UseStrictDirective: [],
-  VariableDeclaration: ["declarators"],
-  VariableDeclarationStatement: ["declaration"],
-  VariableDeclarator: ["binding", "init"],
-  WhileStatement: ["test", "body"],
-  WithStatement: ["object", "body"] };
-
-exports["default"] = SPEC;
-},{}],14:[function(require,module,exports){
-/*
-  Copyright (C) 2012-2013 Yusuke Suzuki <utatane.tea@gmail.com>
-  Copyright (C) 2012 Ariya Hidayat <ariya.hidayat@gmail.com>
-
-  Redistribution and use in source and binary forms, with or without
-  modification, are permitted provided that the following conditions are met:
-
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright
-      notice, this list of conditions and the following disclaimer in the
-      documentation and/or other materials provided with the distribution.
-
-  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-  ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
-  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
-/*jslint vars:false, bitwise:true*/
-/*jshint indent:4*/
-/*global exports:true, define:true*/
-(function (root, factory) {
-    'use strict';
-
-    // Universal Module Definition (UMD) to support AMD, CommonJS/Node.js,
-    // and plain browser loading,
-    if (typeof define === 'function' && define.amd) {
-        define(['exports'], factory);
-    } else if (typeof exports !== 'undefined') {
-        factory(exports);
-    } else {
-        factory((root.estraverse = {}));
-    }
-}(this, function (exports) {
-    'use strict';
-
-    var Syntax,
-        isArray,
-        VisitorOption,
-        VisitorKeys,
-        objectCreate,
-        objectKeys,
-        BREAK,
-        SKIP,
-        REMOVE;
-
-    function ignoreJSHintError() { }
-
-    isArray = Array.isArray;
-    if (!isArray) {
-        isArray = function isArray(array) {
-            return Object.prototype.toString.call(array) === '[object Array]';
-        };
-    }
-
-    function deepCopy(obj) {
-        var ret = {}, key, val;
-        for (key in obj) {
-            if (obj.hasOwnProperty(key)) {
-                val = obj[key];
-                if (typeof val === 'object' && val !== null) {
-                    ret[key] = deepCopy(val);
-                } else {
-                    ret[key] = val;
-                }
-            }
-        }
-        return ret;
-    }
-
-    function shallowCopy(obj) {
-        var ret = {}, key;
-        for (key in obj) {
-            if (obj.hasOwnProperty(key)) {
-                ret[key] = obj[key];
-            }
-        }
-        return ret;
-    }
-    ignoreJSHintError(shallowCopy);
-
-    // based on LLVM libc++ upper_bound / lower_bound
-    // MIT License
-
-    function upperBound(array, func) {
-        var diff, len, i, current;
-
-        len = array.length;
-        i = 0;
-
-        while (len) {
-            diff = len >>> 1;
-            current = i + diff;
-            if (func(array[current])) {
-                len = diff;
-            } else {
-                i = current + 1;
-                len -= diff + 1;
-            }
-        }
-        return i;
-    }
-
-    function lowerBound(array, func) {
-        var diff, len, i, current;
-
-        len = array.length;
-        i = 0;
-
-        while (len) {
-            diff = len >>> 1;
-            current = i + diff;
-            if (func(array[current])) {
-                i = current + 1;
-                len -= diff + 1;
-            } else {
-                len = diff;
-            }
-        }
-        return i;
-    }
-    ignoreJSHintError(lowerBound);
-
-    objectCreate = Object.create || (function () {
-        function F() { }
-
-        return function (o) {
-            F.prototype = o;
-            return new F();
-        };
-    })();
-
-    objectKeys = Object.keys || function (o) {
-        var keys = [], key;
-        for (key in o) {
-            keys.push(key);
-        }
-        return keys;
-    };
-
-    function extend(to, from) {
-        objectKeys(from).forEach(function (key) {
-            to[key] = from[key];
-        });
-        return to;
-    }
-
-    Syntax = {
-        AssignmentExpression: 'AssignmentExpression',
-        ArrayExpression: 'ArrayExpression',
-        ArrayPattern: 'ArrayPattern',
-        ArrowFunctionExpression: 'ArrowFunctionExpression',
-        AwaitExpression: 'AwaitExpression', // CAUTION: It's deferred to ES7.
-        BlockStatement: 'BlockStatement',
-        BinaryExpression: 'BinaryExpression',
-        BreakStatement: 'BreakStatement',
-        CallExpression: 'CallExpression',
-        CatchClause: 'CatchClause',
-        ClassBody: 'ClassBody',
-        ClassDeclaration: 'ClassDeclaration',
-        ClassExpression: 'ClassExpression',
-        ComprehensionBlock: 'ComprehensionBlock',  // CAUTION: It's deferred to ES7.
-        ComprehensionExpression: 'ComprehensionExpression',  // CAUTION: It's deferred to ES7.
-        ConditionalExpression: 'ConditionalExpression',
-        ContinueStatement: 'ContinueStatement',
-        DebuggerStatement: 'DebuggerStatement',
-        DirectiveStatement: 'DirectiveStatement',
-        DoWhileStatement: 'DoWhileStatement',
-        EmptyStatement: 'EmptyStatement',
-        ExportBatchSpecifier: 'ExportBatchSpecifier',
-        ExportDeclaration: 'ExportDeclaration',
-        ExportSpecifier: 'ExportSpecifier',
-        ExpressionStatement: 'ExpressionStatement',
-        ForStatement: 'ForStatement',
-        ForInStatement: 'ForInStatement',
-        ForOfStatement: 'ForOfStatement',
-        FunctionDeclaration: 'FunctionDeclaration',
-        FunctionExpression: 'FunctionExpression',
-        GeneratorExpression: 'GeneratorExpression',  // CAUTION: It's deferred to ES7.
-        Identifier: 'Identifier',
-        IfStatement: 'IfStatement',
-        ImportDeclaration: 'ImportDeclaration',
-        ImportDefaultSpecifier: 'ImportDefaultSpecifier',
-        ImportNamespaceSpecifier: 'ImportNamespaceSpecifier',
-        ImportSpecifier: 'ImportSpecifier',
-        Literal: 'Literal',
-        LabeledStatement: 'LabeledStatement',
-        LogicalExpression: 'LogicalExpression',
-        MemberExpression: 'MemberExpression',
-        MethodDefinition: 'MethodDefinition',
-        ModuleSpecifier: 'ModuleSpecifier',
-        NewExpression: 'NewExpression',
-        ObjectExpression: 'ObjectExpression',
-        ObjectPattern: 'ObjectPattern',
-        Program: 'Program',
-        Property: 'Property',
-        ReturnStatement: 'ReturnStatement',
-        SequenceExpression: 'SequenceExpression',
-        SpreadElement: 'SpreadElement',
-        SwitchStatement: 'SwitchStatement',
-        SwitchCase: 'SwitchCase',
-        TaggedTemplateExpression: 'TaggedTemplateExpression',
-        TemplateElement: 'TemplateElement',
-        TemplateLiteral: 'TemplateLiteral',
-        ThisExpression: 'ThisExpression',
-        ThrowStatement: 'ThrowStatement',
-        TryStatement: 'TryStatement',
-        UnaryExpression: 'UnaryExpression',
-        UpdateExpression: 'UpdateExpression',
-        VariableDeclaration: 'VariableDeclaration',
-        VariableDeclarator: 'VariableDeclarator',
-        WhileStatement: 'WhileStatement',
-        WithStatement: 'WithStatement',
-        YieldExpression: 'YieldExpression'
-    };
-
-    VisitorKeys = {
-        AssignmentExpression: ['left', 'right'],
-        ArrayExpression: ['elements'],
-        ArrayPattern: ['elements'],
-        ArrowFunctionExpression: ['params', 'defaults', 'rest', 'body'],
-        AwaitExpression: ['argument'], // CAUTION: It's deferred to ES7.
-        BlockStatement: ['body'],
-        BinaryExpression: ['left', 'right'],
-        BreakStatement: ['label'],
-        CallExpression: ['callee', 'arguments'],
-        CatchClause: ['param', 'body'],
-        ClassBody: ['body'],
-        ClassDeclaration: ['id', 'body', 'superClass'],
-        ClassExpression: ['id', 'body', 'superClass'],
-        ComprehensionBlock: ['left', 'right'],  // CAUTION: It's deferred to ES7.
-        ComprehensionExpression: ['blocks', 'filter', 'body'],  // CAUTION: It's deferred to ES7.
-        ConditionalExpression: ['test', 'consequent', 'alternate'],
-        ContinueStatement: ['label'],
-        DebuggerStatement: [],
-        DirectiveStatement: [],
-        DoWhileStatement: ['body', 'test'],
-        EmptyStatement: [],
-        ExportBatchSpecifier: [],
-        ExportDeclaration: ['declaration', 'specifiers', 'source'],
-        ExportSpecifier: ['id', 'name'],
-        ExpressionStatement: ['expression'],
-        ForStatement: ['init', 'test', 'update', 'body'],
-        ForInStatement: ['left', 'right', 'body'],
-        ForOfStatement: ['left', 'right', 'body'],
-        FunctionDeclaration: ['id', 'params', 'defaults', 'rest', 'body'],
-        FunctionExpression: ['id', 'params', 'defaults', 'rest', 'body'],
-        GeneratorExpression: ['blocks', 'filter', 'body'],  // CAUTION: It's deferred to ES7.
-        Identifier: [],
-        IfStatement: ['test', 'consequent', 'alternate'],
-        ImportDeclaration: ['specifiers', 'source'],
-        ImportDefaultSpecifier: ['id'],
-        ImportNamespaceSpecifier: ['id'],
-        ImportSpecifier: ['id', 'name'],
-        Literal: [],
-        LabeledStatement: ['label', 'body'],
-        LogicalExpression: ['left', 'right'],
-        MemberExpression: ['object', 'property'],
-        MethodDefinition: ['key', 'value'],
-        ModuleSpecifier: [],
-        NewExpression: ['callee', 'arguments'],
-        ObjectExpression: ['properties'],
-        ObjectPattern: ['properties'],
-        Program: ['body'],
-        Property: ['key', 'value'],
-        ReturnStatement: ['argument'],
-        SequenceExpression: ['expressions'],
-        SpreadElement: ['argument'],
-        SwitchStatement: ['discriminant', 'cases'],
-        SwitchCase: ['test', 'consequent'],
-        TaggedTemplateExpression: ['tag', 'quasi'],
-        TemplateElement: [],
-        TemplateLiteral: ['quasis', 'expressions'],
-        ThisExpression: [],
-        ThrowStatement: ['argument'],
-        TryStatement: ['block', 'handlers', 'handler', 'guardedHandlers', 'finalizer'],
-        UnaryExpression: ['argument'],
-        UpdateExpression: ['argument'],
-        VariableDeclaration: ['declarations'],
-        VariableDeclarator: ['id', 'init'],
-        WhileStatement: ['test', 'body'],
-        WithStatement: ['object', 'body'],
-        YieldExpression: ['argument']
-    };
-
-    // unique id
-    BREAK = {};
-    SKIP = {};
-    REMOVE = {};
-
-    VisitorOption = {
-        Break: BREAK,
-        Skip: SKIP,
-        Remove: REMOVE
-    };
-
-    function Reference(parent, key) {
-        this.parent = parent;
-        this.key = key;
-    }
-
-    Reference.prototype.replace = function replace(node) {
-        this.parent[this.key] = node;
-    };
-
-    Reference.prototype.remove = function remove() {
-        if (isArray(this.parent)) {
-            this.parent.splice(this.key, 1);
-            return true;
-        } else {
-            this.replace(null);
-            return false;
-        }
-    };
-
-    function Element(node, path, wrap, ref) {
-        this.node = node;
-        this.path = path;
-        this.wrap = wrap;
-        this.ref = ref;
-    }
-
-    function Controller() { }
-
-    // API:
-    // return property path array from root to current node
-    Controller.prototype.path = function path() {
-        var i, iz, j, jz, result, element;
-
-        function addToPath(result, path) {
-            if (isArray(path)) {
-                for (j = 0, jz = path.length; j < jz; ++j) {
-                    result.push(path[j]);
-                }
-            } else {
-                result.push(path);
-            }
-        }
-
-        // root node
-        if (!this.__current.path) {
-            return null;
-        }
-
-        // first node is sentinel, second node is root element
-        result = [];
-        for (i = 2, iz = this.__leavelist.length; i < iz; ++i) {
-            element = this.__leavelist[i];
-            addToPath(result, element.path);
-        }
-        addToPath(result, this.__current.path);
-        return result;
-    };
-
-    // API:
-    // return type of current node
-    Controller.prototype.type = function () {
-        var node = this.current();
-        return node.type || this.__current.wrap;
-    };
-
-    // API:
-    // return array of parent elements
-    Controller.prototype.parents = function parents() {
-        var i, iz, result;
-
-        // first node is sentinel
-        result = [];
-        for (i = 1, iz = this.__leavelist.length; i < iz; ++i) {
-            result.push(this.__leavelist[i].node);
-        }
-
-        return result;
-    };
-
-    // API:
-    // return current node
-    Controller.prototype.current = function current() {
-        return this.__current.node;
-    };
-
-    Controller.prototype.__execute = function __execute(callback, element) {
-        var previous, result;
-
-        result = undefined;
-
-        previous  = this.__current;
-        this.__current = element;
-        this.__state = null;
-        if (callback) {
-            result = callback.call(this, element.node, this.__leavelist[this.__leavelist.length - 1].node);
-        }
-        this.__current = previous;
-
-        return result;
-    };
-
-    // API:
-    // notify control skip / break
-    Controller.prototype.notify = function notify(flag) {
-        this.__state = flag;
-    };
-
-    // API:
-    // skip child nodes of current node
-    Controller.prototype.skip = function () {
-        this.notify(SKIP);
-    };
-
-    // API:
-    // break traversals
-    Controller.prototype['break'] = function () {
-        this.notify(BREAK);
-    };
-
-    // API:
-    // remove node
-    Controller.prototype.remove = function () {
-        this.notify(REMOVE);
-    };
-
-    Controller.prototype.__initialize = function(root, visitor) {
-        this.visitor = visitor;
-        this.root = root;
-        this.__worklist = [];
-        this.__leavelist = [];
-        this.__current = null;
-        this.__state = null;
-        this.__fallback = visitor.fallback === 'iteration';
-        this.__keys = VisitorKeys;
-        if (visitor.keys) {
-            this.__keys = extend(objectCreate(this.__keys), visitor.keys);
-        }
-    };
-
-    function isNode(node) {
-        if (node == null) {
-            return false;
-        }
-        return typeof node === 'object' && typeof node.type === 'string';
-    }
-
-    function isProperty(nodeType, key) {
-        return (nodeType === Syntax.ObjectExpression || nodeType === Syntax.ObjectPattern) && 'properties' === key;
-    }
-
-    Controller.prototype.traverse = function traverse(root, visitor) {
-        var worklist,
-            leavelist,
-            element,
-            node,
-            nodeType,
-            ret,
-            key,
-            current,
-            current2,
-            candidates,
-            candidate,
-            sentinel;
-
-        this.__initialize(root, visitor);
-
-        sentinel = {};
-
-        // reference
-        worklist = this.__worklist;
-        leavelist = this.__leavelist;
-
-        // initialize
-        worklist.push(new Element(root, null, null, null));
-        leavelist.push(new Element(null, null, null, null));
-
-        while (worklist.length) {
-            element = worklist.pop();
-
-            if (element === sentinel) {
-                element = leavelist.pop();
-
-                ret = this.__execute(visitor.leave, element);
-
-                if (this.__state === BREAK || ret === BREAK) {
-                    return;
-                }
-                continue;
-            }
-
-            if (element.node) {
-
-                ret = this.__execute(visitor.enter, element);
-
-                if (this.__state === BREAK || ret === BREAK) {
-                    return;
-                }
-
-                worklist.push(sentinel);
-                leavelist.push(element);
-
-                if (this.__state === SKIP || ret === SKIP) {
-                    continue;
-                }
-
-                node = element.node;
-                nodeType = element.wrap || node.type;
-                candidates = this.__keys[nodeType];
-                if (!candidates) {
-                    if (this.__fallback) {
-                        candidates = objectKeys(node);
-                    } else {
-                        throw new Error('Unknown node type ' + nodeType + '.');
-                    }
-                }
-
-                current = candidates.length;
-                while ((current -= 1) >= 0) {
-                    key = candidates[current];
-                    candidate = node[key];
-                    if (!candidate) {
-                        continue;
-                    }
-
-                    if (isArray(candidate)) {
-                        current2 = candidate.length;
-                        while ((current2 -= 1) >= 0) {
-                            if (!candidate[current2]) {
-                                continue;
-                            }
-                            if (isProperty(nodeType, candidates[current])) {
-                                element = new Element(candidate[current2], [key, current2], 'Property', null);
-                            } else if (isNode(candidate[current2])) {
-                                element = new Element(candidate[current2], [key, current2], null, null);
-                            } else {
-                                continue;
-                            }
-                            worklist.push(element);
-                        }
-                    } else if (isNode(candidate)) {
-                        worklist.push(new Element(candidate, key, null, null));
-                    }
-                }
-            }
-        }
-    };
-
-    Controller.prototype.replace = function replace(root, visitor) {
-        function removeElem(element) {
-            var i,
-                key,
-                nextElem,
-                parent;
-
-            if (element.ref.remove()) {
-                // When the reference is an element of an array.
-                key = element.ref.key;
-                parent = element.ref.parent;
-
-                // If removed from array, then decrease following items' keys.
-                i = worklist.length;
-                while (i--) {
-                    nextElem = worklist[i];
-                    if (nextElem.ref && nextElem.ref.parent === parent) {
-                        if  (nextElem.ref.key < key) {
-                            break;
-                        }
-                        --nextElem.ref.key;
-                    }
-                }
-            }
-        }
-
-        var worklist,
-            leavelist,
-            node,
-            nodeType,
-            target,
-            element,
-            current,
-            current2,
-            candidates,
-            candidate,
-            sentinel,
-            outer,
-            key;
-
-        this.__initialize(root, visitor);
-
-        sentinel = {};
-
-        // reference
-        worklist = this.__worklist;
-        leavelist = this.__leavelist;
-
-        // initialize
-        outer = {
-            root: root
-        };
-        element = new Element(root, null, null, new Reference(outer, 'root'));
-        worklist.push(element);
-        leavelist.push(element);
-
-        while (worklist.length) {
-            element = worklist.pop();
-
-            if (element === sentinel) {
-                element = leavelist.pop();
-
-                target = this.__execute(visitor.leave, element);
-
-                // node may be replaced with null,
-                // so distinguish between undefined and null in this place
-                if (target !== undefined && target !== BREAK && target !== SKIP && target !== REMOVE) {
-                    // replace
-                    element.ref.replace(target);
-                }
-
-                if (this.__state === REMOVE || target === REMOVE) {
-                    removeElem(element);
-                }
-
-                if (this.__state === BREAK || target === BREAK) {
-                    return outer.root;
-                }
-                continue;
-            }
-
-            target = this.__execute(visitor.enter, element);
-
-            // node may be replaced with null,
-            // so distinguish between undefined and null in this place
-            if (target !== undefined && target !== BREAK && target !== SKIP && target !== REMOVE) {
-                // replace
-                element.ref.replace(target);
-                element.node = target;
-            }
-
-            if (this.__state === REMOVE || target === REMOVE) {
-                removeElem(element);
-                element.node = null;
-            }
-
-            if (this.__state === BREAK || target === BREAK) {
-                return outer.root;
-            }
-
-            // node may be null
-            node = element.node;
-            if (!node) {
-                continue;
-            }
-
-            worklist.push(sentinel);
-            leavelist.push(element);
-
-            if (this.__state === SKIP || target === SKIP) {
-                continue;
-            }
-
-            nodeType = element.wrap || node.type;
-            candidates = this.__keys[nodeType];
-            if (!candidates) {
-                if (this.__fallback) {
-                    candidates = objectKeys(node);
-                } else {
-                    throw new Error('Unknown node type ' + nodeType + '.');
-                }
-            }
-
-            current = candidates.length;
-            while ((current -= 1) >= 0) {
-                key = candidates[current];
-                candidate = node[key];
-                if (!candidate) {
-                    continue;
-                }
-
-                if (isArray(candidate)) {
-                    current2 = candidate.length;
-                    while ((current2 -= 1) >= 0) {
-                        if (!candidate[current2]) {
-                            continue;
-                        }
-                        if (isProperty(nodeType, candidates[current])) {
-                            element = new Element(candidate[current2], [key, current2], 'Property', new Reference(candidate, current2));
-                        } else if (isNode(candidate[current2])) {
-                            element = new Element(candidate[current2], [key, current2], null, new Reference(candidate, current2));
-                        } else {
-                            continue;
-                        }
-                        worklist.push(element);
-                    }
-                } else if (isNode(candidate)) {
-                    worklist.push(new Element(candidate, key, null, new Reference(node, key)));
-                }
-            }
-        }
-
-        return outer.root;
-    };
-
-    function traverse(root, visitor) {
-        var controller = new Controller();
-        return controller.traverse(root, visitor);
-    }
-
-    function replace(root, visitor) {
-        var controller = new Controller();
-        return controller.replace(root, visitor);
-    }
-
-    function extendCommentRange(comment, tokens) {
-        var target;
-
-        target = upperBound(tokens, function search(token) {
-            return token.range[0] > comment.range[0];
-        });
-
-        comment.extendedRange = [comment.range[0], comment.range[1]];
-
-        if (target !== tokens.length) {
-            comment.extendedRange[1] = tokens[target].range[0];
-        }
-
-        target -= 1;
-        if (target >= 0) {
-            comment.extendedRange[0] = tokens[target].range[1];
-        }
-
-        return comment;
-    }
-
-    function attachComments(tree, providedComments, tokens) {
-        // At first, we should calculate extended comment ranges.
-        var comments = [], comment, len, i, cursor;
-
-        if (!tree.range) {
-            throw new Error('attachComments needs range information');
-        }
-
-        // tokens array is empty, we attach comments to tree as 'leadingComments'
-        if (!tokens.length) {
-            if (providedComments.length) {
-                for (i = 0, len = providedComments.length; i < len; i += 1) {
-                    comment = deepCopy(providedComments[i]);
-                    comment.extendedRange = [0, tree.range[0]];
-                    comments.push(comment);
-                }
-                tree.leadingComments = comments;
-            }
-            return tree;
-        }
-
-        for (i = 0, len = providedComments.length; i < len; i += 1) {
-            comments.push(extendCommentRange(deepCopy(providedComments[i]), tokens));
-        }
-
-        // This is based on John Freeman's implementation.
-        cursor = 0;
-        traverse(tree, {
-            enter: function (node) {
-                var comment;
-
-                while (cursor < comments.length) {
-                    comment = comments[cursor];
-                    if (comment.extendedRange[1] > node.range[0]) {
-                        break;
-                    }
-
-                    if (comment.extendedRange[1] === node.range[0]) {
-                        if (!node.leadingComments) {
-                            node.leadingComments = [];
-                        }
-                        node.leadingComments.push(comment);
-                        comments.splice(cursor, 1);
-                    } else {
-                        cursor += 1;
-                    }
-                }
-
-                // already out of owned node
-                if (cursor === comments.length) {
-                    return VisitorOption.Break;
-                }
-
-                if (comments[cursor].extendedRange[0] > node.range[1]) {
-                    return VisitorOption.Skip;
-                }
-            }
-        });
-
-        cursor = 0;
-        traverse(tree, {
-            leave: function (node) {
-                var comment;
-
-                while (cursor < comments.length) {
-                    comment = comments[cursor];
-                    if (node.range[1] < comment.extendedRange[0]) {
-                        break;
-                    }
-
-                    if (node.range[1] === comment.extendedRange[0]) {
-                        if (!node.trailingComments) {
-                            node.trailingComments = [];
-                        }
-                        node.trailingComments.push(comment);
-                        comments.splice(cursor, 1);
-                    } else {
-                        cursor += 1;
-                    }
-                }
-
-                // already out of owned node
-                if (cursor === comments.length) {
-                    return VisitorOption.Break;
-                }
-
-                if (comments[cursor].extendedRange[0] > node.range[1]) {
-                    return VisitorOption.Skip;
-                }
-            }
-        });
-
-        return tree;
-    }
-
-    exports.version = '1.8.1-dev';
-    exports.Syntax = Syntax;
-    exports.traverse = traverse;
-    exports.replace = replace;
-    exports.attachComments = attachComments;
-    exports.VisitorKeys = VisitorKeys;
-    exports.VisitorOption = VisitorOption;
-    exports.Controller = Controller;
-}));
-/* vim: set sw=4 ts=4 et tw=80 : */
-
-},{}],15:[function(require,module,exports){
-'use strict';
-
-function ToObject(val) {
-	if (val == null) {
-		throw new TypeError('Object.assign cannot be called with null or undefined');
-	}
-
-	return Object(val);
-}
-
-module.exports = Object.assign || function (target, source) {
-	var from;
-	var keys;
-	var to = ToObject(target);
-
-	for (var s = 1; s < arguments.length; s++) {
-		from = arguments[s];
-		keys = Object.keys(Object(from));
-
-		for (var i = 0; i < keys.length; i++) {
-			to[keys[i]] = from[keys[i]];
-		}
-	}
-
-	return to;
-};
-
-},{}],16:[function(require,module,exports){
-'use strict';
-var path = require('path');
-var resolveFrom = require('resolve-from');
-var callerPath = require('caller-path');
-
-module.exports = function (moduleId) {
-	if (typeof moduleId !== 'string') {
-		throw new TypeError('Expected a string');
-	}
-
-	var filePath = resolveFrom(path.dirname(callerPath()), moduleId);
-	var tmp = require.cache[filePath];
-	delete require.cache[filePath];
-	var ret = require(filePath);
-	require.cache[filePath] = tmp;
-
-	return ret;
-};
-
-},{"caller-path":17,"path":4,"resolve-from":19}],17:[function(require,module,exports){
-'use strict';
-var callsites = require('callsites');
-
-module.exports = function () {
-	return callsites()[2].getFileName();
-};
-
-},{"callsites":18}],18:[function(require,module,exports){
-'use strict';
-module.exports = function () {
-	var _ = Error.prepareStackTrace;
-	Error.prepareStackTrace = function (_, stack) { return stack };
-	var stack = new Error().stack.slice(1);
-	Error.prepareStackTrace = _;
-	return stack;
-};
-
-},{}],19:[function(require,module,exports){
-'use strict';
-var path = require('path');
-var Module = require('module');
-
-module.exports = function (fromDir, moduleId) {
-	if (typeof fromDir !== 'string' || typeof moduleId !== 'string') {
-		throw new TypeError('Expected `fromDir` and `moduleId` to be a string');
-	}
-
-	fromDir = path.resolve(fromDir);
-
-	var fromFile = path.join(fromDir, 'noop.js');
-
-	return Module._resolveFilename(moduleId, {
-		id: fromFile,
-		filename: fromFile,
-		paths: Module._nodeModulePaths(fromDir)
-	});
-};
-
-},{"module":3,"path":4}],20:[function(require,module,exports){
-module.exports={
-  "name": "shift-traverse",
-  "version": "1.0.0",
-  "description": "traversal functionality for the Shift AST format",
-  "author": {
-    "name": "Yusuke SUZUKI"
-  },
-  "homepage": "https://github.com/Constellation/shift-traverse-js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Constellation/shift-traverse-js.git"
-  },
-  "main": "lib/index.js",
-  "maintainers": [
-    {
-      "name": "constellation",
-      "email": "utatane.tea@gmail.com"
-    }
-  ],
-  "files": [
-    "lib"
-  ],
-  "scripts": {
-    "test": "gulp test"
-  },
-  "dependencies": {
-    "estraverse": "^1.9.0",
-    "object-assign": "^2.0.0",
-    "require-uncached": "^1.0.2"
-  },
-  "devDependencies": {
-    "gulp": "^3.8.10",
-    "gulp-6to5": "^1.0.2",
-    "gulp-espower": "^0.10.0",
-    "gulp-mocha": "^2.0.0",
-    "power-assert": "^0.10.0",
-    "shift-parser": "^1.0.0"
-  },
-  "keywords": [
-    "Shift",
-    "AST",
-    "traversal",
-    "abstract",
-    "syntax",
-    "tree"
-  ],
-  "bugs": {
-    "url": "https://github.com/Constellation/shift-traverse-js/issues"
-  },
-  "licenses": [
-    {
-      "type": "BSD",
-      "url": "http://github.com/Constellation/shift-traverse-js/raw/master/LICENSE.BSD"
-    }
-  ],
-  "gitHead": "a0ad4c4c605662d47193ac2041b2f15356ffdb8c",
-  "_id": "shift-traverse@1.0.0",
-  "_shasum": "74ce82de72154a46a5ccfe35869c80c2a9295a13",
-  "_from": "shift-traverse@*",
-  "_npmVersion": "2.0.0-alpha-5",
-  "_npmUser": {
-    "name": "constellation",
-    "email": "utatane.tea@gmail.com"
-  },
-  "dist": {
-    "shasum": "74ce82de72154a46a5ccfe35869c80c2a9295a13",
-    "tarball": "http://registry.npmjs.org/shift-traverse/-/shift-traverse-1.0.0.tgz"
-  },
-  "directories": {},
-  "_resolved": "https://registry.npmjs.org/shift-traverse/-/shift-traverse-1.0.0.tgz",
-  "readme": "ERROR: No README data found!"
 }
 
 },{}]},{},[1]);
