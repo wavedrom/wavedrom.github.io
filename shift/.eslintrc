@@ -6,6 +6,7 @@
     rules: {
         quotes: [1, 'single'],
         camelcase: 1,
-        key-spacing: 0
+        key-spacing: 0,
+        curly: 1
     }
 }

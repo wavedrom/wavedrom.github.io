@@ -3,7 +3,8 @@
 
     var inp, out, cm, tree;
 
-    var parse = require('shift-parser').default;
+    var parse = require('shift-parser').default,
+    redrom = require('./redrom');
         // naming = require('./naming');
 
     inp = document.getElementById('input');
@@ -16,7 +17,7 @@
         tree = parse(v);
         // naming(tree);
         localStorage.shiftAST = v;
-        out.innerHTML = JSON.stringify(tree, null, 2);
+        out.innerHTML = redrom(tree);
     }
 
     cm = CodeMirror.fromTextArea(
