@@ -1,4 +1,6 @@
 module.exports = function (root) {
+    'use strict';
+
     var res, obj, arr, indent;
 
     obj = function (tree) {
