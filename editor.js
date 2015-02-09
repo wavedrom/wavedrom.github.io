@@ -212,7 +212,7 @@ function pngdata () {
     'use strict';
     var svgdata, img, canvas, context;
 
-    svgdata = 'data:image/svg+xml;base64,' + btoa(ssvg());
+    svgdata = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(ssvg())));
     img = new Image();
     img.src = svgdata;
     canvas = document.createElement('canvas');
