@@ -16,7 +16,7 @@
         <script src="editor.js"></script>
     </head>
 
-    <body onload="editorInit()" onclick="menuOpen(event)">
+    <body onload="WaveDrom.editorInit()" onclick="WaveDrom.menuOpen(event)">
         <div id="content">
             <div class="toolbar">
                 <img class="button" alt="Memu" id="Menu" title="Menu" src="images/ic_menu.png"/>
@@ -26,16 +26,16 @@
                     <!--li>New</li>
                     <li>Open...</li>
                     <li>Save</li-->
-                    <li onclick="saveJSON(event)"> <img class="button" src="images/ic_download_json.png"/> Save As... </li>
-                    <li onclick="saveSVG(event)"> <img class="button" src="images/ic_download_svg.png"/> Export SVG... </li>
-                    <li onclick="savePNG(event)"> <img class="button" src="images/ic_download_png.png"/> Export PNG... </li>
+                    <li onclick="WaveDrom.saveJSON(event)"> <img class="button" src="images/ic_download_json.png"/> Save As... </li>
+                    <li onclick="WaveDrom.saveSVG(event)"> <img class="button" src="images/ic_download_svg.png"/> Export SVG... </li>
+                    <li onclick="WaveDrom.savePNG(event)"> <img class="button" src="images/ic_download_png.png"/> Export PNG... </li>
                 </ul>
                 <ul>
-                    <li onclick="editorState({rot:1})"> <img class="button" src="images/ic_rot.png" /> Rotate Layout </li>
-                    <li onclick="editorState({per:1})"> <img class="button" src="images/ic_persent.png" /> Proportions </li>
-                    <li onclick="setFullURL()"> <img class="button" src="images/ic_url.png"/> Expand URL </li>
-                    <li onclick="gotoWaveDromGuide()" id="WaveDromGuide"> <img class="button" src="images/ic_guide.png"/> WaveDrom Guide </li>
-                    <li onclick="gotoWaveDromHome()"  id="WaveDromHome"> <img class="button" src="images/ic_logo.png"/> on GitHub </li>
+                    <li onclick="WaveDrom.editorState({rot:1})"> <img class="button" src="images/ic_rot.png" /> Rotate Layout </li>
+                    <li onclick="WaveDrom.editorState({per:1})"> <img class="button" src="images/ic_persent.png" /> Proportions </li>
+                    <li onclick="WaveDrom.setFullURL()"> <img class="button" src="images/ic_url.png"/> Expand URL </li>
+                    <li onclick="WaveDrom.gotoWaveDromGuide()" id="WaveDromGuide"> <img class="button" src="images/ic_guide.png"/> WaveDrom Guide </li>
+                    <li onclick="WaveDrom.gotoWaveDromHome()"  id="WaveDromHome"> <img class="button" src="images/ic_logo.png"/> on GitHub </li>
                     <li style="display:none;">Exit</li>
                 </ul>
             </div>

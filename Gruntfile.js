@@ -17,6 +17,11 @@ module.exports = function(grunt) {
           ], dest: 'WaveDromEditor_build/', filter: 'isFile'},
           {expand: true, flatten: true, src: ['WaveDromEditor/package.json'], dest: 'WaveDromEditor_build/', filter: 'isFile'}
         ]
+      },
+      min: {
+        files: [
+          { src: ['WaveDromEditor_build/WaveDrom.js'], dest: './WaveDrom.js' }
+        ]
       }
     },
     nodewebkit: {
@@ -29,9 +34,13 @@ module.exports = function(grunt) {
       src: ['./WaveDromEditor_build/**']
     },
     compress: {
-      win: {
+      win32: {
         options: {archive: 'nw_builds/<%= pkg.name %>-v<%= pkg.version %>-win-ia32.zip'},
-        files: [{expand: true, cwd: 'nw_builds/WaveDromEditor/win/', src: ['**'], dest: '.'}]
+        files: [{expand: true, cwd: 'nw_builds/WaveDromEditor/win32/', src: ['**'], dest: '.'}]
+      },
+      win64: {
+        options: {archive: 'nw_builds/<%= pkg.name %>-v<%= pkg.version %>-win-ia64.zip'},
+        files: [{expand: true, cwd: 'nw_builds/WaveDromEditor/win64/', src: ['**'], dest: '.'}]
       },
       linux32: {
         options: {archive: 'nw_builds/<%= pkg.name %>-v<%= pkg.version %>-linux-ia32.tar.gz'},
@@ -41,9 +50,13 @@ module.exports = function(grunt) {
         options: {archive: 'nw_builds/<%= pkg.name %>-v<%= pkg.version %>-linux-x64.tar.gz'},
         files: [{expand: true, cwd: 'nw_builds/', src: ['WaveDromEditor/linux64/**'], dest: '.'}]
       },
-      osx: {
+      osx32: {
         options: {archive: 'nw_builds/<%= pkg.name %>-v<%= pkg.version %>-osx-ia32.zip'},
-        files: [{expand: true, cwd: 'nw_builds/WaveDromEditor/osx/', src: ['**'], dest: '.'}]
+        files: [{expand: true, cwd: 'nw_builds/WaveDromEditor/osx32/', src: ['**'], dest: '.'}]
+      },
+      osx64: {
+        options: {archive: 'nw_builds/<%= pkg.name %>-v<%= pkg.version %>-osx-ia64.zip'},
+        files: [{expand: true, cwd: 'nw_builds/WaveDromEditor/osx64/', src: ['**'], dest: '.'}]
       },
       nw: {
         options: {archive: 'nw_builds/<%= pkg.name %>-v<%= pkg.version %>.nw', mode: 'zip'},
@@ -68,5 +81,5 @@ module.exports = function(grunt) {
 
   // Default task(s).
   grunt.registerTask('build', ['eslint', 'copy:editor', 'nodewebkit']);
-  grunt.registerTask('default', ['build', 'compress']);
+  grunt.registerTask('default', ['build', 'copy:min', 'compress']);
 };

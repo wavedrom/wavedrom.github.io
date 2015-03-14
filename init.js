@@ -89,7 +89,7 @@
             autofocus: true
         }
     );
-    cm.on('change', function (cmm, change) {
+    cm.on('change', function (cmm) {
         function c () {
             var v = cmm.getValue();
             e.value = v;
@@ -98,8 +98,11 @@
         }
         setTimeout(c, 750);
     });
+
+WaveDrom.cm = cm;
+
 })();
 
 /* eslint-env browser */
 /* global CodeMirror, WaveDrom, ssvg, pngdata */
-/* eslint new-cap:1, no-underscore-dangle:1 */
+/* eslint new-cap:0, no-underscore-dangle:1 */

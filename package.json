@@ -1,7 +1,7 @@
 {
   "name": "wavedrom-editor",
   "description": "",
-  "version": "0.9.14",
+  "version": "0.10.0",
   "main": "index.js",
   "directories": {
     "doc": "doc"
@@ -35,8 +35,5 @@
     "grunt-contrib-clean": "*",
     "codemirror": "*",
     "grunt-contrib-compress": "*"
-  },
-  "dependencies": {
-    "shift-parser": "^1.0.0"
   }
 }
