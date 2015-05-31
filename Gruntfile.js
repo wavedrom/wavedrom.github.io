@@ -26,7 +26,7 @@ module.exports = function(grunt) {
     },
     nodewebkit: {
       options: {
-        version: '0.12.0',
+        version: '0.12.2',
         buildDir: './nw_builds',
         platforms: ['win', 'osx', 'linux32', 'linux64'],
         keep_nw: true
