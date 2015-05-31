@@ -1,2 +1,1906 @@
-/*! wavedrom 2015-03-13 */
-var JsonML;void 0===JsonML&&(JsonML={}),function(){"use strict";function a(a,b,c){"string"==typeof c&&(c=new Function("event",c)),"function"==typeof c&&(a[b]=c)}function b(b,c){if(c.name&&document.attachEvent)try{var d=document.createElement("<"+b.tagName+" name='"+c.name+"'>");b.tagName===d.tagName&&(b=d)}catch(e){}for(var f in c)if(c.hasOwnProperty(f)){var g=c[f];f&&null!==g&&"undefined"!=typeof g&&(f=j[f.toLowerCase()]||f,"style"===f?"undefined"!=typeof b.style.cssText?b.style.cssText=g:b.style=g:l[f]?(a(b,f,g),k[f]&&a(b,k[f],g)):"string"==typeof g||"number"==typeof g||"boolean"==typeof g?(b.setAttribute(f,g),k[f]&&b.setAttribute(k[f],g)):(b[f]=g,k[f]&&(b[k[f]]=g)))}return b}function c(a,b){if(b)if(a.tagName&&"table"===a.tagName.toLowerCase()&&a.tBodies){if(!b.tagName){if(11===b.nodeType)for(;b.firstChild;)c(a,b.removeChild(b.firstChild));return}var d=b.tagName.toLowerCase();if(d&&"tbody"!==d&&"thead"!==d){var e=a.tBodies.length>0?a.tBodies[a.tBodies.length-1]:null;e||(e=document.createElement("th"===d?"thead":"tbody"),a.appendChild(e)),e.appendChild(b)}else a.canHaveChildren!==!1&&a.appendChild(b)}else if(a.tagName&&"style"===a.tagName.toLowerCase()&&document.createStyleSheet)a.cssText=b;else if(a.canHaveChildren!==!1)a.appendChild(b);else if(a.tagName&&"object"===a.tagName.toLowerCase()&&b.tagName&&"param"===b.tagName.toLowerCase()){try{a.appendChild(b)}catch(f){}try{a.object&&(a.object[b.name]=b.value)}catch(g){}}}function d(a){return a&&3===a.nodeType&&(!a.nodeValue||!/\S/.exec(a.nodeValue))}function e(a){if(a){for(;d(a.firstChild);)a.removeChild(a.firstChild);for(;d(a.lastChild);)a.removeChild(a.lastChild)}}function f(a){var b=document.createElement("div");if(b.innerHTML=a,e(b),1===b.childNodes.length)return b.firstChild;for(var c=document.createDocumentFragment?document.createDocumentFragment():document.createElement("");b.firstChild;)c.appendChild(b.firstChild);return c}function g(a){this.value=a}function h(a){return document.createTextNode("["+a+"]")}function i(a,d,e){for(var h=1;h<d.length;h++)d[h]instanceof Array||"string"==typeof d[h]?c(a,JsonML.parse(d[h],e)):d[h]instanceof g?c(a,f(d[h].value)):"object"==typeof d[h]&&null!==d[h]&&1===a.nodeType&&(a=b(a,d[h]));return a}var j={rowspan:"rowSpan",colspan:"colSpan",cellpadding:"cellPadding",cellspacing:"cellSpacing",tabindex:"tabIndex",accesskey:"accessKey",hidefocus:"hideFocus",usemap:"useMap",maxlength:"maxLength",readonly:"readOnly",contenteditable:"contentEditable"},k={enctype:"encoding",onscroll:"DOMMouseScroll"},l=function(a){for(var b,c={};a.length;)b=a.shift(),c["on"+b.toLowerCase()]=b;return c}("blur,change,click,dblclick,error,focus,keydown,keypress,keyup,load,mousedown,mouseenter,mouseleave,mousemove,mouseout,mouseover,mouseup,resize,scroll,select,submit,unload".split(","));JsonML.onerror=null,JsonML.parse=function(a,b){try{if(!a)return null;if("string"==typeof a)return document.createTextNode(a);if(a instanceof g)return f(a.value);if(!JsonML.isElement(a))throw new SyntaxError("invalid JsonML");var d=a[0];if(!d){for(var j=document.createDocumentFragment?document.createDocumentFragment():document.createElement(""),k=1;k<a.length;k++)c(j,JsonML.parse(a[k],b));return e(j),1===j.childNodes.length?j.firstChild:j}if("style"===d.toLowerCase()&&document.createStyleSheet)return JsonML.patch(document.createStyleSheet(),a,b),null;var l,m="http://www.w3.org/2000/svg";return l=i(document.createElementNS(m,d),a,b),e(l),l&&"function"==typeof b?b(l):l}catch(n){try{var o="function"==typeof JsonML.onerror?JsonML.onerror:h;return o(n,a,b)}catch(p){return document.createTextNode("["+p+"]")}}},JsonML.isElement=function(a){return a instanceof Array&&"string"==typeof a[0]}}();var WaveDrom=WaveDrom||{};!function(){"use strict";function genBrick(a,b,c){var d,e,f=[];if(4===a.length){for(e=0;c>e;e+=1){for(f.push(a[0]),d=0;b>d;d+=1)f.push(a[1]);for(f.push(a[2]),d=0;b>d;d+=1)f.push(a[3])}return f}for(1===a.length&&a.push(a[0]),f.push(a[0]),d=0;2*c*(b+1)-1>d;d+=1)f.push(a[1]);return f}function genFirstWaveBrick(a,b,c){var d;switch(d=[],a){case"p":d=genBrick(["pclk","111","nclk","000"],b,c);break;case"n":d=genBrick(["nclk","000","pclk","111"],b,c);break;case"P":d=genBrick(["Pclk","111","nclk","000"],b,c);break;case"N":d=genBrick(["Nclk","000","pclk","111"],b,c);break;case"l":case"L":case"0":d=genBrick(["000"],b,c);break;case"h":case"H":case"1":d=genBrick(["111"],b,c);break;case"=":d=genBrick(["vvv-2"],b,c);break;case"2":d=genBrick(["vvv-2"],b,c);break;case"3":d=genBrick(["vvv-3"],b,c);break;case"4":d=genBrick(["vvv-4"],b,c);break;case"5":d=genBrick(["vvv-5"],b,c);break;case"d":d=genBrick(["ddd"],b,c);break;case"u":d=genBrick(["uuu"],b,c);break;case"z":d=genBrick(["zzz"],b,c);break;default:d=genBrick(["xxx"],b,c)}return d}function genWaveBrick(a,b,c){var d,e,f,g,h,i,j,k,l,m,n,o,p,q,r;return d={p:"pclk",n:"nclk",P:"Pclk",N:"Nclk",h:"pclk",l:"nclk",H:"Pclk",L:"Nclk"},e={0:"0",1:"1",x:"x",d:"d",u:"u",z:"z","=":"v",2:"v",3:"v",4:"v",5:"v"},f={0:"",1:"",x:"",d:"",u:"",z:"","=":"-2",2:"-2",3:"-3",4:"-4",5:"-5"},g={p:"0",n:"1",P:"0",N:"1",h:"1",l:"0",H:"1",L:"0",0:"0",1:"1",x:"x",d:"d",u:"u",z:"z","=":"v",2:"v",3:"v",4:"v",5:"v"},h={p:"",n:"",P:"",N:"",h:"",l:"",H:"",L:"",0:"",1:"",x:"",d:"",u:"",z:"","=":"-2",2:"-2",3:"-3",4:"-4",5:"-5"},i={p:"111",n:"000",P:"111",N:"000",h:"111",l:"000",H:"111",L:"000",0:"000",1:"111",x:"xxx",d:"ddd",u:"uuu",z:"zzz","=":"vvv-2",2:"vvv-2",3:"vvv-3",4:"vvv-4",5:"vvv-5"},j={p:"nclk",n:"pclk",P:"nclk",N:"pclk"},k={p:"000",n:"111",P:"000",N:"111"},l={hp:"111",Hp:"111",ln:"000",Ln:"000",nh:"111",Nh:"111",pl:"000",Pl:"000"},m=a.split(""),n=i[m[1]],o=d[m[1]],void 0===o?(p=e[m[1]],void 0===p?genBrick(["xxx"],b,c):(q=g[m[0]],void 0===q?genBrick(["xxx"],b,c):genBrick([q+"m"+p+h[m[0]]+f[m[1]],n],b,c))):(r=l[a],void 0!==r&&(o=r),p=j[m[1]],void 0===p?genBrick([o,n],b,c):genBrick([o,n,p,k[m[1]]],b,c))}function parseWaveLane(a,b){var c,d,e,f,g=[],h=[];for(g=a.split(""),e=g.shift(),c=1;"."===g[0]||"|"===g[0];)g.shift(),c+=1;for(h=h.concat(genFirstWaveBrick(e,b,c));g.length;){for(d=e,e=g.shift(),c=1;"."===g[0]||"|"===g[0];)g.shift(),c+=1;h=h.concat(genWaveBrick(d+e,b,c))}for(f=0;f<lane.phase;f+=1)h.shift();return h}function parseWaveLanes(a){function b(a){var b=a.data;return void 0===b?null:"string"==typeof b?b.split(" "):b}var c,d,e=[],f=[];for(c in a)d=a[c],lane.period=d.period?d.period:1,lane.phase=d.phase?2*d.phase:0,e.push([]),f[0]=d.name||" ",f[1]=d.phase||0,e[e.length-1][0]=f.slice(0),e[e.length-1][1]=d.wave?parseWaveLane(d.wave,lane.period*lane.hscale-1,lane):null,e[e.length-1][2]=b(d);return e}function findLaneMarkers(a){var b,c=0,d=0,e=[];for(b in a)"vvv-2"===a[b]|"vvv-3"===a[b]|"vvv-4"===a[b]|"vvv-5"===a[b]?d+=1:0!==d&&(e.push(c-(d+1)/2),d=0),c+=1;return 0!==d&&e.push(c-(d+1)/2),e}function renderWaveLane(a,b,c){var d,e,f,g,h,i,j,k,l=[1],m=0,n=0,o=[],p="http://www.w3.org/2000/svg",q="http://www.w3.org/1999/xlink",r="http://www.w3.org/XML/1998/namespace";for(e=0;e<b.length;e+=1)if(k=b[e][0][0]){g=parse(["g",{id:"wavelane_"+e+"_"+c,transform:"translate(0,"+(lane.y0+e*lane.yo)+")"}]),a.insertBefore(g,null),"number"==typeof k&&(k+=""),i=parse(["text",{x:lane.tgo,y:lane.ym,"class":"info","text-anchor":"end"},k]),i.setAttributeNS(r,"xml:space","preserve"),g.insertBefore(i,null),o.push(i.getBBox().width);var s;if(s=b[e][0][1],s=s>0?Math.ceil(2*s)-2*s:-2*s,h=parse(["g",{id:"wavelane_draw_"+e+"_"+c,transform:"translate("+s*lane.xs+", 0)"}]),g.insertBefore(h,null),b[e][1]){for(d=0;d<b[e][1].length;d+=1)j=document.createElementNS(p,"use"),j.setAttributeNS(q,"xlink:href","#"+b[e][1][d]),j.setAttribute("transform","translate("+d*lane.xs+")"),h.insertBefore(j,null);if(b[e][2]&&b[e][2].length&&(l=findLaneMarkers(b[e][1]),0!==l.length))for(f in l)b[e][2]&&"undefined"!=typeof b[e][2][f]&&(i=parse(["text",{x:l[f]*lane.xs+lane.xlabel,y:lane.ym,"text-anchor":"middle"},b[e][2][f]]),i.setAttributeNS(r,"xml:space","preserve"),h.insertBefore(i,null));b[e][1].length>m&&(m=b[e][1].length)}}return lane.xmax=m,lane.xg=n+20,o}function renderMarks(a,b,c){function d(a,b,c){var d;a[b]&&a[b].text&&(d=parse(["text",{x:a.xmax*a.xs/2,y:c,"text-anchor":"middle",fill:"#000"},a[b].text]),d.setAttributeNS(l,"xml:space","preserve"),g.insertBefore(d,null))}function e(a,b,c,d,e,h,i){var j,k,m,n,o=1,p=0,q=[];if(void 0!==a[b]&&void 0!==a[b][c]){if(m=a[b][c],"string"==typeof m)m=m.split(" ");else if("number"==typeof m||"boolean"==typeof m)for(k=Number(m),m=[],f=0;i>f;f+=1)m.push(f+k);if("[object Array]"===Object.prototype.toString.call(m)&&0!==m.length){if(1===m.length)if(k=Number(m[0]),isNaN(k))q=m;else for(f=0;i>f;f+=1)q[f]=f+k;else if(2===m.length)if(k=Number(m[0]),o=Number(m[1]),n=m[1].split("."),2===n.length&&(p=n[1].length),isNaN(k)||isNaN(o))q=m;else for(k=o*k,f=0;i>f;f+=1)q[f]=(o*f+k).toFixed(p);else q=m;for(f=0;i>f;f+=1)n=q[f],"number"==typeof n&&(n+=""),j=parse(["text",{x:f*e+d,y:h,"text-anchor":"middle","class":"muted"},n]),j.setAttributeNS(l,"xml:space","preserve"),g.insertBefore(j,null)}}}var f,g,h,i,j,k,l;for(l="http://www.w3.org/XML/1998/namespace",i=2*lane.hscale,j=i*lane.xs,h=lane.xmax/i,k=b.length*lane.yo,g=parse(["g",{id:"gmarks_"+c}]),a.insertBefore(g,a.firstChild),f=0;h+1>f;f+=1)g.insertBefore(parse(["path",{id:"gmark_"+f+"_"+c,d:"m "+f*j+",0 0,"+k,style:"stroke:#888;stroke-width:0.5;stroke-dasharray:1,3"}]),null);d(lane,"head",lane.yh0?-33:-13),d(lane,"foot",k+(lane.yf0?45:25)),e(lane,"head","tick",0,j,-5,h+1),e(lane,"head","tock",j/2,j,-5,h),e(lane,"foot","tick",0,j,k+15,h+1),e(lane,"foot","tock",j/2,j,k+15,h)}function renderGroups(a,b,c){var d,e,f,g,h,i,j="http://www.w3.org/2000/svg",k="http://www.w3.org/XML/1998/namespace";for(d in b)e=document.createElementNS(j,"path"),e.id="group_"+d+"_"+c,e.setAttribute("d","m "+(b[d].x+.5)+","+(b[d].y*lane.yo+3.5+lane.yh0+lane.yh1)+" c -3,0 -5,2 -5,5 l 0,"+(b[d].height*lane.yo-16)+" c 0,3 2,5 5,5"),e.setAttribute("style","stroke:#0041c4;stroke-width:1;fill:none"),a.insertBefore(e,null),i=b[d].name,"undefined"!=typeof i&&("number"==typeof i&&(i+=""),g=b[d].x-10,h=lane.yo*(b[d].y+b[d].height/2)+lane.yh0+lane.yh1,f=parse(["text",{x:g,y:h,"text-anchor":"middle","class":"info",transform:"rotate(270,"+g+","+h+")"},i]),f.setAttributeNS(k,"xml:space","preserve"),a.insertBefore(f,null))}function renderGaps(a,b,c){var d,e,f,g,h,i,j=[],k="http://www.w3.org/2000/svg",l="http://www.w3.org/1999/xlink";if(b){e=document.createElementNS(k,"g"),e.id="wavegaps_"+c,a.insertBefore(e,null);for(d in b)if(lane.period=b[d].period?b[d].period:1,lane.phase=b[d].phase?2*b[d].phase:0,f=document.createElementNS(k,"g"),f.id="wavegap_"+d+"_"+c,f.setAttribute("transform","translate(0,"+(lane.y0+d*lane.yo)+")"),e.insertBefore(f,null),i=b[d].wave)for(j=i.split(""),h=0;j.length;)"|"===j.shift()&&(g=document.createElementNS(k,"use"),g.setAttributeNS(l,"xlink:href","#gap"),g.setAttribute("transform","translate("+lane.xs*((2*h+1)*lane.period*lane.hscale-lane.phase)+")"),f.insertBefore(g,null)),h+=1}}function renderArcs(a,b,c,d){function e(){p=document.createElementNS(u,"path"),p.id="gmark_"+s.from+"_"+s.to,p.setAttribute("d","M "+n.x+","+n.y+" "+o.x+","+o.y),p.setAttribute("style","fill:none;stroke:#00F;stroke-width:1"),f.insertBefore(p,null)}var f,g,h,i,j,k,l,m,n,o,p,q,r=[],s={words:[],from:0,shape:"",to:0,label:""},t={},u="http://www.w3.org/2000/svg",v="http://www.w3.org/XML/1998/namespace";if(b){for(g in b)if(lane.period=b[g].period?b[g].period:1,lane.phase=b[g].phase?2*b[g].phase:0,i=b[g].node)for(r=i.split(""),j=0;r.length;)k=r.shift(),"."!==k&&(t[k]={x:lane.xs*(2*j*lane.period*lane.hscale-lane.phase)+lane.xlabel,y:g*lane.yo+lane.y0+.5*lane.ys}),j+=1;if(f=document.createElementNS(u,"g"),f.id="wavearcs_"+c,a.insertBefore(f,null),d.edge)for(g in d.edge){s.words=d.edge[g].split(" "),s.label=d.edge[g].substring(s.words[0].length),s.label=s.label.substring(1),s.from=s.words[0].substr(0,1),s.to=s.words[0].substr(-1,1),s.shape=s.words[0].slice(1,-1),n=t[s.from],o=t[s.to],e(),s.label&&(l=parse(["text",{style:"font-size:10px;","text-anchor":"middle"},s.label+""]),l.setAttributeNS(v,"xml:space","preserve"),m=parse(["rect",{height:9,style:"fill:#FFF;"}]),f.insertBefore(m,null),f.insertBefore(l,null),q=l.getBBox().width,m.setAttribute("width",q));var w=o.x-n.x,x=o.y-n.y,y=(n.x+o.x)/2,z=(n.y+o.y)/2;switch(s.shape){case"-":break;case"~":p.setAttribute("d","M "+n.x+","+n.y+" c "+.7*w+", 0 "+.3*w+", "+x+" "+w+", "+x);break;case"-~":p.setAttribute("d","M "+n.x+","+n.y+" c "+.7*w+", 0 "+w+", "+x+" "+w+", "+x),s.label&&(y=n.x+.75*(o.x-n.x));break;case"~-":p.setAttribute("d","M "+n.x+","+n.y+" c 0, 0 "+.3*w+", "+x+" "+w+", "+x),s.label&&(y=n.x+.25*(o.x-n.x));break;case"-|":p.setAttribute("d","m "+n.x+","+n.y+" "+w+",0 0,"+x),s.label&&(y=o.x);break;case"|-":p.setAttribute("d","m "+n.x+","+n.y+" 0,"+x+" "+w+",0"),s.label&&(y=n.x);break;case"-|-":p.setAttribute("d","m "+n.x+","+n.y+" "+w/2+",0 0,"+x+" "+w/2+",0");break;case"->":p.setAttribute("style","marker-end:url(#arrowhead);stroke:#0041c4;stroke-width:1;fill:none");break;case"~>":p.setAttribute("style","marker-end:url(#arrowhead);stroke:#0041c4;stroke-width:1;fill:none"),p.setAttribute("d","M "+n.x+","+n.y+" c "+.7*w+", 0 "+.3*w+", "+x+" "+w+", "+x);break;case"-~>":p.setAttribute("style","marker-end:url(#arrowhead);stroke:#0041c4;stroke-width:1;fill:none"),p.setAttribute("d","M "+n.x+","+n.y+" c "+.7*w+", 0 "+w+", "+x+" "+w+", "+x),s.label&&(y=n.x+.75*(o.x-n.x));break;case"~->":p.setAttribute("style","marker-end:url(#arrowhead);stroke:#0041c4;stroke-width:1;fill:none"),p.setAttribute("d","M "+n.x+","+n.y+" c 0, 0 "+.3*w+", "+x+" "+w+", "+x),s.label&&(y=n.x+.25*(o.x-n.x));break;case"-|>":p.setAttribute("style","marker-end:url(#arrowhead);stroke:#0041c4;stroke-width:1;fill:none"),p.setAttribute("d","m "+n.x+","+n.y+" "+w+",0 0,"+x),s.label&&(y=o.x);break;case"|->":p.setAttribute("style","marker-end:url(#arrowhead);stroke:#0041c4;stroke-width:1;fill:none"),p.setAttribute("d","m "+n.x+","+n.y+" 0,"+x+" "+w+",0"),s.label&&(y=n.x);break;case"-|->":p.setAttribute("style","marker-end:url(#arrowhead);stroke:#0041c4;stroke-width:1;fill:none"),p.setAttribute("d","m "+n.x+","+n.y+" "+w/2+",0 0,"+x+" "+w/2+",0");break;case"<->":p.setAttribute("style","marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#0041c4;stroke-width:1;fill:none");break;case"<~>":p.setAttribute("style","marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#0041c4;stroke-width:1;fill:none"),p.setAttribute("d","M "+n.x+","+n.y+" c "+.7*w+", 0 "+.3*w+", "+x+" "+w+", "+x);break;case"<-~>":p.setAttribute("style","marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#0041c4;stroke-width:1;fill:none"),p.setAttribute("d","M "+n.x+","+n.y+" c "+.7*w+", 0 "+w+", "+x+" "+w+", "+x),s.label&&(y=n.x+.75*(o.x-n.x));break;case"<-|>":p.setAttribute("style","marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#0041c4;stroke-width:1;fill:none"),p.setAttribute("d","m "+n.x+","+n.y+" "+w+",0 0,"+x),s.label&&(y=o.x);break;case"<-|->":p.setAttribute("style","marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#0041c4;stroke-width:1;fill:none"),p.setAttribute("d","m "+n.x+","+n.y+" "+w/2+",0 0,"+x+" "+w/2+",0");break;default:p.setAttribute("style","fill:none;stroke:#F00;stroke-width:1")}s.label&&(l.setAttribute("x",y),l.setAttribute("y",z+3),m.setAttribute("x",y-q/2),m.setAttribute("y",z-5))}for(h in t)h===h.toLowerCase()&&t[h].x>0&&(m=parse(["rect",{y:t[h].y-4,height:8,style:"fill:#FFF;"}]),f.insertBefore(m,null),l=parse(["text",{style:"font-size:8px;",x:t[h].x,y:t[h].y+2,"text-anchor":"middle"},h+""]),f.insertBefore(l,null),q=l.getBBox().width+2,m.setAttribute("x",t[h].x-q/2),m.setAttribute("width",q))}}function parseConfig(a){function b(a){return a>0?Math.round(a):1}var c;lane.hscale=1,lane.hscale0&&(lane.hscale=lane.hscale0),a&&a.config&&a.config.hscale&&(c=Math.round(b(a.config.hscale)),c>0&&(c>100&&(c=100),lane.hscale=c)),lane.yh0=0,lane.yh1=0,lane.head=a.head,a&&a.head&&((a.head.tick||0===a.head.tick)&&(lane.yh0=20),(a.head.tock||0===a.head.tock)&&(lane.yh0=20),a.head.text&&(lane.yh1=46,lane.head.text=a.head.text)),lane.yf0=0,lane.yf1=0,lane.foot=a.foot,a&&a.foot&&((a.foot.tick||0===a.foot.tick)&&(lane.yf0=20),(a.foot.tock||0===a.foot.tock)&&(lane.yf0=20),a.foot.text&&(lane.yf1=46,lane.foot.text=a.foot.text))}function rec(a,b){var c,d,e={},f={x:10};for(("string"==typeof a[0]||"number"==typeof a[0])&&(d=a[0],f.x=25),b.x+=f.x,c=0;c<a.length;c++)"object"==typeof a[c]&&("[object Array]"===Object.prototype.toString.call(a[c])?(e.y=b.y,b=rec(a[c],b),b.groups.push({x:b.xx,y:e.y,height:b.y-e.y,name:b.name})):(b.lanes.push(a[c]),b.width.push(b.x),b.y+=1));return b.xx=b.x,b.x-=f.x,b.name=d,b}function insertSVGTemplate(a,b,c){for(var d,e,f;b.childNodes.length;)b.removeChild(b.childNodes[0]);for(e in waveSkin)break;f=waveSkin["default"]||waveSkin[e],c&&c.config&&c.config.skin&&waveSkin[c.config.skin]&&(f=waveSkin[c.config.skin]),0===a?(lane.xs=Number(f[3][1][2][1].width),lane.ys=Number(f[3][1][2][1].height),lane.xlabel=Number(f[3][1][2][1].x),lane.ym=Number(f[3][1][2][1].y)):f=["svg",{id:"svg",xmlns:"http://www.w3.org/2000/svg","xmlns:xlink":"http://www.w3.org/1999/xlink",height:"0"},["g",{id:"waves"},["g",{id:"lanes"}],["g",{id:"groups"}]]],f[f.length-1][1].id="waves_"+a,f[f.length-1][2][1].id="lanes_"+a,f[f.length-1][3][1].id="groups_"+a,f[1].id="svgcontent_"+a,f[1].height=0,d=parse(f),b.insertBefore(d,null)}function insertSVGTemplateAssign(a,b){for(var c,d;b.childNodes.length;)b.removeChild(b.childNodes[0]);d=["svg",{id:"svgcontent_"+a,xmlns:"http://www.w3.org/2000/svg","xmlns:xlink":"http://www.w3.org/1999/xlink",overflow:"hidden"},["style",".pinname {font-size:12px; font-style:normal; font-variant:normal; font-weight:500; font-stretch:normal; text-align:center; text-anchor:end; font-family:Helvetica} .wirename {font-size:12px; font-style:normal; font-variant:normal; font-weight:500; font-stretch:normal; text-align:center; text-anchor:start; font-family:Helvetica} .wirename:hover {fill:blue} .gate {color:#000; fill:#ffc; fill-opacity: 1;stroke:#000; stroke-width:1; stroke-opacity:1} .gate:hover {fill:red !important; } .wire {fill:none; stroke:#000; stroke-width:1; stroke-opacity:1} .grid {fill:#fff; fill-opacity:1; stroke:none}"]],c=parse(d),b.insertBefore(c,null)}function renderAssign(a,b){function c(a,b){var d,e,f;for(b.xmax=Math.max(b.xmax,b.x),d=b.y,f=a.length,e=1;f>e;e++)"[object Array]"===Object.prototype.toString.call(a[e])?b=c(a[e],{x:b.x+1,y:b.y,xmax:b.xmax}):(a[e]={name:a[e],x:b.x+1,y:b.y},b.y+=2);return a[0]={name:a[0],x:b.x,y:Math.round((d+(b.y-2))/2)},b.x--,b}function d(a,b,c){console.log(b,c);var d,e,f=" M 4,0 C 4,1.1 3.1,2 2,2 0.9,2 0,1.1 0,0 c 0,-1.1 0.9,-2 2,-2 1.1,0 2,0.9 2,2 z",g={"~":"M -11,-6 -11,6 0,0 z m -5,6 5,0"+f,"=":"M -11,-6 -11,6 0,0 z m -5,6 5,0","&":"m -16,-10 5,0 c 6,0 11,4 11,10 0,6 -5,10 -11,10 l -5,0 z","~&":"m -16,-10 5,0 c 6,0 11,4 11,10 0,6 -5,10 -11,10 l -5,0 z"+f,"|":"m -18,-10 4,0 c 6,0 12,5 14,10 -2,5 -8,10 -14,10 l -4,0 c 2.5,-5 2.5,-15 0,-20 z","~|":"m -18,-10 4,0 c 6,0 12,5 14,10 -2,5 -8,10 -14,10 l -4,0 c 2.5,-5 2.5,-15 0,-20 z"+f,"^":"m -21,-10 c 1,3 2,6 2,10 m 0,0 c 0,4 -1,7 -2,10 m 3,-20 4,0 c 6,0 12,5 14,10 -2,5 -8,10 -14,10 l -4,0 c 1,-3 2,-6 2,-10 0,-4 -1,-7 -2,-10 z","~^":"m -21,-10 c 1,3 2,6 2,10 m 0,0 c 0,4 -1,7 -2,10 m 3,-20 4,0 c 6,0 12,5 14,10 -2,5 -8,10 -14,10 l -4,0 c 1,-3 2,-6 2,-10 0,-4 -1,-7 -2,-10 z"+f,"+":"m -8,5 0,-10 m -5,5 10,0 m 3,0 c 0,4.418278 -3.581722,8 -8,8 -4.418278,0 -8,-3.581722 -8,-8 0,-4.418278 3.581722,-8 8,-8 4.418278,0 8,3.581722 8,8 z","*":"m -4,4 -8,-8 m 0,8 8,-8 m 4,4 c 0,4.418278 -3.581722,8 -8,8 -4.418278,0 -8,-3.581722 -8,-8 0,-4.418278 3.581722,-8 8,-8 4.418278,0 8,3.581722 8,8 z"},h={BUF:1,INV:1,AND:"&",NAND:"&",OR:"≥1",NOR:"≥1",XOR:"=1",XNOR:"=1",box:""},i={INV:1,NAND:1,NOR:1,XNOR:1};return c===b&&(c=4,b=-4),d=g[a],e=h[a],d?["path",{"class":"gate",d:d}]:e?["g",["path",{"class":"gate",d:"m -16,"+(b-3)+" 16,0 0,"+(c-b+6)+" -16,0 z"+(i[a]?f:"")}],["text",["tspan",{x:"-14",y:"4","class":"wirename"},e+""]]]:["text",["tspan",{x:"-14",y:"4","class":"wirename"},a+""]]}function e(a){var b,c,e,f=["g"],g=[],h=a.length;for(b=2;h>b;b++)g.push(a[b][1]);for(c=Math.min.apply(null,g),e=Math.max.apply(null,g),f.push(["g",{transform:"translate(16,0)"},["path",{d:"M  "+a[2][0]+","+c+" "+a[2][0]+","+e,"class":"wire"}]]),b=2;h>b;b++)f.push(["g",["path",{d:"m  "+a[b][0]+","+a[b][1]+" 16,0","class":"wire"}]]);return f.push(["g",{transform:"translate("+a[1][0]+","+a[1][1]+")"},["title",a[0]],d(a[0],c-a[1][1],e-a[1][1])]),f}function f(a,b){var c,d,g,h,i,j=["g"],k=[];if("[object Array]"===Object.prototype.toString.call(a)){for(d=a.length,k.push(a[0].name),k.push([32*(b-a[0].x),8*a[0].y]),c=1;d>c;c++)k.push("[object Array]"===Object.prototype.toString.call(a[c])?[32*(b-a[c][0].x),8*a[c][0].y]:[32*(b-a[c].x),8*a[c].y]);for(j.push(e(k)),c=1;d>c;c++)j.push(f(a[c],b))}else i=a.name,g=32*(b-a.x),h=8*a.y,j.push(["g",{transform:"translate("+g+","+h+")"},["title",i],["path",{d:"M 2,0 a 2,2 0 1 1 -4,0 2,2 0 1 1 4,0 z"}],["text",["tspan",{x:"-4",y:"4","class":"pinname"},i]]]);return j}var g,h,i,j,k,l,m,n,o,p,q=["g"],r=["g"];for(n=b.assign.length,h={x:0,y:2,xmax:0},g=b.assign,m=0;n>m;m++)h=c(g[m],h),h.x++;for(i=h.xmax+3,m=0;n>m;m++)q.push(f(g[m],i));for(k=32*(i+1)+1,l=8*(h.y+1)-7,n=4*(i+1),p=h.y+1,m=0;n>=m;m++)for(o=0;p>=o;o++)r.push(["rect",{height:1,width:1,x:8*m-.5,y:8*o-.5,"class":"grid"}]);j=document.getElementById("svgcontent_"+a),j.setAttribute("viewBox","0 0 "+k+" "+l),j.setAttribute("width",k),j.setAttribute("height",l),j.insertBefore(JsonML.parse(["g",{transform:"translate(0.5, 0.5)"},r,q]),null)}function eva(id){function erra(a){return console.log(a.stack),{signal:[{name:["tspan",["tspan",{"class":"error h5"},"Error: "],a.message]}]}}var TheTextBox,source;if(TheTextBox=document.getElementById(id),TheTextBox.type&&"textarea"===TheTextBox.type)try{source=eval("("+TheTextBox.value+")")}catch(e){return erra(e)}else try{source=eval("("+TheTextBox.innerHTML+")")}catch(e){return erra(e)}if("[object Object]"!==Object.prototype.toString.call(source))return erra({message:'[Semantic]: The root has to be an Object: "{signal:[...]}"'});if(source.signal){if("[object Array]"!==Object.prototype.toString.call(source.signal))return erra({message:'[Semantic]: "signal" object has to be an Array "signal:[]"'})}else{if(!source.assign)return erra({message:'[Semantic]: "signal:[...]" or "assign:[...]" property is missing inside the root Object'});if("[object Array]"!==Object.prototype.toString.call(source.assign))return erra({message:'[Semantic]: "assign" object hasto be an Array "assign:[]"'})}return source}function renderWaveForm(a,b,c){var d,e,f,g,h,i,j,k,l,m=0;if(b.signal){insertSVGTemplate(a,document.getElementById(c+a),b),parseConfig(b),d=rec(b.signal,{x:0,y:0,xmax:0,width:[],lanes:[],groups:[]}),e=document.getElementById("lanes_"+a),f=document.getElementById("groups_"+a),h=parseWaveLanes(d.lanes,lane),k=renderWaveLane(e,h,a);for(l in k)m=Math.max(m,k[l]+d.width[l]);renderMarks(e,h,a),renderArcs(e,d.lanes,a,b),renderGaps(e,d.lanes,a),renderGroups(f,d.groups,a),lane.xg=Math.ceil((m-lane.tgo)/lane.xs)*lane.xs,i=lane.xg+lane.xs*(lane.xmax+1),j=h.length*lane.yo+lane.yh0+lane.yh1+lane.yf0+lane.yf1,g=document.getElementById("svgcontent_"+a),g.setAttribute("viewBox","0 0 "+i+" "+j),g.setAttribute("width",i),g.setAttribute("height",j),g.setAttribute("overflow","hidden"),e.setAttribute("transform","translate("+(lane.xg+.5)+", "+(lane.yh0+lane.yh1+.5)+")")}else b.assign&&(insertSVGTemplateAssign(a,document.getElementById(c+a),b),renderAssign(a,b))}function processAll(){var a,b,c,d;for(c=0,a=document.getElementsByTagName("SCRIPT"),b=0;b<a.length;b++)a.item(b).type&&"WaveDrom"===a.item(b).type&&(a.item(b).setAttribute("id","InputJSON_"+c),d=document.createElement("div"),d.id="WaveDrom_Display_"+c,a.item(b).parentNode.insertBefore(d,a.item(b)),c+=1);for(b=0;c>b;b+=1)renderWaveForm(b,eva("InputJSON_"+b),"WaveDrom_Display_"),WaveDrom.appendSaveAsDialog(b,"WaveDrom_Display_");document.head.innerHTML+='<style type="text/css">div.wavedromMenu{position:fixed;border:solid 1pt#CCCCCC;background-color:white;box-shadow:0px 10px 20px #808080;cursor:default;margin:0px;padding:0px;}div.wavedromMenu>ul{margin:0px;padding:0px;}div.wavedromMenu>ul>li{padding:2px 10px;list-style:none;}div.wavedromMenu>ul>li:hover{background-color:#b5d5ff;}</style>'}function editorRefresh(){renderWaveForm(0,eva("InputJSON_0"),"WaveDrom_Display_")}var lane,parse,waveSkin;parse=JsonML.parse,waveSkin=WaveSkin,lane={xs:20,ys:20,xg:120,yh0:0,yh1:0,yf0:0,yf1:0,y0:5,yo:30,tgo:-10,ym:15,xlabel:6,xmax:1,scale:1,head:{},foot:{}},WaveDrom.RenderWaveForm=renderWaveForm,WaveDrom.ProcessAll=processAll,WaveDrom.EditorRefresh=editorRefresh}(),WaveDrom.appendSaveAsDialog=function(a,b){"use strict";function c(a){var b=parseInt(e.style.left,10),d=parseInt(e.style.top,10);(a.x<b||a.x>b+e.offsetWidth||a.y<d||a.y>d+e.offsetHeight)&&(e.parentNode.removeChild(e),document.body.removeEventListener("mousedown",c,!1))}var d,e;d=document.getElementById(b+a),d.childNodes[0].addEventListener("contextmenu",function(f){var g,h,i;e=document.createElement("div"),e.className="wavedromMenu",e.style.top=f.y+"px",e.style.left=f.x+"px",g=document.createElement("ul"),h=document.createElement("li"),h.innerHTML="Save as PNG",g.appendChild(h),i=document.createElement("li"),i.innerHTML="Save as SVG",g.appendChild(i),e.appendChild(g),document.body.appendChild(e),h.addEventListener("click",function(){var f,g,h,i,j,k,l,m;f="",0!==a&&(g=document.getElementById(b+0),f+=g.innerHTML.substring(166,g.innerHTML.indexOf('<g id="waves_0">'))),f=[d.innerHTML.slice(0,166),f,d.innerHTML.slice(166)].join(""),h="data:image/svg+xml;base64,"+btoa(f),i=new Image,i.src=h,j=document.createElement("canvas"),j.width=i.width,j.height=i.height,k=j.getContext("2d"),k.drawImage(i,0,0),l=j.toDataURL("image/png"),m=document.createElement("a"),m.href=l,m.download="wavedrom.png",m.click(),e.parentNode.removeChild(e),document.body.removeEventListener("mousedown",c,!1)},!1),i.addEventListener("click",function(){var f,g,h,i;f="",0!==a&&(g=document.getElementById(b+0),f+=g.innerHTML.substring(166,g.innerHTML.indexOf('<g id="waves_0">'))),f=[d.innerHTML.slice(0,166),f,d.innerHTML.slice(166)].join(""),h="data:image/svg+xml;base64,"+btoa(f),i=document.createElement("a"),i.href=h,i.download="wavedrom.svg",i.click(),e.parentNode.removeChild(e),document.body.removeEventListener("mousedown",c,!1)},!1),e.addEventListener("contextmenu",function(a){a.preventDefault()},!1),document.body.addEventListener("mousedown",c,!1),f.preventDefault()},!1)};
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+'use strict';
+
+function appendSaveAsDialog (index, output) {
+    var div;
+    var menu;
+
+    function closeMenu(e) {
+        var left = parseInt(menu.style.left, 10);
+        var top = parseInt(menu.style.top, 10);
+        if (
+            e.x < left ||
+            e.x > (left + menu.offsetWidth) ||
+            e.y < top ||
+            e.y > (top + menu.offsetHeight)
+        ) {
+            menu.parentNode.removeChild(menu);
+            document.body.removeEventListener('mousedown', closeMenu, false);
+        }
+    }
+
+    div = document.getElementById(output + index);
+
+    div.childNodes[0].addEventListener('contextmenu',
+        function (e) {
+            var list, savePng, saveSvg;
+
+            menu = document.createElement('div');
+
+            menu.className = 'wavedromMenu';
+            menu.style.top = e.y + 'px';
+            menu.style.left = e.x + 'px';
+
+            list = document.createElement('ul');
+            savePng = document.createElement('li');
+            savePng.innerHTML = 'Save as PNG';
+            list.appendChild(savePng);
+
+            saveSvg = document.createElement('li');
+            saveSvg.innerHTML = 'Save as SVG';
+            list.appendChild(saveSvg);
+
+            //var saveJson = document.createElement('li');
+            //saveJson.innerHTML = 'Save as JSON';
+            //list.appendChild(saveJson);
+
+            menu.appendChild(list);
+
+            document.body.appendChild(menu);
+
+            savePng.addEventListener('click',
+                function () {
+                    var html, firstDiv, svgdata, img, canvas, context, pngdata, a;
+
+                    html = '';
+                    if (index !== 0) {
+                        firstDiv = document.getElementById(output + 0);
+                        html += firstDiv.innerHTML.substring(166, firstDiv.innerHTML.indexOf('<g id="waves_0">'));
+                    }
+                    html = [div.innerHTML.slice(0, 166), html, div.innerHTML.slice(166)].join('');
+                    svgdata = 'data:image/svg+xml;base64,' + btoa(html);
+                    img = new Image();
+                    img.src = svgdata;
+                    canvas = document.createElement('canvas');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    context = canvas.getContext('2d');
+                    context.drawImage(img, 0, 0);
+
+                    pngdata = canvas.toDataURL('image/png');
+
+                    a = document.createElement('a');
+                    a.href = pngdata;
+                    a.download = 'wavedrom.png';
+                    a.click();
+
+                    menu.parentNode.removeChild(menu);
+                    document.body.removeEventListener('mousedown', closeMenu, false);
+                },
+                false
+            );
+
+            saveSvg.addEventListener('click',
+                function () {
+                    var html,
+                        firstDiv,
+                        svgdata,
+                        a;
+
+                    html = '';
+                    if (index !== 0) {
+                        firstDiv = document.getElementById(output + 0);
+                        html += firstDiv.innerHTML.substring(166, firstDiv.innerHTML.indexOf('<g id="waves_0">'));
+                    }
+                    html = [div.innerHTML.slice(0, 166), html, div.innerHTML.slice(166)].join('');
+                    svgdata = 'data:image/svg+xml;base64,' + btoa(html);
+
+                    a = document.createElement('a');
+                    a.href = svgdata;
+                    a.download = 'wavedrom.svg';
+                    a.click();
+
+                    menu.parentNode.removeChild(menu);
+                    document.body.removeEventListener('mousedown', closeMenu, false);
+                },
+                false
+            );
+
+            menu.addEventListener('contextmenu',
+                function (ee) {
+                    ee.preventDefault();
+                },
+                false
+            );
+
+            document.body.addEventListener('mousedown', closeMenu, false);
+
+            e.preventDefault();
+        },
+        false
+    );
+}
+
+module.exports = appendSaveAsDialog;
+
+/* eslint-env browser */
+
+},{}],2:[function(require,module,exports){
+'use strict';
+
+var // obj2ml = require('./obj2ml'),
+    jsonmlParse = require('./jsonml-parse');
+
+// function createElement (obj) {
+//     var el;
+//
+//     el = document.createElement('g');
+//     el.innerHTML = obj2ml(obj);
+//     return el.firstChild;
+// }
+
+module.exports = jsonmlParse;
+// module.exports = createElement;
+
+/* eslint-env browser */
+
+},{"./jsonml-parse":14}],3:[function(require,module,exports){
+'use strict';
+
+var eva = require('./eva'),
+    lane = require('./lane'),
+    renderWaveForm = require('./render-wave-form');
+
+function editorRefresh () {
+    // var svg,
+    // 	ser,
+    // 	ssvg,
+    // 	asvg,
+    // 	sjson,
+    // 	ajson;
+
+    renderWaveForm(0, eva('InputJSON_0'), 'WaveDrom_Display_', lane);
+
+    /*
+    svg = document.getElementById('svgcontent_0');
+    ser = new XMLSerializer();
+    ssvg = '<?xml version='1.0' standalone='no'?>\n' +
+    '<!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'>\n' +
+    '<!-- Created with WaveDrom -->\n' +
+    ser.serializeToString(svg);
+
+    asvg = document.getElementById('download_svg');
+    asvg.href = 'data:image/svg+xml;base64,' + window.btoa(ssvg);
+
+    sjson = localStorage.waveform;
+    ajson = document.getElementById('download_json');
+    ajson.href = 'data:text/json;base64,' + window.btoa(sjson);
+    */
+}
+
+module.exports = editorRefresh;
+
+},{"./eva":4,"./lane":16,"./render-wave-form":27}],4:[function(require,module,exports){
+'use strict';
+
+function eva (id) {
+    var TheTextBox, source;
+
+    function erra (e) {
+        return { signal: [{ name: ['tspan', ['tspan', {class:'error h5'}, 'Error: '], e.message] }]};
+    }
+
+    TheTextBox = document.getElementById(id);
+
+    /* eslint-disable no-eval */
+    if (TheTextBox.type && TheTextBox.type === 'textarea') {
+        try { source = eval('(' + TheTextBox.value + ')'); } catch (e) { return erra(e); }
+    } else {
+        try { source = eval('(' + TheTextBox.innerHTML + ')'); } catch (e) { return erra(e); }
+    }
+    /* eslint-enable  no-eval */
+
+    if (Object.prototype.toString.call(source) !== '[object Object]') {
+        return erra({ message: '[Semantic]: The root has to be an Object: "{signal:[...]}"'});
+    }
+    if (source.signal) {
+        if (Object.prototype.toString.call(source.signal) !== '[object Array]') {
+            return erra({ message: '[Semantic]: "signal" object has to be an Array "signal:[]"'});
+        }
+    } else if (source.assign) {
+        if (Object.prototype.toString.call(source.assign) !== '[object Array]') {
+            return erra({ message: '[Semantic]: "assign" object hasto be an Array "assign:[]"'});
+        }
+    } else {
+        return erra({ message: '[Semantic]: "signal:[...]" or "assign:[...]" property is missing inside the root Object'});
+    }
+    return source;
+}
+
+module.exports = eva;
+
+/* eslint-env browser */
+
+},{}],5:[function(require,module,exports){
+'use strict';
+
+function findLaneMarkers (lanetext) {
+    var i, gcount = 0, lcount = 0, ret = [];
+
+    for (i in lanetext) {
+        if (
+            (lanetext[i] === 'vvv-2') ||
+            (lanetext[i] === 'vvv-3') ||
+            (lanetext[i] === 'vvv-4') ||
+            (lanetext[i] === 'vvv-5')
+        ) {
+            lcount += 1;
+        } else {
+            if (lcount !== 0) {
+                ret.push(gcount - ((lcount + 1) / 2));
+                lcount = 0;
+            }
+        }
+        gcount += 1;
+    }
+    if (lcount !== 0) {
+        ret.push(gcount - ((lcount + 1) / 2));
+    }
+
+    return ret;
+}
+
+module.exports = findLaneMarkers;
+
+},{}],6:[function(require,module,exports){
+'use strict';
+
+function genBrick (texts, extra, times) {
+    var i, j, R = [];
+
+    if (texts.length === 4) {
+        for (j = 0; j < times; j += 1) {
+            R.push(texts[0]);
+            for (i = 0; i < extra; i += 1) {
+                R.push(texts[1]);
+            }
+            R.push(texts[2]);
+            for (i = 0; i < extra; i += 1) {
+                R.push(texts[3]);
+            }
+        }
+        return R;
+    }
+    if (texts.length === 1) {
+        texts.push(texts[0]);
+    }
+    R.push(texts[0]);
+    for (i = 0; i < (times * (2 * (extra + 1)) - 1); i += 1) {
+        R.push(texts[1]);
+    }
+    return R;
+}
+
+module.exports = genBrick;
+
+},{}],7:[function(require,module,exports){
+'use strict';
+
+var genBrick = require('./gen-brick');
+
+function genFirstWaveBrick (text, extra, times) {
+    var tmp;
+
+    tmp = [];
+    switch (text) {
+        case 'p': tmp = genBrick(['pclk', '111', 'nclk', '000'], extra, times); break;
+        case 'n': tmp = genBrick(['nclk', '000', 'pclk', '111'], extra, times); break;
+        case 'P': tmp = genBrick(['Pclk', '111', 'nclk', '000'], extra, times); break;
+        case 'N': tmp = genBrick(['Nclk', '000', 'pclk', '111'], extra, times); break;
+        case 'l':
+        case 'L':
+        case '0': tmp = genBrick(['000'], extra, times); break;
+        case 'h':
+        case 'H':
+        case '1': tmp = genBrick(['111'], extra, times); break;
+        case '=': tmp = genBrick(['vvv-2'], extra, times); break;
+        case '2': tmp = genBrick(['vvv-2'], extra, times); break;
+        case '3': tmp = genBrick(['vvv-3'], extra, times); break;
+        case '4': tmp = genBrick(['vvv-4'], extra, times); break;
+        case '5': tmp = genBrick(['vvv-5'], extra, times); break;
+        case 'd': tmp = genBrick(['ddd'], extra, times); break;
+        case 'u': tmp = genBrick(['uuu'], extra, times); break;
+        case 'z': tmp = genBrick(['zzz'], extra, times); break;
+        default:  tmp = genBrick(['xxx'], extra, times); break;
+    }
+    return tmp;
+}
+
+module.exports = genFirstWaveBrick;
+
+},{"./gen-brick":6}],8:[function(require,module,exports){
+'use strict';
+
+var genBrick = require('./gen-brick');
+
+function genWaveBrick (text, extra, times) {
+    var x1, x2, x3, y1, y2, x4, x5, x6, xclude, atext, tmp0, tmp1, tmp2, tmp3, tmp4;
+    x1 = {p:'pclk', n:'nclk', P:'Pclk', N:'Nclk', h:'pclk', l:'nclk', H:'Pclk', L:'Nclk'};
+    x2 = {'0':'0', '1':'1', 'x':'x', 'd':'d', 'u':'u', 'z':'z', '=':'v',  '2':'v',  '3':'v',  '4':'v',  5:'v' };
+    x3 = {'0': '', '1': '', 'x': '', 'd': '', 'u': '', 'z': '', '=':'-2', '2':'-2', '3':'-3', '4':'-4', 5:'-5'};
+    y1 = {
+        'p':'0', 'n':'1',
+        'P':'0', 'N':'1',
+        'h':'1', 'l':'0',
+        'H':'1', 'L':'0',
+        '0':'0', '1':'1', 'x':'x', 'd':'d', 'u':'u', 'z':'z', '=':'v', '2':'v', '3':'v', '4':'v', '5':'v'
+    };
+    y2 = {
+        'p': '', 'n': '',
+        'P': '', 'N': '',
+        'h': '', 'l': '',
+        'H': '', 'L': '',
+        '0': '', '1': '', 'x': '', 'd': '', 'u': '', 'z': '', '=':'-2', '2':'-2', '3':'-3', '4':'-4', '5':'-5'
+    };
+    x4 = {
+        'p': '111', 'n': '000',
+        'P': '111', 'N': '000',
+        'h': '111', 'l': '000',
+        'H': '111', 'L': '000',
+        '0': '000', '1': '111', 'x': 'xxx', 'd': 'ddd', 'u': 'uuu', 'z': 'zzz',
+        '=': 'vvv-2', '2': 'vvv-2', '3': 'vvv-3', '4': 'vvv-4', '5': 'vvv-5'
+    };
+    x5 = {p:'nclk', n:'pclk', P:'nclk', N:'pclk'};
+    x6 = {p: '000', n: '111', P: '000', N: '111'};
+    xclude = {'hp':'111', 'Hp':'111', 'ln': '000', 'Ln': '000', 'nh':'111', 'Nh':'111', 'pl': '000', 'Pl':'000'};
+
+    atext = text.split('');
+    //if (atext.length !== 2) { return genBrick(['xxx'], extra, times); }
+
+    tmp0 = x4[atext[1]];
+    tmp1 = x1[atext[1]];
+    if (tmp1 === undefined) {
+        tmp2 = x2[atext[1]];
+        if (tmp2 === undefined) {
+            // unknown
+            return genBrick(['xxx'], extra, times);
+        } else {
+            tmp3 = y1[atext[0]];
+            if (tmp3 === undefined) {
+                // unknown
+                return genBrick(['xxx'], extra, times);
+            }
+            // soft curves
+            return genBrick([tmp3 + 'm' + tmp2 + y2[atext[0]] + x3[atext[1]], tmp0], extra, times);
+        }
+    } else {
+        tmp4 = xclude[text];
+        if (tmp4 !== undefined) {
+            tmp1 = tmp4;
+        }
+        // sharp curves
+        tmp2 = x5[atext[1]];
+        if (tmp2 === undefined) {
+            // hlHL
+            return genBrick([tmp1, tmp0], extra, times);
+        } else {
+            // pnPN
+            return genBrick([tmp1, tmp0, tmp2, x6[atext[1]]], extra, times);
+        }
+    }
+}
+
+module.exports = genWaveBrick;
+
+},{"./gen-brick":6}],9:[function(require,module,exports){
+'use strict';
+
+var jsonmlParse = require('./create-element');
+
+function insertSVGTemplateAssign (index, parent) {
+    var node, e;
+    // cleanup
+    while (parent.childNodes.length) {
+        parent.removeChild(parent.childNodes[0]);
+    }
+    e =
+    ['svg', {id: 'svgcontent_' + index, xmlns:'http://www.w3.org/2000/svg', 'xmlns:xlink':'http://www.w3.org/1999/xlink', overflow:'hidden'},
+        ['style', '.pinname {font-size:12px; font-style:normal; font-variant:normal; font-weight:500; font-stretch:normal; text-align:center; text-anchor:end; font-family:Helvetica} .wirename {font-size:12px; font-style:normal; font-variant:normal; font-weight:500; font-stretch:normal; text-align:center; text-anchor:start; font-family:Helvetica} .wirename:hover {fill:blue} .gate {color:#000; fill:#ffc; fill-opacity: 1;stroke:#000; stroke-width:1; stroke-opacity:1} .gate:hover {fill:red !important; } .wire {fill:none; stroke:#000; stroke-width:1; stroke-opacity:1} .grid {fill:#fff; fill-opacity:1; stroke:none}']
+    ];
+    node = jsonmlParse(e);
+    parent.insertBefore(node, null);
+}
+
+module.exports = insertSVGTemplateAssign;
+
+/* eslint-env browser */
+
+},{"./create-element":2}],10:[function(require,module,exports){
+'use strict';
+
+var jsonmlParse = require('./create-element'),
+    waveSkin = require('./wave-skin');
+
+function insertSVGTemplate (index, parent, source, lane) {
+    var node, first, e;
+
+    // cleanup
+    while (parent.childNodes.length) {
+        parent.removeChild(parent.childNodes[0]);
+    }
+
+    for (first in waveSkin) { break; }
+
+    e = waveSkin.default || waveSkin[first];
+
+    if (source && source.config && source.config.skin && waveSkin[source.config.skin]) {
+        e = waveSkin[source.config.skin];
+    }
+
+    if (index === 0) {
+        lane.xs     = Number(e[3][1][2][1].width);
+        lane.ys     = Number(e[3][1][2][1].height);
+        lane.xlabel = Number(e[3][1][2][1].x);
+        lane.ym     = Number(e[3][1][2][1].y);
+    } else {
+        e =
+        ['svg', {id: 'svg', xmlns: 'http://www.w3.org/2000/svg', 'xmlns:xlink': 'http://www.w3.org/1999/xlink', height: '0'},
+            ['g', {id: 'waves'},
+                ['g', {id: 'lanes'}],
+                ['g', {id: 'groups'}]
+            ]
+        ];
+    }
+
+    e[e.length - 1][1].id    = 'waves_'  + index;
+    e[e.length - 1][2][1].id = 'lanes_'  + index;
+    e[e.length - 1][3][1].id = 'groups_' + index;
+    e[1].id = 'svgcontent_' + index;
+    e[1].height = 0;
+
+    node = jsonmlParse(e);
+    parent.insertBefore(node, null);
+}
+
+module.exports = insertSVGTemplate;
+
+/* eslint-env browser */
+
+},{"./create-element":2,"./wave-skin":30}],11:[function(require,module,exports){
+'use strict';
+
+//attribute name mapping
+var ATTRMAP = {
+        rowspan : 'rowSpan',
+        colspan : 'colSpan',
+        cellpadding : 'cellPadding',
+        cellspacing : 'cellSpacing',
+        tabindex : 'tabIndex',
+        accesskey : 'accessKey',
+        hidefocus : 'hideFocus',
+        usemap : 'useMap',
+        maxlength : 'maxLength',
+        readonly : 'readOnly',
+        contenteditable : 'contentEditable'
+        // can add more attributes here as needed
+    },
+    // attribute duplicates
+    ATTRDUP = {
+        enctype : 'encoding',
+        onscroll : 'DOMMouseScroll'
+        // can add more attributes here as needed
+    },
+    // event names
+    EVTS = (function (/*string[]*/ names) {
+        var evts = {}, evt;
+        while (names.length) {
+            evt = names.shift();
+            evts['on' + evt.toLowerCase()] = evt;
+        }
+        return evts;
+    })('blur,change,click,dblclick,error,focus,keydown,keypress,keyup,load,mousedown,mouseenter,mouseleave,mousemove,mouseout,mouseover,mouseup,resize,scroll,select,submit,unload'.split(','));
+
+/*void*/ function addHandler(/*DOM*/ elem, /*string*/ name, /*function*/ handler) {
+    if (typeof handler === 'string') {
+        handler = new Function('event', handler);
+    }
+
+    if (typeof handler !== 'function') {
+        return;
+    }
+
+    elem[name] = handler;
+}
+
+/*DOM*/ function addAttributes(/*DOM*/ elem, /*object*/ attr) {
+    if (attr.name && document.attachEvent) {
+        try {
+            // IE fix for not being able to programatically change the name attribute
+            var alt = document.createElement('<' + elem.tagName + ' name=\'' + attr.name + '\'>');
+            // fix for Opera 8.5 and Netscape 7.1 creating malformed elements
+            if (elem.tagName === alt.tagName) {
+                elem = alt;
+            }
+        } catch (ex) {
+            console.log(ex);
+        }
+    }
+
+    // for each attributeName
+    for (var name in attr) {
+        if (attr.hasOwnProperty(name)) {
+            // attributeValue
+            var value = attr[name];
+            if (
+                name &&
+                value !== null &&
+                typeof value !== 'undefined'
+            ) {
+                name = ATTRMAP[name.toLowerCase()] || name;
+                if (name === 'style') {
+                    if (typeof elem.style.cssText !== 'undefined') {
+                        elem.style.cssText = value;
+                    } else {
+                        elem.style = value;
+                    }
+//                    } else if (name === 'class') {
+//                        elem.className = value;
+//                        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//                        elem.setAttribute(name, value);
+//                        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                } else if (EVTS[name]) {
+                    addHandler(elem, name, value);
+
+                    // also set duplicated events
+                    if (ATTRDUP[name]) {
+                        addHandler(elem, ATTRDUP[name], value);
+                    }
+                } else if (
+                     typeof value === 'string' ||
+                     typeof value === 'number' ||
+                     typeof value === 'boolean'
+                ) {
+                    elem.setAttribute(name, value);
+
+                    // also set duplicated attributes
+                    if (ATTRDUP[name]) {
+                        elem.setAttribute(ATTRDUP[name], value);
+                    }
+                } else {
+
+                    // allow direct setting of complex properties
+                    elem[name] = value;
+
+                    // also set duplicated attributes
+                    if (ATTRDUP[name]) {
+                        elem[ATTRDUP[name]] = value;
+                    }
+                }
+            }
+        }
+    }
+    return elem;
+}
+
+module.exports = addAttributes;
+
+/* eslint-env browser */
+/* eslint no-new-func:0 */
+
+},{}],12:[function(require,module,exports){
+'use strict';
+
+/*void*/ function appendChild(/*DOM*/ elem, /*DOM*/ child) {
+    if (child) {
+        // if (
+        //     elem.tagName &&
+        //     elem.tagName.toLowerCase() === 'table' &&
+        //     elem.tBodies
+        // ) {
+        //     if (!child.tagName) {
+        //         // must unwrap documentFragment for tables
+        //         if (child.nodeType === 11) {
+        //             while (child.firstChild) {
+        //                 appendChild(elem, child.removeChild(child.firstChild));
+        //             }
+        //         }
+        //         return;
+        //     }
+        //     // in IE must explicitly nest TRs in TBODY
+        //     var childTag = child.tagName.toLowerCase();// child tagName
+        //     if (childTag && childTag !== "tbody" && childTag !== "thead") {
+        //         // insert in last tbody
+        //         var tBody = elem.tBodies.length > 0 ? elem.tBodies[elem.tBodies.length - 1] : null;
+        //         if (!tBody) {
+        //             tBody = document.createElement(childTag === "th" ? "thead" : "tbody");
+        //             elem.appendChild(tBody);
+        //         }
+        //         tBody.appendChild(child);
+        //     } else if (elem.canHaveChildren !== false) {
+        //         elem.appendChild(child);
+        //     }
+        // } else
+        if (
+            elem.tagName &&
+            elem.tagName.toLowerCase() === 'style' &&
+            document.createStyleSheet
+        ) {
+            // IE requires this interface for styles
+            elem.cssText = child;
+        } else
+
+        if (elem.canHaveChildren !== false) {
+            elem.appendChild(child);
+        }
+        // else if (
+        //     elem.tagName &&
+        //     elem.tagName.toLowerCase() === 'object' &&
+        //     child.tagName &&
+        //     child.tagName.toLowerCase() === 'param'
+        // ) {
+        //         // IE-only path
+        //     try {
+        //         elem.appendChild(child);
+        //     } catch (ex1) {
+        //
+        //     }
+        //     try {
+        //         if (elem.object) {
+        //             elem.object[child.name] = child.value;
+        //         }
+        //     } catch (ex2) {}
+        // }
+    }
+}
+
+module.exports = appendChild;
+
+/* eslint-env browser */
+
+},{}],13:[function(require,module,exports){
+'use strict';
+
+var trimWhitespace = require('./jsonml-trim-whitespace');
+
+/*DOM*/ function hydrate(/*string*/ value) {
+    var wrapper = document.createElement('div');
+    wrapper.innerHTML = value;
+
+    // trim extraneous whitespace
+    trimWhitespace(wrapper);
+
+    // eliminate wrapper for single nodes
+    if (wrapper.childNodes.length === 1) {
+        return wrapper.firstChild;
+    }
+
+    // create a document fragment to hold elements
+    var frag = document.createDocumentFragment ?
+        document.createDocumentFragment() :
+        document.createElement('');
+
+    while (wrapper.firstChild) {
+        frag.appendChild(wrapper.firstChild);
+    }
+    return frag;
+}
+
+module.exports = hydrate;
+
+/* eslint-env browser */
+
+},{"./jsonml-trim-whitespace":15}],14:[function(require,module,exports){
+'use strict';
+
+var hydrate = require('./jsonml-hydrate'),
+    appendChild = require('./jsonml-append-child'),
+    addAttributes = require('./jsonml-add-attributes'),
+    trimWhitespace = require('./jsonml-trim-whitespace');
+
+var patch,
+    parse,
+    onerror = null;
+
+/*bool*/ function isElement (/*JsonML*/ jml) {
+    return (jml instanceof Array) && (typeof jml[0] === 'string');
+}
+
+/*DOM*/ function onError (/*Error*/ ex, /*JsonML*/ jml, /*function*/ filter) {
+    return document.createTextNode('[' + ex + '-' + filter + ']');
+}
+
+patch = /*DOM*/ function (/*DOM*/ elem, /*JsonML*/ jml, /*function*/ filter) {
+    for (var i = 1; i < jml.length; i++) {
+
+        if (
+            (jml[i] instanceof Array) ||
+            (typeof jml[i] === 'string')
+        ) {
+            // append children
+            appendChild(elem, parse(jml[i], filter));
+        // } else if (jml[i] instanceof Unparsed) {
+        } else if (
+            jml[i] &&
+            jml[i].value
+        ) {
+            appendChild(elem, hydrate(jml[i].value));
+        } else if (
+            (typeof jml[i] === 'object') &&
+            (jml[i] !== null) &&
+            elem.nodeType === 1
+        ) {
+            // add attributes
+            elem = addAttributes(elem, jml[i]);
+        }
+    }
+
+    return elem;
+};
+
+parse = /*DOM*/ function (/*JsonML*/ jml, /*function*/ filter) {
+    try {
+        if (!jml) {
+            return null;
+        }
+
+        if (typeof jml === 'string') {
+            return document.createTextNode(jml);
+        }
+
+        // if (jml instanceof Unparsed) {
+        if (jml && jml.value) {
+            return hydrate(jml.value);
+        }
+
+        if (!isElement(jml)) {
+            throw new SyntaxError('invalid JsonML');
+        }
+
+        var tagName = jml[0]; // tagName
+        if (!tagName) {
+            // correctly handle a list of JsonML trees
+            // create a document fragment to hold elements
+            var frag = document.createDocumentFragment ?
+                document.createDocumentFragment() :
+                document.createElement('');
+            for (var i = 2; i < jml.length; i++) {
+                appendChild(frag, parse(jml[i], filter));
+            }
+
+            // trim extraneous whitespace
+            trimWhitespace(frag);
+
+            // eliminate wrapper for single nodes
+            if (frag.childNodes.length === 1) {
+                return frag.firstChild;
+            }
+            return frag;
+        }
+
+        if (
+            tagName.toLowerCase() === 'style' &&
+            document.createStyleSheet
+        ) {
+            // IE requires this interface for styles
+            patch(document.createStyleSheet(), jml, filter);
+            // in IE styles are effective immediately
+            return null;
+        }
+        //!!!!!!!!!!!!!!
+        var svgns = 'http://www.w3.org/2000/svg';
+        var elem;
+        //          elem = patch(document.createElement(tagName), jml, filter);
+
+        elem = patch(document.createElementNS(svgns, tagName), jml, filter);
+
+        //!!!!!!!!!!!!!!
+        // trim extraneous whitespace
+        trimWhitespace(elem);
+        // return (elem && (typeof filter === 'function')) ? filter(elem) : elem;
+        return elem;
+    } catch (ex) {
+        try {
+            // handle error with complete context
+            var err = (typeof onerror === 'function') ? onerror : onError;
+            return err(ex, jml, filter);
+        } catch (ex2) {
+            return document.createTextNode('[' + ex2 + ']');
+        }
+    }
+};
+
+module.exports = parse;
+
+/* eslint-env browser */
+/* eslint yoda:1 */
+
+},{"./jsonml-add-attributes":11,"./jsonml-append-child":12,"./jsonml-hydrate":13,"./jsonml-trim-whitespace":15}],15:[function(require,module,exports){
+'use strict';
+
+/*bool*/ function isWhitespace(/*DOM*/ node) {
+    return node &&
+        (node.nodeType === 3) &&
+        (!node.nodeValue || !/\S/.exec(node.nodeValue));
+}
+
+/*void*/ function trimWhitespace(/*DOM*/ elem) {
+    if (elem) {
+        while (isWhitespace(elem.firstChild)) {
+            // trim leading whitespace text nodes
+            elem.removeChild(elem.firstChild);
+        }
+        while (isWhitespace(elem.lastChild)) {
+            // trim trailing whitespace text nodes
+            elem.removeChild(elem.lastChild);
+        }
+    }
+}
+
+module.exports = trimWhitespace;
+
+/* eslint-env browser */
+
+},{}],16:[function(require,module,exports){
+'use strict';
+
+var lane = {
+    xs     : 20,    // tmpgraphlane0.width
+    ys     : 20,    // tmpgraphlane0.height
+    xg     : 120,   // tmpgraphlane0.x
+    // yg     : 0,     // head gap
+    yh0    : 0,     // head gap title
+    yh1    : 0,     // head gap
+    yf0    : 0,     // foot gap
+    yf1    : 0,     // foot gap
+    y0     : 5,     // tmpgraphlane0.y
+    yo     : 30,    // tmpgraphlane1.y - y0;
+    tgo    : -10,   // tmptextlane0.x - xg;
+    ym     : 15,    // tmptextlane0.y - y0
+    xlabel : 6,     // tmptextlabel.x - xg;
+    xmax   : 1,
+    scale  : 1,
+    head   : {},
+    foot   : {}
+};
+
+module.exports = lane;
+
+},{}],17:[function(require,module,exports){
+'use strict';
+
+function parseConfig (source, lane) {
+    var hscale;
+
+    function tonumber (x) {
+        return x > 0 ? Math.round(x) : 1;
+    }
+
+    lane.hscale = 1;
+    if (lane.hscale0) {
+        lane.hscale = lane.hscale0;
+    }
+    if (source && source.config && source.config.hscale) {
+        hscale = Math.round(tonumber(source.config.hscale));
+        if (hscale > 0) {
+            if (hscale > 100) {
+                hscale = 100;
+            }
+            lane.hscale = hscale;
+        }
+    }
+    lane.yh0 = 0;
+    lane.yh1 = 0;
+    lane.head = source.head;
+    if (source && source.head) {
+        if (source.head.tick || source.head.tick === 0) { lane.yh0 = 20; }
+        if (source.head.tock || source.head.tock === 0) { lane.yh0 = 20; }
+        if (source.head.text) { lane.yh1 = 46; lane.head.text = source.head.text; }
+    }
+    lane.yf0 = 0;
+    lane.yf1 = 0;
+    lane.foot = source.foot;
+    if (source && source.foot) {
+        if (source.foot.tick || source.foot.tick === 0) { lane.yf0 = 20; }
+        if (source.foot.tock || source.foot.tock === 0) { lane.yf0 = 20; }
+        if (source.foot.text) { lane.yf1 = 46; lane.foot.text = source.foot.text; }
+    }
+}
+
+module.exports = parseConfig;
+
+},{}],18:[function(require,module,exports){
+'use strict';
+
+var genFirstWaveBrick = require('./gen-first-wave-brick'),
+    genWaveBrick = require('./gen-wave-brick');
+
+function parseWaveLane (text, extra, lane) {
+    var Repeats, Top, Next, Stack = [], R = [], i;
+
+    Stack = text.split('');
+    Next  = Stack.shift();
+
+    Repeats = 1;
+    while (Stack[0] === '.' || Stack[0] === '|') { // repeaters parser
+        Stack.shift();
+        Repeats += 1;
+    }
+    R = R.concat(genFirstWaveBrick(Next, extra, Repeats));
+
+    while (Stack.length) {
+        Top = Next;
+        Next = Stack.shift();
+        Repeats = 1;
+        while (Stack[0] === '.' || Stack[0] === '|') { // repeaters parser
+            Stack.shift();
+            Repeats += 1;
+        }
+        R = R.concat(genWaveBrick((Top + Next), extra, Repeats));
+    }
+    for (i = 0; i < lane.phase; i += 1) {
+        R.shift();
+    }
+    return R;
+}
+
+module.exports = parseWaveLane;
+
+},{"./gen-first-wave-brick":7,"./gen-wave-brick":8}],19:[function(require,module,exports){
+'use strict';
+
+var parseWaveLane = require('./parse-wave-lane');
+
+function data_extract (e) {
+    var tmp;
+
+    tmp = e.data;
+    if (tmp === undefined) { return null; }
+    if (typeof (tmp) === 'string') { return tmp.split(' '); }
+    return tmp;
+}
+
+function parseWaveLanes (sig, lane) {
+    var x,
+        sigx,
+        content = [],
+        tmp0 = [];
+
+    for (x in sig) {
+        sigx = sig[x];
+        lane.period = sigx.period ? sigx.period    : 1;
+        lane.phase  = sigx.phase  ? sigx.phase * 2 : 0;
+        content.push([]);
+        tmp0[0] = sigx.name  || ' ';
+        tmp0[1] = sigx.phase || 0;
+        content[content.length - 1][0] = tmp0.slice(0);
+        content[content.length - 1][1] = sigx.wave ? parseWaveLane(sigx.wave, lane.period * lane.hscale - 1, lane) : null;
+        content[content.length - 1][2] = data_extract(sigx);
+    }
+    return content;
+}
+
+module.exports = parseWaveLanes;
+
+},{"./parse-wave-lane":18}],20:[function(require,module,exports){
+'use strict';
+
+var eva = require('./eva'),
+    lane = require('./lane'),
+    appendSaveAsDialog = require('./append-save-as-dialog'),
+    renderWaveForm = require('./render-wave-form');
+
+function processAll () {
+    var points,
+        i,
+        index,
+        node0;
+        // node1;
+
+    // first pass
+    index = 0; // actual number of valid anchor
+    points = document.getElementsByTagName('SCRIPT');
+    for (i = 0; i < points.length; i++) {
+        if (points.item(i).type && points.item(i).type === 'WaveDrom') {
+            points.item(i).setAttribute('id', 'InputJSON_' + index);
+
+            node0 = document.createElement('div');
+            //			node0.className += 'WaveDrom_Display_' + index;
+            node0.id = 'WaveDrom_Display_' + index;
+            points.item(i).parentNode.insertBefore(node0, points.item(i));
+            // WaveDrom.InsertSVGTemplate(i, node0);
+            index += 1;
+        }
+    }
+    // second pass
+    for (i = 0; i < index; i += 1) {
+        renderWaveForm(i, eva('InputJSON_' + i), 'WaveDrom_Display_', lane);
+        appendSaveAsDialog(i, 'WaveDrom_Display_');
+    }
+    // add styles
+    document.head.innerHTML += '<style type="text/css">div.wavedromMenu{position:fixed;border:solid 1pt#CCCCCC;background-color:white;box-shadow:0px 10px 20px #808080;cursor:default;margin:0px;padding:0px;}div.wavedromMenu>ul{margin:0px;padding:0px;}div.wavedromMenu>ul>li{padding:2px 10px;list-style:none;}div.wavedromMenu>ul>li:hover{background-color:#b5d5ff;}</style>';
+}
+
+module.exports = processAll;
+
+/* eslint-env browser */
+
+},{"./append-save-as-dialog":1,"./eva":4,"./lane":16,"./render-wave-form":27}],21:[function(require,module,exports){
+'use strict';
+
+function rec (tmp, state) {
+    var i, name, old = {}, delta = {'x':10};
+    if (typeof tmp[0] === 'string' || typeof tmp[0] === 'number') {
+        name = tmp[0];
+        delta.x = 25;
+    }
+    state.x += delta.x;
+    for (i = 0; i < tmp.length; i++) {
+        if (typeof tmp[i] === 'object') {
+            if (Object.prototype.toString.call(tmp[i]) === '[object Array]') {
+                old.y = state.y;
+                state = rec(tmp[i], state);
+                state.groups.push({'x':state.xx, 'y':old.y, 'height':(state.y - old.y), 'name':state.name});
+            } else {
+                state.lanes.push(tmp[i]);
+                state.width.push(state.x);
+                state.y += 1;
+            }
+        }
+    }
+    state.xx = state.x;
+    state.x -= delta.x;
+    state.name = name;
+    return state;
+}
+
+module.exports = rec;
+
+},{}],22:[function(require,module,exports){
+'use strict';
+
+var jsonmlParse = require('./create-element');
+
+ function renderArcs (root, source, index, top, lane) {
+     var gg,
+         i,
+         k,
+         text,
+         Stack = [],
+         Edge = {words: [], from: 0, shape: '', to: 0, label: ''},
+         Events = {},
+         pos,
+         eventname,
+         // labeltext,
+         label,
+         underlabel,
+         from,
+         to,
+         gmark,
+         lwidth,
+         svgns = 'http://www.w3.org/2000/svg',
+         xmlns = 'http://www.w3.org/XML/1998/namespace';
+
+     function t1 () {
+         gmark = document.createElementNS(svgns, 'path');
+         gmark.id = ('gmark_' + Edge.from + '_' + Edge.to);
+         gmark.setAttribute('d', 'M ' + from.x + ',' + from.y + ' ' + to.x   + ',' + to.y);
+         gmark.setAttribute('style', 'fill:none;stroke:#00F;stroke-width:1');
+         gg.insertBefore(gmark, null);
+     }
+
+     if (source) {
+         for (i in source) {
+             lane.period = source[i].period ? source[i].period    : 1;
+             lane.phase  = source[i].phase  ? source[i].phase * 2 : 0;
+             text = source[i].node;
+             if (text) {
+                 Stack = text.split('');
+                 pos = 0;
+                 while (Stack.length) {
+                     eventname = Stack.shift();
+                     if (eventname !== '.') {
+                         Events[eventname] = {
+                             'x' : lane.xs * (2 * pos * lane.period * lane.hscale - lane.phase) + lane.xlabel,
+                             'y' : i * lane.yo + lane.y0 + lane.ys * 0.5
+                         };
+                     }
+                     pos += 1;
+                 }
+             }
+         }
+         gg = document.createElementNS(svgns, 'g');
+         gg.id = 'wavearcs_' + index;
+         root.insertBefore(gg, null);
+         if (top.edge) {
+             for (i in top.edge) {
+                 Edge.words = top.edge[i].split(' ');
+                 Edge.label = top.edge[i].substring(Edge.words[0].length);
+                 Edge.label = Edge.label.substring(1);
+                 Edge.from  = Edge.words[0].substr(0, 1);
+                 Edge.to    = Edge.words[0].substr(-1, 1);
+                 Edge.shape = Edge.words[0].slice(1, -1);
+                 from  = Events[Edge.from];
+                 to    = Events[Edge.to];
+                 t1();
+                 if (Edge.label) {
+                     label = jsonmlParse([
+                         'text',
+                         {
+                             style: 'font-size:10px;',
+                             'text-anchor': 'middle'
+                         },
+                         Edge.label + ''
+                     ]);
+                     label.setAttributeNS(xmlns, 'xml:space', 'preserve');
+                     underlabel = jsonmlParse([
+                         'rect',
+                         {
+                             height: 9,
+                             style: 'fill:#FFF;'
+                         }
+                     ]);
+                     gg.insertBefore(underlabel, null);
+                     gg.insertBefore(label, null);
+
+                     lwidth = label.getBBox().width;
+
+                     underlabel.setAttribute('width', lwidth);
+                 }
+                 var dx = to.x - from.x;
+                 var dy = to.y - from.y;
+                 var lx = ((from.x + to.x) / 2);
+                 var ly = ((from.y + to.y) / 2);
+                 switch (Edge.shape) {
+                     case '-'  : {
+                         break;
+                     }
+                     case '~'  : {
+                         gmark.setAttribute('d', 'M ' + from.x + ',' + from.y + ' c ' + (0.7 * dx) + ', 0 ' + (0.3 * dx) + ', ' + dy + ' ' + dx + ', ' + dy);
+                         break;
+                     }
+                     case '-~' : {
+                         gmark.setAttribute('d', 'M ' + from.x + ',' + from.y + ' c ' + (0.7 * dx) + ', 0 ' +         dx + ', ' + dy + ' ' + dx + ', ' + dy);
+                         if (Edge.label) { lx = (from.x + (to.x - from.x) * 0.75); }
+                         break;
+                     }
+                     case '~-' : {
+                         gmark.setAttribute('d', 'M ' + from.x + ',' + from.y + ' c ' + 0          + ', 0 ' + (0.3 * dx) + ', ' + dy + ' ' + dx + ', ' + dy);
+                         if (Edge.label) { lx = (from.x + (to.x - from.x) * 0.25); }
+                         break;
+                     }
+                     case '-|' : {
+                         gmark.setAttribute('d', 'm ' + from.x + ',' + from.y + ' ' + dx + ',0 0,' + dy);
+                         if (Edge.label) { lx = to.x; }
+                         break;
+                     }
+                     case '|-' : {
+                         gmark.setAttribute('d', 'm ' + from.x + ',' + from.y + ' 0,' + dy + ' ' + dx + ',0');
+                         if (Edge.label) { lx = from.x; }
+                         break;
+                     }
+                     case '-|-': {
+                         gmark.setAttribute('d', 'm ' + from.x + ',' + from.y + ' ' + (dx / 2) + ',0 0,' + dy + ' ' + (dx / 2) + ',0');
+                         break;
+                     }
+                     case '->' : {
+                         gmark.setAttribute('style', 'marker-end:url(#arrowhead);stroke:#0041c4;stroke-width:1;fill:none');
+                         break;
+                     }
+                     case '~>' : {
+                         gmark.setAttribute('style', 'marker-end:url(#arrowhead);stroke:#0041c4;stroke-width:1;fill:none');
+                         gmark.setAttribute('d', 'M ' + from.x + ',' + from.y + ' ' + 'c ' + (0.7 * dx) + ', 0 ' + 0.3 * dx + ', ' + dy + ' ' + dx + ', ' + dy);
+                         break;
+                     }
+                     case '-~>': {
+                         gmark.setAttribute('style', 'marker-end:url(#arrowhead);stroke:#0041c4;stroke-width:1;fill:none');
+                         gmark.setAttribute('d', 'M ' + from.x + ',' + from.y + ' ' + 'c ' + (0.7 * dx) + ', 0 ' +     dx + ', ' + dy + ' ' + dx + ', ' + dy);
+                         if (Edge.label) { lx = (from.x + (to.x - from.x) * 0.75); }
+                         break;
+                     }
+                     case '~->': {
+                         gmark.setAttribute('style', 'marker-end:url(#arrowhead);stroke:#0041c4;stroke-width:1;fill:none');
+                         gmark.setAttribute('d', 'M ' + from.x + ',' + from.y + ' ' + 'c ' + 0      + ', 0 ' + (0.3 * dx) + ', ' + dy + ' ' + dx + ', ' + dy);
+                         if (Edge.label) { lx = (from.x + (to.x - from.x) * 0.25); }
+                         break;
+                     }
+                     case '-|>' : {
+                         gmark.setAttribute('style', 'marker-end:url(#arrowhead);stroke:#0041c4;stroke-width:1;fill:none');
+                         gmark.setAttribute('d', 'm ' + from.x + ',' + from.y + ' ' + dx + ',0 0,' + dy);
+                         if (Edge.label) { lx = to.x; }
+                         break;
+                     }
+                     case '|->' : {
+                         gmark.setAttribute('style', 'marker-end:url(#arrowhead);stroke:#0041c4;stroke-width:1;fill:none');
+                         gmark.setAttribute('d', 'm ' + from.x + ',' + from.y + ' 0,' + dy + ' ' + dx + ',0');
+                         if (Edge.label) { lx = from.x; }
+                         break;
+                     }
+                     case '-|->': {
+                         gmark.setAttribute('style', 'marker-end:url(#arrowhead);stroke:#0041c4;stroke-width:1;fill:none');
+                         gmark.setAttribute('d', 'm ' + from.x + ',' + from.y + ' ' + (dx / 2) + ',0 0,' + dy + ' ' + (dx / 2) + ',0');
+                         break;
+                     }
+                     case '<->' : {
+                         gmark.setAttribute('style', 'marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#0041c4;stroke-width:1;fill:none');
+                         break;
+                     }
+                     case '<~>' : {
+                         gmark.setAttribute('style', 'marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#0041c4;stroke-width:1;fill:none');
+                         gmark.setAttribute('d', 'M ' + from.x + ',' + from.y + ' ' + 'c ' + (0.7 * dx) + ', 0 ' + (0.3 * dx) + ', ' + dy + ' ' + dx + ', ' + dy);
+                         break;
+                     }
+                     case '<-~>': {
+                         gmark.setAttribute('style', 'marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#0041c4;stroke-width:1;fill:none');
+                         gmark.setAttribute('d', 'M ' + from.x + ',' + from.y + ' ' + 'c ' + (0.7 * dx) + ', 0 ' +     dx + ', ' + dy + ' ' + dx + ', ' + dy);
+                         if (Edge.label) { lx = (from.x + (to.x - from.x) * 0.75); }
+                         break;
+                     }
+                     case '<-|>' : {
+                         gmark.setAttribute('style', 'marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#0041c4;stroke-width:1;fill:none');
+                         gmark.setAttribute('d', 'm ' + from.x + ',' + from.y + ' ' + dx + ',0 0,' + dy);
+                         if (Edge.label) { lx = to.x; }
+                         break;
+                     }
+                     case '<-|->': {
+                         gmark.setAttribute('style', 'marker-end:url(#arrowhead);marker-start:url(#arrowtail);stroke:#0041c4;stroke-width:1;fill:none');
+                         gmark.setAttribute('d', 'm ' + from.x + ',' + from.y + ' ' + (dx / 2) + ',0 0,' + dy + ' ' + (dx / 2) + ',0');
+                         break;
+                     }
+                     default   : { gmark.setAttribute('style', 'fill:none;stroke:#F00;stroke-width:1'); }
+                 }
+                 if (Edge.label) {
+                     label.setAttribute('x', lx);
+                     label.setAttribute('y', ly + 3);
+                     underlabel.setAttribute('x', lx - lwidth / 2);
+                     underlabel.setAttribute('y', ly - 5);
+                 }
+             }
+         }
+         for (k in Events) {
+             if (k === k.toLowerCase()) {
+                 if (Events[k].x > 0) {
+                     underlabel = jsonmlParse([
+                         'rect',
+                         {
+                             y: Events[k].y - 4,
+                             height: 8,
+                             style: 'fill:#FFF;'
+                         }
+                     ]);
+                     gg.insertBefore(underlabel, null);
+                     label = jsonmlParse([
+                         'text',
+                         {
+                             style: 'font-size:8px;',
+                             x: Events[k].x,
+                             y: Events[k].y + 2,
+                             'text-anchor': 'middle'
+                         },
+                         (k + '')
+                     ]);
+                     gg.insertBefore(label, null);
+
+                     lwidth = label.getBBox().width + 2;
+
+                     underlabel.setAttribute('x', Events[k].x - lwidth / 2);
+                     underlabel.setAttribute('width', lwidth);
+                 }
+             }
+         }
+     }
+ }
+
+module.exports = renderArcs;
+
+/* eslint-env browser */
+
+},{"./create-element":2}],23:[function(require,module,exports){
+'use strict';
+
+var jsonmlParse = require('./create-element');
+
+function render (tree, state) {
+    var y, i, ilen;
+
+    state.xmax = Math.max(state.xmax, state.x);
+    y = state.y;
+    ilen = tree.length;
+    for (i = 1; i < ilen; i++) {
+        if (Object.prototype.toString.call(tree[i]) === '[object Array]') {
+            state = render(tree[i], {x: (state.x + 1), y: state.y, xmax: state.xmax});
+        } else {
+            tree[i] = {name:tree[i], x: (state.x + 1), y: state.y};
+            state.y += 2;
+        }
+    }
+    tree[0] = {name: tree[0], x: state.x, y: Math.round((y + (state.y - 2)) / 2)};
+    state.x--;
+    return state;
+}
+
+function draw_body (type, ymin, ymax) {
+    var e,
+        iecs,
+        circle = ' M 4,0 C 4,1.1 3.1,2 2,2 0.9,2 0,1.1 0,0 c 0,-1.1 0.9,-2 2,-2 1.1,0 2,0.9 2,2 z',
+        gates = {
+            '~':  'M -11,-6 -11,6 0,0 z m -5,6 5,0' + circle,
+            '=':  'M -11,-6 -11,6 0,0 z m -5,6 5,0',
+            '&':  'm -16,-10 5,0 c 6,0 11,4 11,10 0,6 -5,10 -11,10 l -5,0 z',
+            '~&': 'm -16,-10 5,0 c 6,0 11,4 11,10 0,6 -5,10 -11,10 l -5,0 z' + circle,
+            '|':  'm -18,-10 4,0 c 6,0 12,5 14,10 -2,5 -8,10 -14,10 l -4,0 c 2.5,-5 2.5,-15 0,-20 z',
+            '~|': 'm -18,-10 4,0 c 6,0 12,5 14,10 -2,5 -8,10 -14,10 l -4,0 c 2.5,-5 2.5,-15 0,-20 z' + circle,
+            '^':  'm -21,-10 c 1,3 2,6 2,10 m 0,0 c 0,4 -1,7 -2,10 m 3,-20 4,0 c 6,0 12,5 14,10 -2,5 -8,10 -14,10 l -4,0 c 1,-3 2,-6 2,-10 0,-4 -1,-7 -2,-10 z',
+            '~^': 'm -21,-10 c 1,3 2,6 2,10 m 0,0 c 0,4 -1,7 -2,10 m 3,-20 4,0 c 6,0 12,5 14,10 -2,5 -8,10 -14,10 l -4,0 c 1,-3 2,-6 2,-10 0,-4 -1,-7 -2,-10 z' + circle,
+            '+':  'm -8,5 0,-10 m -5,5 10,0 m 3,0 c 0,4.418278 -3.581722,8 -8,8 -4.418278,0 -8,-3.581722 -8,-8 0,-4.418278 3.581722,-8 8,-8 4.418278,0 8,3.581722 8,8 z',
+            '*':  'm -4,4 -8,-8 m 0,8 8,-8 m 4,4 c 0,4.418278 -3.581722,8 -8,8 -4.418278,0 -8,-3.581722 -8,-8 0,-4.418278 3.581722,-8 8,-8 4.418278,0 8,3.581722 8,8 z'
+        },
+        iec = {
+            BUF: 1, INV: 1, AND: '&',  NAND: '&',
+            OR: '\u22651', NOR: '\u22651', XOR: '=1', XNOR: '=1', box: ''
+        },
+        circled = { INV: 1, NAND: 1, NOR: 1, XNOR: 1 };
+
+    if (ymax === ymin) {
+        ymax = 4; ymin = -4;
+    }
+    e = gates[type];
+    iecs = iec[type];
+    if (e) {
+        return ['path', {class:'gate', d: e}];
+    } else {
+        if (iecs) {
+            return [
+                'g', [
+                    'path', {
+                        class:'gate',
+                        d: 'm -16,' + (ymin - 3) + ' 16,0 0,' + (ymax - ymin + 6) + ' -16,0 z' + (circled[type] ? circle : '')
+                    }], [
+                    'text', [
+                        'tspan', {x: '-14', y: '4', class: 'wirename'}, iecs + ''
+                    ]
+                ]
+            ];
+        } else {
+            return ['text', ['tspan', {x: '-14', y: '4', class: 'wirename'}, type + '']];
+        }
+    }
+}
+
+function draw_gate (spec) { // ['type', [x,y], [x,y] ... ]
+    var i,
+        ret = ['g'],
+        ys = [],
+        ymin,
+        ymax,
+        ilen = spec.length;
+
+    for (i = 2; i < ilen; i++) {
+        ys.push(spec[i][1]);
+    }
+
+    ymin = Math.min.apply(null, ys);
+    ymax = Math.max.apply(null, ys);
+
+    ret.push(
+        ['g',
+            {transform:'translate(16,0)'},
+            ['path', {
+                d: 'M  ' + spec[2][0] + ',' + ymin + ' ' + spec[2][0] + ',' + ymax,
+                class: 'wire'
+            }]
+        ]
+    );
+
+    for (i = 2; i < ilen; i++) {
+        ret.push(
+            ['g',
+                ['path',
+                    {
+                        d: 'm  ' + spec[i][0] + ',' + spec[i][1] + ' 16,0',
+                        class: 'wire'
+                    }
+                ]
+            ]
+        );
+    }
+    ret.push(
+        ['g', { transform: 'translate(' + spec[1][0] + ',' + spec[1][1] + ')' },
+            ['title', spec[0]],
+            draw_body(spec[0], ymin - spec[1][1], ymax - spec[1][1])
+        ]
+    );
+    return ret;
+}
+
+function draw_boxes (tree, xmax) {
+    var ret = ['g'], i, ilen, fx, fy, fname, spec = [];
+    if (Object.prototype.toString.call(tree) === '[object Array]') {
+        ilen = tree.length;
+        spec.push(tree[0].name);
+        spec.push([32 * (xmax - tree[0].x), 8 * tree[0].y]);
+        for (i = 1; i < ilen; i++) {
+            if (Object.prototype.toString.call(tree[i]) === '[object Array]') {
+                spec.push([32 * (xmax - tree[i][0].x), 8 * tree[i][0].y]);
+            } else {
+                spec.push([32 * (xmax - tree[i].x), 8 * tree[i].y]);
+            }
+        }
+        ret.push(draw_gate(spec));
+        for (i = 1; i < ilen; i++) {
+            ret.push(draw_boxes(tree[i], xmax));
+        }
+    } else {
+        fname = tree.name;
+        fx = 32 * (xmax - tree.x);
+        fy = 8 * tree.y;
+        ret.push(
+            ['g', { transform: 'translate(' + fx + ',' + fy + ')'},
+                ['title', fname],
+                ['path', {d:'M 2,0 a 2,2 0 1 1 -4,0 2,2 0 1 1 4,0 z'}],
+                ['text',
+                    ['tspan', {
+                        x:'-4', y:'4',
+                        class:'pinname'},
+                        fname
+                    ]
+                ]
+            ]
+        );
+    }
+    return ret;
+}
+
+function renderAssign (index, source) {
+    var tree,
+        state,
+        xmax,
+        svg = ['g'],
+        grid = ['g'],
+        svgcontent,
+        width,
+        height,
+        i,
+        ilen,
+        j,
+        jlen;
+
+    ilen = source.assign.length;
+    state = { x: 0, y: 2, xmax: 0 };
+    tree = source.assign;
+    for (i = 0; i < ilen; i++) {
+        state = render(tree[i], state);
+        state.x++;
+    }
+    xmax = state.xmax + 3;
+
+    for (i = 0; i < ilen; i++) {
+        svg.push(draw_boxes(tree[i], xmax));
+    }
+    width  = 32 * (xmax + 1) + 1;
+    height = 8 * (state.y + 1) - 7;
+    ilen = 4 * (xmax + 1);
+    jlen = state.y + 1;
+    for (i = 0; i <= ilen; i++) {
+        for (j = 0; j <= jlen; j++) {
+            grid.push(['rect', {
+                height: 1,
+                width: 1,
+                x: (i * 8 - 0.5),
+                y: (j * 8 - 0.5),
+                class: 'grid'
+            }]);
+        }
+    }
+    svgcontent = document.getElementById('svgcontent_' + index);
+    svgcontent.setAttribute('viewBox', '0 0 ' + width + ' ' + height);
+    svgcontent.setAttribute('width', width);
+    svgcontent.setAttribute('height', height);
+    svgcontent.insertBefore(jsonmlParse(['g', {transform:'translate(0.5, 0.5)'}, grid, svg]), null);
+}
+
+module.exports = renderAssign;
+
+/* eslint-env browser */
+
+},{"./create-element":2}],24:[function(require,module,exports){
+'use strict';
+
+function renderGaps (root, source, index, lane) {
+    var i, gg, g, b, pos, Stack = [], text,
+        svgns   = 'http://www.w3.org/2000/svg',
+        xlinkns = 'http://www.w3.org/1999/xlink';
+
+    if (source) {
+
+        gg = document.createElementNS(svgns, 'g');
+        gg.id = 'wavegaps_' + index;
+        //gg.setAttribute('transform', 'translate(' + lane.xg + ')');
+        root.insertBefore(gg, null);
+
+        for (i in source) {
+            lane.period = source[i].period ? source[i].period    : 1;
+            lane.phase  = source[i].phase  ? source[i].phase * 2 : 0;
+            g = document.createElementNS(svgns, 'g');
+            g.id = 'wavegap_' + i + '_' + index;
+            g.setAttribute('transform', 'translate(0,' + (lane.y0 + i * lane.yo) + ')');
+            gg.insertBefore(g, null);
+
+            text = source[i].wave;
+            if (text) {
+                Stack = text.split('');
+                pos = 0;
+                while (Stack.length) {
+                    if (Stack.shift() === '|') {
+                        b    = document.createElementNS(svgns, 'use');
+                        // b.id = 'guse_' + pos + '_' + i + '_' + index;
+                        b.setAttributeNS(xlinkns, 'xlink:href', '#gap');
+                        b.setAttribute('transform', 'translate(' + (lane.xs * ((2 * pos + 1) * lane.period * lane.hscale - lane.phase)) + ')');
+                        g.insertBefore(b, null);
+                    }
+                    pos += 1;
+                }
+            }
+        }
+    }
+}
+
+module.exports = renderGaps;
+
+/* eslint-env browser */
+
+},{}],25:[function(require,module,exports){
+'use strict';
+
+var jsonmlParse = require('./create-element');
+
+function renderGroups (root, groups, index, lane) {
+    var i, group, label, x, y, name, // g grouplabel
+        svgns = 'http://www.w3.org/2000/svg',
+        xmlns = 'http://www.w3.org/XML/1998/namespace';
+
+    for (i in groups) {
+        group = document.createElementNS(svgns, 'path');
+        group.id = ('group_' + i + '_' + index);
+        group.setAttribute('d', 'm ' + (groups[i].x + 0.5) + ',' + (groups[i].y * lane.yo + 3.5 + lane.yh0 + lane.yh1) + ' c -3,0 -5,2 -5,5 l 0,' + (groups[i].height * lane.yo - 16) + ' c 0,3 2,5 5,5');
+        group.setAttribute('style', 'stroke:#0041c4;stroke-width:1;fill:none');
+        root.insertBefore(group, null);
+
+        name = groups[i].name;
+        if (typeof name !== 'undefined') {
+            if (typeof name === 'number') { name += ''; }
+            x = (groups[i].x - 10);
+            y = (lane.yo * (groups[i].y + (groups[i].height / 2)) + lane.yh0 + lane.yh1);
+            label = jsonmlParse([
+                'text',
+                {
+                    x: x,
+                    y: y,
+                    'text-anchor': 'middle',
+                    // fill: '#0041c4',
+                    class: 'info',
+                    transform: 'rotate(270,' + x + ',' + y + ')'
+                },
+                name
+            ]);
+            label.setAttributeNS(xmlns, 'xml:space', 'preserve');
+            root.insertBefore(label, null);
+        }
+    }
+}
+
+module.exports = renderGroups;
+
+/* eslint-env browser */
+
+},{"./create-element":2}],26:[function(require,module,exports){
+'use strict';
+
+var jsonmlParse = require('./create-element');
+
+ function renderMarks (root, content, index, lane) {
+     var i, g, marks, mstep, mmstep, gy, xmlns; // svgns
+
+     function captext (cxt, anchor, y) {
+         var tmark;
+
+         if (cxt[anchor] && cxt[anchor].text) {
+             tmark = jsonmlParse([
+                 'text',
+                 {
+                     x: cxt.xmax * cxt.xs / 2,
+                     y: y,
+                     'text-anchor': 'middle',
+                     fill: '#000'
+                 }, cxt[anchor].text
+             ]);
+             tmark.setAttributeNS(xmlns, 'xml:space', 'preserve');
+             g.insertBefore(tmark, null);
+         }
+     }
+
+     function ticktock (cxt, ref1, ref2, x, dx, y, len) {
+         var tmark, step = 1, offset, dp = 0, val, L = [], tmp;
+
+         if (cxt[ref1] === undefined || cxt[ref1][ref2] === undefined) { return; }
+         val = cxt[ref1][ref2];
+         if (typeof val === 'string') {
+             val = val.split(' ');
+         } else if (typeof val === 'number' || typeof val === 'boolean') {
+             offset = Number(val);
+             val = [];
+             for (i = 0; i < len; i += 1) {
+                 val.push(i + offset);
+             }
+         }
+         if (Object.prototype.toString.call(val) === '[object Array]') {
+             if (val.length === 0) {
+                 return;
+             } else if (val.length === 1) {
+                 offset = Number(val[0]);
+                 if (isNaN(offset)) {
+                     L = val;
+                 } else {
+                     for (i = 0; i < len; i += 1) {
+                         L[i] = i + offset;
+                     }
+                 }
+             } else if (val.length === 2) {
+                 offset = Number(val[0]);
+                 step   = Number(val[1]);
+                 tmp = val[1].split('.');
+                 if ( tmp.length === 2 ) {
+                     dp = tmp[1].length;
+                 }
+                 if (isNaN(offset) || isNaN(step)) {
+                     L = val;
+                 } else {
+                     offset = step * offset;
+                     for (i = 0; i < len; i += 1) {
+                         L[i] = (step * i + offset).toFixed(dp);
+                     }
+                 }
+             } else {
+                 L = val;
+             }
+         } else {
+             return;
+         }
+         for (i = 0; i < len; i += 1) {
+             tmp = L[i];
+             if (typeof tmp === 'number') { tmp += ''; }
+             tmark = jsonmlParse([
+                 'text',
+                 {
+                     x: i * dx + x,
+                     y: y,
+                     'text-anchor': 'middle',
+                     //					fill: '#AAA'
+                     class: 'muted'
+                 }, tmp
+             ]);
+             tmark.setAttributeNS(xmlns, 'xml:space', 'preserve');
+             g.insertBefore(tmark, null);
+         }
+     }
+
+     // svgns = 'http://www.w3.org/2000/svg';
+     xmlns = 'http://www.w3.org/XML/1998/namespace';
+
+     mstep  = 2 * (lane.hscale);
+     mmstep = mstep * lane.xs;
+     marks  = lane.xmax / mstep;
+     gy     = content.length * lane.yo;
+
+     g = jsonmlParse(['g', {id: ('gmarks_' + index)}]);
+     root.insertBefore(g, root.firstChild);
+
+     for (i = 0; i < (marks + 1); i += 1) {
+         g.insertBefore(
+             jsonmlParse([
+                 'path',
+                 {
+                     id:    'gmark_' + i + '_' + index,
+                     d:     'm ' + (i * mmstep) + ',' + 0 + ' 0,' + gy,
+                     style: 'stroke:#888;stroke-width:0.5;stroke-dasharray:1,3'
+                 }
+             ]),
+             null
+         );
+     }
+
+     captext(lane, 'head', (lane.yh0 ? -33 : -13));
+     captext(lane, 'foot', gy + (lane.yf0 ? 45 : 25));
+
+     ticktock(lane, 'head', 'tick',          0, mmstep,      -5, marks + 1);
+     ticktock(lane, 'head', 'tock', mmstep / 2, mmstep,      -5, marks);
+     ticktock(lane, 'foot', 'tick',          0, mmstep, gy + 15, marks + 1);
+     ticktock(lane, 'foot', 'tock', mmstep / 2, mmstep, gy + 15, marks);
+ }
+
+module.exports = renderMarks;
+
+/* eslint-env browser */
+
+},{"./create-element":2}],27:[function(require,module,exports){
+'use strict';
+
+var rec = require('./rec'),
+    parseConfig = require('./parse-config'),
+    parseWaveLanes = require('./parse-wave-lanes'),
+    renderMarks = require('./render-marks'),
+    renderGaps = require('./render-gaps'),
+    renderGroups = require('./render-groups'),
+    renderWaveLane = require('./render-wave-lane'),
+    renderAssign = require('./render-assign'),
+    renderArcs = require('./render-arcs'),
+    insertSVGTemplate = require('./insert-svg-template'),
+    insertSVGTemplateAssign = require('./insert-svg-template-assign');
+
+function renderWaveForm (index, source, output, lane) {
+    var ret,
+    root, groups, svgcontent, content, width, height,
+    glengths, xmax = 0, i;
+
+    if (source.signal) {
+        insertSVGTemplate(index, document.getElementById(output + index), source, lane);
+        parseConfig(source, lane);
+        ret = rec(source.signal, {'x':0, 'y':0, 'xmax':0, 'width':[], 'lanes':[], 'groups':[]});
+        root          = document.getElementById('lanes_' + index);
+        groups        = document.getElementById('groups_' + index);
+        content  = parseWaveLanes(ret.lanes, lane);
+        glengths = renderWaveLane(root, content, index, lane);
+        for (i in glengths) {
+            xmax = Math.max(xmax, (glengths[i] + ret.width[i]));
+        }
+        renderMarks(root, content, index, lane);
+        renderArcs(root, ret.lanes, index, source, lane);
+        renderGaps(root, ret.lanes, index, lane);
+        renderGroups(groups, ret.groups, index, lane);
+        lane.xg = Math.ceil((xmax - lane.tgo) / lane.xs) * lane.xs;
+        width  = (lane.xg + (lane.xs * (lane.xmax + 1)));
+        height = (content.length * lane.yo +
+        lane.yh0 + lane.yh1 + lane.yf0 + lane.yf1);
+
+        svgcontent = document.getElementById('svgcontent_' + index);
+        svgcontent.setAttribute('viewBox', '0 0 ' + width + ' ' + height);
+        svgcontent.setAttribute('width', width);
+        svgcontent.setAttribute('height', height);
+        svgcontent.setAttribute('overflow', 'hidden');
+        root.setAttribute('transform', 'translate(' + (lane.xg + 0.5) + ', ' + ((lane.yh0 + lane.yh1) + 0.5) + ')');
+    } else if (source.assign) {
+        insertSVGTemplateAssign(index, document.getElementById(output + index), source);
+        renderAssign(index, source);
+    }
+}
+
+module.exports = renderWaveForm;
+
+/* eslint-env browser */
+
+},{"./insert-svg-template":10,"./insert-svg-template-assign":9,"./parse-config":17,"./parse-wave-lanes":19,"./rec":21,"./render-arcs":22,"./render-assign":23,"./render-gaps":24,"./render-groups":25,"./render-marks":26,"./render-wave-lane":28}],28:[function(require,module,exports){
+'use strict';
+
+var jsonmlParse = require('./create-element'),
+    findLaneMarkers = require('./find-lane-markers');
+
+function renderWaveLane (root, content, index, lane) {
+    var i, j, k, g, gg, title, b, labels = [1], name,
+
+    xmax     = 0,
+    xgmax    = 0,
+    glengths = [],
+    svgns    = 'http://www.w3.org/2000/svg',
+    xlinkns  = 'http://www.w3.org/1999/xlink',
+    xmlns    = 'http://www.w3.org/XML/1998/namespace';
+
+    for (j = 0; j < content.length; j += 1) {
+        name = content[j][0][0];
+        if (name) { // check name
+            g = jsonmlParse([
+                'g',
+                {
+                    id: 'wavelane_' + j + '_' + index,
+                    transform: 'translate(0,' + ((lane.y0) + j * lane.yo) + ')'
+                }
+            ]);
+            root.insertBefore(g, null);
+            if (typeof name === 'number') { name += ''; }
+            title = jsonmlParse([
+                'text',
+                {
+                    x: lane.tgo,
+                    y: lane.ym,
+                    class: 'info',
+                // fill: '#0041c4', // Pantone 288C
+                    'text-anchor': 'end'
+                },
+                name // + '') // name
+            ]);
+            title.setAttributeNS(xmlns, 'xml:space', 'preserve');
+            g.insertBefore(title, null);
+
+            // scale = lane.xs * (lane.hscale) * 2;
+
+            glengths.push(title.getBBox().width);
+
+            var xoffset;
+            xoffset = content[j][0][1];
+            xoffset = (xoffset > 0) ? (Math.ceil(2 * xoffset) - 2 * xoffset) :
+            (-2 * xoffset);
+            gg = jsonmlParse([
+                'g',
+                {
+                    id: 'wavelane_draw_' + j + '_' + index,
+                    transform: 'translate(' + (xoffset * lane.xs) + ', 0)'
+                }
+            ]);
+            g.insertBefore(gg, null);
+
+            if (content[j][1]) {
+                for (i = 0; i < content[j][1].length; i += 1) {
+                    b    = document.createElementNS(svgns, 'use');
+                    // b.id = 'use_' + i + '_' + j + '_' + index;
+                    b.setAttributeNS(xlinkns, 'xlink:href', '#' + content[j][1][i]);
+                    // b.setAttribute('transform', 'translate(' + (i * lane.xs) + ')');
+                    b.setAttribute('transform', 'translate(' + (i * lane.xs) + ')');
+                    gg.insertBefore(b, null);
+                }
+                if (content[j][2] && content[j][2].length) {
+                    labels = findLaneMarkers(content[j][1]);
+
+                    if (labels.length !== 0) {
+                        for (k in labels) {
+                            if (content[j][2] && (typeof content[j][2][k] !== 'undefined')) {
+                                title = jsonmlParse([
+                                    'text',
+                                    {
+                                        x: labels[k] * lane.xs + lane.xlabel,
+                                        y: lane.ym,
+                                        'text-anchor': 'middle'
+                                    },
+                                    content[j][2][k] // + '')
+                                ]);
+                                title.setAttributeNS(xmlns, 'xml:space', 'preserve');
+                                gg.insertBefore(title, null);
+                            }
+                        }
+                    }
+                }
+                if (content[j][1].length > xmax) {
+                    xmax = content[j][1].length;
+                }
+            }
+        }
+    }
+    lane.xmax = xmax;
+    lane.xg = xgmax + 20;
+    return glengths;
+}
+
+module.exports = renderWaveLane;
+
+/* eslint-env browser */
+
+},{"./create-element":2,"./find-lane-markers":5}],29:[function(require,module,exports){
+'use strict';
+
+window.WaveDrom = window.WaveDrom || {};
+
+var processAll = require('./process-all'),
+    renderWaveForm = require('./render-wave-form'),
+    editorRefresh = require('./editor-refresh');
+
+window.WaveDrom.ProcessAll = processAll;
+window.WaveDrom.RenderWaveForm = renderWaveForm;
+window.WaveDrom.EditorRefresh = editorRefresh;
+
+/* eslint-env browser */
+
+},{"./editor-refresh":3,"./process-all":20,"./render-wave-form":27}],30:[function(require,module,exports){
+'use strict';
+
+module.exports = window.WaveSkin;
+
+/* eslint-env browser */
+
+},{}]},{},[29]);
