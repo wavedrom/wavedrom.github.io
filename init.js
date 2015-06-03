@@ -62,7 +62,6 @@
             rawdata;
 
         if (args[0] && args[0] === 'source' && args[1]) {
-            console.log(path.resolve(process.env.PWD, args[1]));
             val = fs.readFileSync(
                 path.resolve(process.env.PWD, args[1]),
                 {encoding: 'utf8'}
