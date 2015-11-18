@@ -11,7 +11,7 @@ module.exports = function(grunt) {
                 files: [{
                     expand: true,
                     src: [
-                        'WaveDrom.js', 'editor.js', 'init.js',
+                        'editor.js', 'init.js',
                         'editor.html', 'tutorial.html',
                         'images/ic_*.png', 'images/favicon.ico', 'images/logo.png',
                         'skins/*', 'css/*', 'scripts/*'
@@ -21,7 +21,10 @@ module.exports = function(grunt) {
                 }, {
                     expand: true,
                     flatten: true,
-                    src: ['WaveDromEditor/package.json'],
+                    src: [
+                        'WaveDromEditor/package.json',
+                        './node_modules/wavedrom/WaveDrom.js'
+                    ],
                     dest: 'WaveDromEditor_build/',
                     filter: 'isFile'
                 }]
@@ -35,7 +38,7 @@ module.exports = function(grunt) {
         },
         nodewebkit: {
             options: {
-                version: '0.12.2',
+                version: '0.12.3',
                 buildDir: './nw_builds',
                 platforms: ['win', 'osx', 'linux32', 'linux64'],
                 keep_nw: true
