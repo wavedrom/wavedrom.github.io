@@ -36,7 +36,7 @@ module.exports = function(grunt) {
                 }]
             }
         },
-        nodewebkit: {
+        nwjs: {
             options: {
                 version: '0.12.3',
                 buildDir: './nw_builds',
@@ -137,11 +137,11 @@ module.exports = function(grunt) {
     // Load the plugin that provides the "uglify" task.
     grunt.loadNpmTasks('grunt-eslint');
     grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-node-webkit-builder');
+    grunt.loadNpmTasks('grunt-nw-builder');
     grunt.loadNpmTasks('grunt-contrib-compress');
     grunt.loadNpmTasks('grunt-contrib-clean');
 
     // Default task(s).
-    grunt.registerTask('build', ['eslint', 'copy:editor', 'nodewebkit']);
+    grunt.registerTask('build', ['eslint', 'copy:editor', 'nwjs']);
     grunt.registerTask('default', ['build', 'copy:min', 'compress']);
 };
