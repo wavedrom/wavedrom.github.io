@@ -34,6 +34,6 @@
     "grunt-contrib-copy": "^0.8.2",
     "grunt-eslint": "^17.3.1",
     "grunt-nw-builder": "^2.0.0",
-    "wavedrom": "^1.2.1"
+    "wavedrom": "^1.2.2"
   }
 }
