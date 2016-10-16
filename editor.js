@@ -153,7 +153,7 @@ function saveJSON () {
         var theEvent = document.createEvent('MouseEvent');
         theEvent.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
         a.dispatchEvent(theEvent);
-        // a.click();
+        a.click();
     }
 }
 
