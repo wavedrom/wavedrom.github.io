@@ -24,7 +24,7 @@ See [Tutorial](http://wavedrom.com/tutorial.html) for more examples.
 
 * Install `nodejs` from http://nodejs.org/
 * `npm install` to install the development environment
-* `node node_modules/.bin/grunt` to build distributable packages
+* `node run build` to build distributable packages
 
 ## Community
 
