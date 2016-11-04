@@ -1,4 +1,4 @@
-cache
 node_modules
-nw_builds
-WaveDromEditor_build
+cache
+build
+src
