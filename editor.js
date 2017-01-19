@@ -192,7 +192,7 @@ function saveSVG () {
         chooseFile('#fileDialogSVG');
     } else {
         a = document.createElement('a');
-        a.href = 'data:image/svg+xml;base64,' + btoa(ssvg());
+        a.href = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(ssvg())));
         a.download = 'wavedrom.svg';
         var theEvent = document.createEvent('MouseEvent');
         theEvent.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
@@ -204,7 +204,7 @@ function saveSVG () {
 function pngdata () {
     var svgdata, img, canvas, context;
 
-    svgdata = 'data:image/svg+xml;base64,' + btoa(ssvg());
+    svgdata = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(ssvg())));
     img = new Image();
     img.src = svgdata;
     canvas = document.createElement('canvas');
