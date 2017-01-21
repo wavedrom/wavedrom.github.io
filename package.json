@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "eslint editor.js init.js",
-    "build": "cp node_modules/wavedrom/wavedrom.min.js WaveDrom.js && cp node_modules/wavedrom/wavedrom.min.js wavedrom.min.js && mkdir src && mkdir src/images && mkdir src/skins && mkdir src/css && mkdir src/scripts && cp {editor.js,init.js,editor.html,tutorial.html,WaveDromEditor/package.json,node_modules/wavedrom/wavedrom.min.js} src/ && cp images/ic_*.png src/images/ && cp images/favicon.ico src/images && cp images/logo.png src/images && cp skins/* src/skins && cp css/* src/css && cp scripts/* src/scripts && wget https://raw.githubusercontent.com/drom/simple-nwjs-app/master/build.sh -O build.sh && bash build.sh --name wavedrom-editor --version v1.4.1"
+    "build": "cp node_modules/wavedrom/wavedrom.min.js WaveDrom.js && cp node_modules/wavedrom/wavedrom.min.js wavedrom.min.js && mkdir src && mkdir src/images && mkdir src/skins && mkdir src/css && mkdir src/scripts && cp {editor.js,init.js,editor.html,tutorial.html,WaveDromEditor/package.json,node_modules/wavedrom/wavedrom.min.js} src/ && cp images/ic_*.png src/images/ && cp images/favicon.ico src/images && cp images/logo.png src/images && cp skins/* src/skins && cp css/* src/css && cp scripts/* src/scripts && wget https://raw.githubusercontent.com/drom/simple-nwjs-app/master/build.sh -O build.sh && bash build.sh --name wavedrom-editor --version v1.4.2"
   },
   "repository": {
     "type": "git",
@@ -26,8 +26,8 @@
   },
   "homepage": "http://wavedrom.com",
   "devDependencies": {
-    "codemirror": "^5.20.2",
-    "eslint": "^2.6.0",
+    "codemirror": "^5.23.0",
+    "eslint": "^2.13.1",
     "wavedrom": "^1.4.1"
   }
 }
