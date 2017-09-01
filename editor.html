@@ -26,6 +26,7 @@
                     <!--li>New</li>
                     <li>Open...</li>
                     <li>Save</li-->
+                    <li onclick="WaveDrom.loadJSON(event)"> <img class="button" src="images/ic_upload_json.png"/> Load... </li>
                     <li onclick="WaveDrom.saveJSON(event)"> <img class="button" src="images/ic_download_json.png"/> Save As... </li>
                     <li onclick="WaveDrom.saveSVG(event)"> <img class="button" src="images/ic_download_svg.png"/> Export SVG... </li>
                     <li onclick="WaveDrom.savePNG(event)"> <img class="button" src="images/ic_download_png.png"/> Export PNG... </li>
@@ -39,7 +40,8 @@
                     <li style="display:none;">Exit</li>
                 </ul>
             </div>
-            <input style="display:none;" id="fileDialog" type="file" nwsaveas="wavedrom.json" />
+            <input style="display:none;" id="fileDialogLoad" type="file" />
+            <input style="display:none;" id="fileDialogSave" type="file" nwsaveas="wavedrom.json" />
             <input style="display:none;" id="fileDialogSVG" type="file" nwsaveas="wavedrom.svg" />
             <input style="display:none;" id="fileDialogPNG" type="file" nwsaveas="wavedrom.png" />
             <div id='SVG'><div id="WaveDrom_Display_0"></div></div>

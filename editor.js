@@ -119,6 +119,30 @@ function gotoWaveDromGuide () {
     window.open('tutorial.html').focus();
 }
 
+function loadJSON () {
+    var a;
+    
+    function chooseFile(name) {
+        var chooser = document.querySelector(name);
+
+        chooser.addEventListener('change', function() {
+            var fs = require('fs');
+            var filename = chooser.value;
+            if (!filename) return;
+	    fs.readFile(filename, 'utf-8', (err, data) => {
+		if (err) throw err;
+		WaveDrom.cm.setValue(data);
+	    });
+        }, false);
+
+        chooser.click();
+    }
+
+    if (typeof process === 'object') { // nodewebkit detection
+        chooseFile('#fileDialogLoad');
+    }
+}
+    
 function saveJSON () {
     var a;
 
@@ -145,7 +169,7 @@ function saveJSON () {
     }
 
     if (typeof process === 'object') { // nodewebkit detection
-        chooseFile('#fileDialog');
+        chooseFile('#fileDialogSave');
     } else {
         a = document.createElement('a');
         a.href = 'data:text/json;base64,' + btoa(sjson());
@@ -252,6 +276,7 @@ function savePNG () {
 
 WaveDrom.editorInit = editorInit;
 WaveDrom.menuOpen = menuOpen;
+WaveDrom.loadJSON = loadJSON;
 WaveDrom.saveJSON = saveJSON;
 WaveDrom.saveSVG = saveSVG;
 WaveDrom.savePNG = savePNG;
