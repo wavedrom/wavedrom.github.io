@@ -120,7 +120,6 @@ function gotoWaveDromGuide () {
 }
 
 function loadJSON () {
-    var a;
     
     function chooseFile(name) {
         var chooser = document.querySelector(name);
@@ -129,12 +128,12 @@ function loadJSON () {
             var fs = require('fs');
             var filename = chooser.value;
             if (!filename) { return; }
-	    fs.readFile(filename, 'utf-8', (err, data) => {
-		if (err) {
-		    console.log('error');
-		}
-		WaveDrom.cm.setValue(data);
-	    });
+            fs.readFile(filename, 'utf-8', function(err, data) {
+                if (err) {
+                    console.log('error');
+                }
+                WaveDrom.cm.setValue(data);
+            });
         }, false);
 
         chooser.click();
