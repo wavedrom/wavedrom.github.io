@@ -128,9 +128,11 @@ function loadJSON () {
         chooser.addEventListener('change', function() {
             var fs = require('fs');
             var filename = chooser.value;
-            if (!filename) return;
+            if (!filename) { return; }
 	    fs.readFile(filename, 'utf-8', (err, data) => {
-		if (err) throw err;
+		if (err) {
+		    console.log('error');
+		}
 		WaveDrom.cm.setValue(data);
 	    });
         }, false);
