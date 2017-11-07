@@ -1,5 +1,6 @@
+'use strict';
+
 (function(){
-    'use strict';
 
     var e, val;
 
@@ -124,10 +125,9 @@
         setTimeout(c, 750);
     });
 
-WaveDrom.cm = cm;
+    WaveDrom.cm = cm;
 
 })();
 
 /* eslint-env browser */
 /* global CodeMirror, WaveDrom */
-/* eslint new-cap:0, no-underscore-dangle:1 */

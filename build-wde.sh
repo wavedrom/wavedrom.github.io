@@ -26,4 +26,4 @@ cp scripts/* src/scripts
 
 wget https://raw.githubusercontent.com/drom/simple-nwjs-app/master/build.sh -O build.sh
 
-bash build.sh --name wavedrom-editor --version v1.4.2
+bash build.sh --name wavedrom-editor --version v1.5.0

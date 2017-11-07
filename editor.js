@@ -1,293 +1,293 @@
+'use strict';
+
 (function () {
-    'use strict';
 
+    function editorState (op) {
+        var rot, drot, per, dper, sizeTXT, sizeSVG, styleTXT, styleSVG;
 
-function editorState (op) {
-    var rot, drot, per, dper, sizeTXT, sizeSVG, styleTXT, styleSVG;
+        function delta (root, name) {
+            if (root && root[name]) {
+                var res = Number(root[name]);
+                if ((res !== 1) && (res !== -1)) { return 0; }
+                return res;
+            }
+            return 0;
+        }
 
-    function delta (root, name) {
-        if (root && root[name]) {
-            var res = Number(root[name]);
-            if ((res !== 1) && (res !== -1)) { return 0; }
+        function ring (name, inc, size, init) {
+            var res;
+            res = parseInt(localStorage [name]);
+            if (res || res === 0) {
+                res += inc;
+                if (res >= size) {
+                    res -= size;
+                } else if (res < 0) {
+                    res += size;
+                }
+            } else {
+                res = init;
+            }
+            localStorage [name] = res;
             return res;
         }
-        return 0;
+
+        function setStyle (id, prop) {
+            var e = document.getElementById(id);
+            e.removeAttribute('style');
+            for (var p in prop) {
+                e.style [p] = prop [p];
+            }
+        }
+
+        drot = delta(op, 'rot');
+        dper = delta(op, 'per');
+        rot = ring('drom.editor.rot', drot, 4, 0);
+        per = ring('drom.editor.per', dper, 7, 3);
+        sizeTXT = ((per + 2) * 10) + '%';
+        sizeSVG = ((8 - per) * 10) + '%';
+
+        if (rot === 1) {        // SVG|TXT
+            styleSVG = {width: sizeSVG, height: '100%', cssFloat: 'left', overflow: 'hidden'};
+            styleTXT = {height: '100%'};
+        } else if (rot === 2) { // SVG/TXT
+            styleSVG = {width: '100%', height: sizeSVG, overflow: 'hidden'};
+            styleTXT = {height: sizeTXT};
+        } else if (rot === 3) { // TXT|SVG
+            styleSVG = {width: sizeSVG, height: '100%', cssFloat: 'right', overflow: 'hidden'};
+            styleTXT = {width: sizeTXT, height: '100%'};
+        } else {                // TXT/SVG
+            styleSVG = {width: '100%', height: sizeSVG, position: 'absolute', bottom: 0, overflow: 'hidden'};
+            styleTXT = {height: sizeTXT};
+        }
+        setStyle('SVG', styleSVG);
+        setStyle('TXT', styleTXT);
+        WaveDrom.EditorRefresh();
     }
 
-    function ring (name, inc, size, init) {
-        var res;
-        res = parseInt(localStorage [name]);
-        if (res || res === 0) {
-            res += inc;
-            if (res >= size) {
-                res -= size;
-            } else if (res < 0) {
-                res += size;
+    function editorInit () {
+        if (document.location.search) {
+            WaveDrom.cm.setValue(decodeURIComponent(window.location.search.substr(1)));
+            // document.getElementById ('InputJSON_0').value = decodeURIComponent(window.location.search.substr(1));
+        }
+        window.ondragover = function(e) { e.preventDefault(); return false; };
+        window.ondrop = function(e) { e.preventDefault(); return false; };
+
+        if (typeof process === 'object') { // nodewebkit detection
+            var holder = document.getElementById('content');
+            holder.ondragover = function () { this.className = 'hover'; return false; };
+            holder.ondragend = function () { this.className = ''; return false; };
+            holder.ondrop = function (e) {
+                e.preventDefault();
+
+                for (var i = 0; i < e.dataTransfer.files.length; ++i) {
+                    console.log(e.dataTransfer.files[i].path);
+                }
+                return false;
+            };
+        }
+        editorState();
+    }
+
+    function setFullURL () {
+        document.location.search = encodeURIComponent(document.getElementById('InputJSON_0').value);
+    }
+
+    function menuOpen (e) {
+        function closestById(el, id) {
+            while (el.id !== id) {
+                el = el.parentNode;
+                if (!el) {
+                    return null;
+                }
             }
+            return el;
+        }
+
+        var doc = document.getElementById('menux');
+        if (closestById(e.target, 'Menu') && (doc.style.display === 'none')) {
+            doc.style.display = 'inline';
         } else {
-            res = init;
-        }
-        localStorage [name] = res;
-        return res;
-    }
-
-    function setStyle (id, prop) {
-        var e = document.getElementById(id);
-        e.removeAttribute('style');
-        for (var p in prop) {
-            e.style [p] = prop [p];
+            doc.style.display = 'none';
         }
     }
 
-    drot = delta(op, 'rot');
-    dper = delta(op, 'per');
-    rot = ring('drom.editor.rot', drot, 4, 0);
-    per = ring('drom.editor.per', dper, 7, 3);
-    sizeTXT = ((per + 2) * 10) + '%';
-    sizeSVG = ((8 - per) * 10) + '%';
-
-    if (rot === 1) {        // SVG|TXT
-        styleSVG = {width: sizeSVG, height: '100%', cssFloat: 'left', overflow: 'hidden'};
-        styleTXT = {height: '100%'};
-    } else if (rot === 2) { // SVG/TXT
-        styleSVG = {width: '100%', height: sizeSVG, overflow: 'hidden'};
-        styleTXT = {height: sizeTXT};
-    } else if (rot === 3) { // TXT|SVG
-        styleSVG = {width: sizeSVG, height: '100%', cssFloat: 'right', overflow: 'hidden'};
-        styleTXT = {width: sizeTXT, height: '100%'};
-    } else {                // TXT/SVG
-        styleSVG = {width: '100%', height: sizeSVG, position: 'absolute', bottom: 0, overflow: 'hidden'};
-        styleTXT = {height: sizeTXT};
+    function gotoWaveDromHome () {
+        window.open('http://wavedrom.com').focus();
     }
-    setStyle('SVG', styleSVG);
-    setStyle('TXT', styleTXT);
-    WaveDrom.EditorRefresh();
-}
 
-function editorInit () {
-    if (document.location.search) {
-      WaveDrom.cm.setValue(decodeURIComponent(window.location.search.substr(1)));
-      // document.getElementById ('InputJSON_0').value = decodeURIComponent(window.location.search.substr(1));
+    function gotoWaveDromGuide () {
+        window.open('tutorial.html').focus();
     }
-    window.ondragover = function(e) { e.preventDefault(); return false; };
-    window.ondrop = function(e) { e.preventDefault(); return false; };
 
-    if (typeof process === 'object') { // nodewebkit detection
-      var holder = document.getElementById('content');
-      holder.ondragover = function () { this.className = 'hover'; return false; };
-      holder.ondragend = function () { this.className = ''; return false; };
-      holder.ondrop = function (e) {
-        e.preventDefault();
+    function loadJSON () {
 
-        for (var i = 0; i < e.dataTransfer.files.length; ++i) {
-          console.log(e.dataTransfer.files[i].path);
+        function chooseFile(name) {
+            var chooser = document.querySelector(name);
+
+            chooser.addEventListener('change', function() {
+                var fs = require('fs');
+                var filename = chooser.value;
+                if (!filename) { return; }
+                fs.readFile(filename, 'utf-8', function(err, data) {
+                    if (err) {
+                        console.log('error');
+                    }
+                    WaveDrom.cm.setValue(data);
+                });
+            }, false);
+
+            chooser.click();
         }
-        return false;
-      };
-    }
-    editorState();
-}
 
-function setFullURL () {
-    document.location.search = encodeURIComponent(document.getElementById('InputJSON_0').value);
-}
-
-function menuOpen (e) {
-    function closestById(el, id) {
-        while (el.id !== id) {
-            el = el.parentNode;
-            if (!el) {
-                return null;
-            }
+        if (typeof process === 'object') { // nodewebkit detection
+            chooseFile('#fileDialogLoad');
         }
-        return el;
     }
 
-    var doc = document.getElementById('menux');
-    if (closestById(e.target, 'Menu') && (doc.style.display === 'none')) {
-        doc.style.display = 'inline';
-    } else {
-        doc.style.display = 'none';
-    }
-}
+    function saveJSON () {
+        var a;
 
-function gotoWaveDromHome () {
-    window.open('http://wavedrom.com').focus();
-}
+        function sjson () {
+            return localStorage.waveform;
+        }
 
-function gotoWaveDromGuide () {
-    window.open('tutorial.html').focus();
-}
+        function chooseFile(name) {
+            var chooser = document.querySelector(name);
 
-function loadJSON () {
-    
-    function chooseFile(name) {
-        var chooser = document.querySelector(name);
+            chooser.addEventListener('change', function() {
+                var fs = require('fs');
+                var filename = this.value;
+                if (!filename) { return; }
+                fs.writeFile(filename, sjson(), function(err) {
+                    if(err) {
+                        console.log('error');
+                    }
+                });
+                this.value = '';
+            }, false);
 
-        chooser.addEventListener('change', function() {
-            var fs = require('fs');
-            var filename = chooser.value;
-            if (!filename) { return; }
-            fs.readFile(filename, 'utf-8', function(err, data) {
-                if (err) {
-                    console.log('error');
-                }
-                WaveDrom.cm.setValue(data);
-            });
-        }, false);
+            chooser.click();
+        }
 
-        chooser.click();
-    }
-
-    if (typeof process === 'object') { // nodewebkit detection
-        chooseFile('#fileDialogLoad');
-    }
-}
-    
-function saveJSON () {
-    var a;
-
-    function sjson () {
-        return localStorage.waveform;
+        if (typeof process === 'object') { // nodewebkit detection
+            chooseFile('#fileDialogSave');
+        } else {
+            a = document.createElement('a');
+            a.href = 'data:text/json;base64,' + btoa(sjson());
+            a.download = 'wavedrom.json';
+            var theEvent = document.createEvent('MouseEvent');
+            theEvent.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+            a.dispatchEvent(theEvent);
+            a.click();
+        }
     }
 
-    function chooseFile(name) {
-        var chooser = document.querySelector(name);
+    function ssvg () {
+        var svg, ser;
 
-        chooser.addEventListener('change', function() {
-            var fs = require('fs');
-            var filename = this.value;
-            if (!filename) { return; }
-            fs.writeFile(filename, sjson(), function(err) {
-                if(err) {
-                    console.log('error');
-                }
-            });
-            this.value = '';
-        }, false);
-
-        chooser.click();
+        svg = document.getElementById('svgcontent_0');
+        ser = new XMLSerializer();
+        return '<?xml version="1.0" standalone="no"?>\n'
+            + '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n'
+            + '<!-- Created with WaveDrom -->\n'
+            + ser.serializeToString(svg);
     }
 
-    if (typeof process === 'object') { // nodewebkit detection
-        chooseFile('#fileDialogSave');
-    } else {
-        a = document.createElement('a');
-        a.href = 'data:text/json;base64,' + btoa(sjson());
-        a.download = 'wavedrom.json';
-        var theEvent = document.createEvent('MouseEvent');
-        theEvent.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-        a.dispatchEvent(theEvent);
-        a.click();
-    }
-}
+    function saveSVG () {
+        var a;
 
-function ssvg () {
-    var svg, ser;
+        function chooseFile(name) {
+            var chooser = document.querySelector(name);
 
-    svg = document.getElementById('svgcontent_0');
-    ser = new XMLSerializer();
-    return '<?xml version="1.0" standalone="no"?>\n'
-        + '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n'
-        + '<!-- Created with WaveDrom -->\n'
-        + ser.serializeToString(svg);
-}
+            chooser.addEventListener('change', function() {
+                var fs = require('fs');
+                var filename = this.value;
+                if (!filename) { return; }
+                fs.writeFile(filename, ssvg(), function(err) {
+                    if(err) {
+                        console.log('error');
+                    }
+                });
+                this.value = '';
+            }, false);
+            chooser.click();
+        }
 
-function saveSVG () {
-    var a;
-
-    function chooseFile(name) {
-        var chooser = document.querySelector(name);
-
-        chooser.addEventListener('change', function() {
-            var fs = require('fs');
-            var filename = this.value;
-            if (!filename) { return; }
-            fs.writeFile(filename, ssvg(), function(err) {
-                if(err) {
-                    console.log('error');
-                }
-            });
-            this.value = '';
-        }, false);
-        chooser.click();
+        if (typeof process === 'object') { // nodewebkit detection
+            chooseFile('#fileDialogSVG');
+        } else {
+            a = document.createElement('a');
+            a.href = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(ssvg())));
+            a.download = 'wavedrom.svg';
+            var theEvent = document.createEvent('MouseEvent');
+            theEvent.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+            a.dispatchEvent(theEvent);
+            // a.click();
+        }
     }
 
-    if (typeof process === 'object') { // nodewebkit detection
-        chooseFile('#fileDialogSVG');
-    } else {
-        a = document.createElement('a');
-        a.href = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(ssvg())));
-        a.download = 'wavedrom.svg';
-        var theEvent = document.createEvent('MouseEvent');
-        theEvent.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-        a.dispatchEvent(theEvent);
-        // a.click();
-    }
-}
+    function pngdata () {
+        var svgdata, img, canvas, context;
 
-function pngdata () {
-    var svgdata, img, canvas, context;
-
-    svgdata = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(ssvg())));
-    img = new Image();
-    img.src = svgdata;
-    canvas = document.createElement('canvas');
-    canvas.width = img.width;
-    canvas.height = img.height;
-    context = canvas.getContext('2d');
-    context.drawImage(img, 0, 0);
-    return canvas.toDataURL('image/png');
-}
-
-function savePNG () {
-    var a;
-
-    function chooseFile(name) {
-        var chooser = document.querySelector(name);
-
-        chooser.addEventListener('change', function() {
-            var fs = require('fs');
-            var filename = this.value;
-            if (!filename) { return; }
-            var data = pngdata().replace(/^data:image\/\w+;base64,/, '');
-            var buf = new Buffer(data, 'base64');
-            fs.writeFile(filename, buf, function(err) {
-                if(err) {
-                    console.log('error');
-                }
-            });
-            this.value = '';
-        }, false);
-        chooser.click();
+        svgdata = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(ssvg())));
+        img = new Image();
+        img.src = svgdata;
+        canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        context = canvas.getContext('2d');
+        context.drawImage(img, 0, 0);
+        return canvas.toDataURL('image/png');
     }
 
-    if (typeof process === 'object') { // nodewebkit detection
-        chooseFile('#fileDialogPNG');
-    } else {
-        a = document.createElement('a');
-        a.href = pngdata();
-        a.download = 'wavedrom.png';
-        var theEvent = document.createEvent('MouseEvent');
-        theEvent.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-        a.dispatchEvent(theEvent);
-        // a.click();
-    }
-}
+    function savePNG () {
+        var a;
 
-WaveDrom.editorInit = editorInit;
-WaveDrom.menuOpen = menuOpen;
-WaveDrom.loadJSON = loadJSON;
-WaveDrom.saveJSON = saveJSON;
-WaveDrom.saveSVG = saveSVG;
-WaveDrom.savePNG = savePNG;
-WaveDrom.editorState = editorState;
-WaveDrom.setFullURL = setFullURL;
-WaveDrom.gotoWaveDromGuide = gotoWaveDromGuide;
-WaveDrom.gotoWaveDromHome = gotoWaveDromHome;
+        function chooseFile(name) {
+            var chooser = document.querySelector(name);
+
+            chooser.addEventListener('change', function() {
+                var fs = require('fs');
+                var filename = this.value;
+                if (!filename) { return; }
+                var data = pngdata().replace(/^data:image\/\w+;base64,/, '');
+                var buf = new Buffer(data, 'base64');
+                fs.writeFile(filename, buf, function(err) {
+                    if(err) {
+                        console.log('error');
+                    }
+                });
+                this.value = '';
+            }, false);
+            chooser.click();
+        }
+
+        if (typeof process === 'object') { // nodewebkit detection
+            chooseFile('#fileDialogPNG');
+        } else {
+            a = document.createElement('a');
+            a.href = pngdata();
+            a.download = 'wavedrom.png';
+            var theEvent = document.createEvent('MouseEvent');
+            theEvent.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+            a.dispatchEvent(theEvent);
+            // a.click();
+        }
+    }
+
+    WaveDrom.editorInit = editorInit;
+    WaveDrom.menuOpen = menuOpen;
+    WaveDrom.loadJSON = loadJSON;
+    WaveDrom.saveJSON = saveJSON;
+    WaveDrom.saveSVG = saveSVG;
+    WaveDrom.savePNG = savePNG;
+    WaveDrom.editorState = editorState;
+    WaveDrom.setFullURL = setFullURL;
+    WaveDrom.gotoWaveDromGuide = gotoWaveDromGuide;
+    WaveDrom.gotoWaveDromHome = gotoWaveDromHome;
 
 })();
 
 /* eslint-env node, browser */
-/* eslint new-cap:0 */
 /* global WaveDrom */
+/* eslint no-console: 1 */
