@@ -159,7 +159,7 @@
                 var filename = this.value;
                 if (!filename) { return; }
                 fs.writeFile(filename, sjson(), function(err) {
-                    if(err) {
+                    if (err) {
                         console.log('error');
                     }
                 });
@@ -226,18 +226,29 @@
         }
     }
 
-    function pngdata () {
-        var svgdata, img, canvas, context;
+    function pngdata (done) {
 
-        svgdata = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(ssvg())));
-        img = new Image();
+        var img = new Image();
+        var canvas = document.createElement('canvas');
+
+        function onload () {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            var context = canvas.getContext('2d');
+            context.drawImage(img, 0, 0);
+            var res = canvas.toDataURL('image/png');
+            done(res);
+        }
+
+        var svgBody = ssvg();
+        var svgdata = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgBody)));
         img.src = svgdata;
-        canvas = document.createElement('canvas');
-        canvas.width = img.width;
-        canvas.height = img.height;
-        context = canvas.getContext('2d');
-        context.drawImage(img, 0, 0);
-        return canvas.toDataURL('image/png');
+
+        if (img.complete) {
+            onload();
+        } else {
+            img.onload = onload;
+        }
     }
 
     function savePNG () {
@@ -250,14 +261,16 @@
                 var fs = require('fs');
                 var filename = this.value;
                 if (!filename) { return; }
-                var data = pngdata().replace(/^data:image\/\w+;base64,/, '');
-                var buf = new Buffer(data, 'base64');
-                fs.writeFile(filename, buf, function(err) {
-                    if(err) {
-                        console.log('error');
-                    }
+                pngdata(function (data) {
+                    data = data.replace(/^data:image\/\w+;base64,/, '');
+                    var buf = new Buffer(data, 'base64');
+                    fs.writeFile(filename, buf, function(err) {
+                        if (err) {
+                            console.log('error');
+                        }
+                    });
+                    this.value = '';
                 });
-                this.value = '';
             }, false);
             chooser.click();
         }
@@ -266,12 +279,14 @@
             chooseFile('#fileDialogPNG');
         } else {
             a = document.createElement('a');
-            a.href = pngdata();
-            a.download = 'wavedrom.png';
-            var theEvent = document.createEvent('MouseEvent');
-            theEvent.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-            a.dispatchEvent(theEvent);
-            // a.click();
+            pngdata(function (res) {
+                a.href = res;
+                a.download = 'wavedrom.png';
+                var theEvent = document.createEvent('MouseEvent');
+                theEvent.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+                a.dispatchEvent(theEvent);
+                // a.click();
+            });
         }
     }
 
