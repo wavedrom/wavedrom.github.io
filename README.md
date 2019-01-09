@@ -22,9 +22,9 @@ See [Tutorial](http://wavedrom.com/tutorial.html) for more examples.
 
 ## How to Build Desktop Application
 
-* Install `nodejs` from http://nodejs.org/
+* Install `nodejs` from http://nodejs.org/ or https://github.com/creationix/nvm
 * `npm install` to install the development environment
-* `node run build` to build distributable packages
+* `npm run build` to build distributable packages
 
 ## Community
 
