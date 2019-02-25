@@ -2,7 +2,7 @@
 
 # WaveDrom editor
 
-[WaveDromEditor](http://wavedrom.com/editor.html) is real-time editor of digital timing diagrams based on [WaveDrom](https://github.com/drom/wavedrom) engine and [WaveJSON](https://github.com/drom/wavedrom/wiki/WaveJSON) format.
+[WaveDromEditor](http://wavedrom.com/editor.html) is real-time editor of digital timing diagrams based on [WaveDrom](https://github.com/wavedrom/wavedrom) engine and [WaveJSON](https://github.com/wavedrom/schema/blob/master/WaveJSON.md) format.
 
 See [Tutorial](http://wavedrom.com/tutorial.html) for more examples.
 
