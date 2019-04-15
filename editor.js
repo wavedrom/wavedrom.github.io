@@ -2,50 +2,49 @@
 
 (function () {
 
-    function editorState (op) {
-        var rot, drot, per, dper, sizeTXT, sizeSVG, styleTXT, styleSVG;
-
-        function delta (root, name) {
-            if (root && root[name]) {
-                var res = Number(root[name]);
-                if ((res !== 1) && (res !== -1)) { return 0; }
-                return res;
-            }
-            return 0;
-        }
-
-        function ring (name, inc, size, init) {
-            var res;
-            res = parseInt(localStorage [name]);
-            if (res || res === 0) {
-                res += inc;
-                if (res >= size) {
-                    res -= size;
-                } else if (res < 0) {
-                    res += size;
-                }
-            } else {
-                res = init;
-            }
-            localStorage [name] = res;
+    function delta (root, name) {
+        if (root && root[name]) {
+            var res = Number(root[name]);
+            if ((res !== 1) && (res !== -1)) { return 0; }
             return res;
         }
+        return 0;
+    }
 
-        function setStyle (id, prop) {
-            var e = document.getElementById(id);
-            e.removeAttribute('style');
-            for (var p in prop) {
-                e.style [p] = prop [p];
+    function ring (name, inc, size, init) {
+        var res;
+        res = parseInt(localStorage [name]);
+        if (res || res === 0) {
+            res += inc;
+            if (res >= size) {
+                res -= size;
+            } else if (res < 0) {
+                res += size;
             }
+        } else {
+            res = init;
         }
+        localStorage [name] = res;
+        return res;
+    }
 
-        drot = delta(op, 'rot');
-        dper = delta(op, 'per');
-        rot = ring('drom.editor.rot', drot, 4, 0);
-        per = ring('drom.editor.per', dper, 7, 3);
-        sizeTXT = ((per + 2) * 10) + '%';
-        sizeSVG = ((8 - per) * 10) + '%';
+    function setStyle (id, prop) {
+        var e = document.getElementById(id);
+        e.removeAttribute('style');
+        for (var p in prop) {
+            e.style [p] = prop [p];
+        }
+    }
 
+    function editorState (op) {
+        var drot = delta(op, 'rot');
+        var dper = delta(op, 'per');
+        var rot = ring('drom.editor.rot', drot, 4, 0);
+        var per = ring('drom.editor.per', dper, 7, 3);
+        var sizeTXT = ((per + 2) * 10) + '%';
+        var sizeSVG = ((8 - per) * 10) + '%';
+
+        var styleTXT, styleSVG;
         if (rot === 1) {        // SVG|TXT
             styleSVG = {width: sizeSVG, height: '100%', cssFloat: 'left', overflow: 'hidden'};
             styleTXT = {height: '100%'};
