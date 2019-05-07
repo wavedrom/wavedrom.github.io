@@ -29,7 +29,7 @@ Element <span class="fixed">"signal"</span> is an array of WaveLanes.
 Each WaveLane has two mandatory fields: <span class="fixed">"name"</span>
  and <span class="fixed">"wave"</span>.
 
-<h2>Step 1. The Signal</h2>
+<h2 id="the-signal">Step 1. The Signal</h2>
 
 Lets start with a quick example.
 Following code will create 1-bit signal named <span class="fixed">"Alfa"</span>
@@ -50,7 +50,7 @@ Here is how it looks:
 <a href="https://wavedrom.com/editor.html?%7B%20%22signal%22%20%3A%20%5B%7B%20%22name%22%3A%20%22Alfa%22%2C%20%22wave%22%3A%20%2201.zx%3Dud.23.45%22%20%7D%5D%20%7D%0A">Edit Me &gt;&gt;</a>
 
 
-<h2>Step 2. Adding Clock</h2>
+<h2 id="adding-clock">Step 2. Adding Clock</h2>
 
 Digital clock is a special type of signal.
 It changes twice per time period and can have positive or negative polarity.
@@ -94,7 +94,7 @@ and the rendered diagram:
 
 
 
-<h2>Step 3. Putting all together</h2>
+<h2 id="putting-all-together">Step 3. Putting all together</h2>
 
 Typical timing diagram would have the clock and signals (wires).
 Multi-bit signals will try to grab the labels from <span class="fixed">"data"</span> array.
@@ -117,7 +117,7 @@ Multi-bit signals will try to grab the labels from <span class="fixed">"data"</s
 <a href="https://wavedrom.com/editor.html?%7B%20%22signal%22%20%3A%20%5B%0A%20%20%7B%20%22name%22%3A%20%22clk%22%2C%20%20%22wave%22%3A%20%22P......%22%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22bus%22%2C%20%20%22wave%22%3A%20%22x.%3D%3D.%3Dx%22%2C%20%22data%22%3A%20%5B%22head%22%2C%20%22body%22%2C%20%22tail%22%2C%20%22data%22%5D%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22wire%22%2C%20%22wave%22%3A%20%220.1..0.%22%20%7D%0A%5D%7D%0A">Edit Me &gt;&gt;</a>
 
 
-<h2>Step 4. Spacers and Gaps</h2>
+<h2 id="spacers-and-gaps">Step 4. Spacers and Gaps</h2>
 
 <pre class="brush: js">
 { signal: [
@@ -141,7 +141,7 @@ Multi-bit signals will try to grab the labels from <span class="fixed">"data"</s
 <a href="https://wavedrom.com/editor.html?%7B%20%22signal%22%20%3A%20%5B%0A%20%20%7B%20%22name%22%3A%20%22clk%22%2C%20%20%20%20%20%20%20%20%20%22wave%22%3A%20%22p.....%7C...%22%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22Data%22%2C%20%20%20%20%20%20%20%20%22wave%22%3A%20%22x.345x%7C%3D.x%22%2C%20%22data%22%3A%20%5B%22head%22%2C%20%22body%22%2C%20%22tail%22%2C%20%22data%22%5D%20%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22Request%22%2C%20%20%20%20%20%22wave%22%3A%20%220.1..0%7C1.0%22%20%7D%2C%0A%20%20%7B%7D%2C%0A%20%20%7B%20%22name%22%3A%20%22Acknowledge%22%2C%20%22wave%22%3A%20%221.....%7C01.%22%20%7D%0A%5D%7D%0A">Edit Me &gt;&gt;</a>
 
 
-<h2>Step 5. The groups</h2>
+<h2 id="the-groups">Step 5. The groups</h2>
 
 WaveLanes can be united in named groups that are represented in form of arrays.
 
@@ -197,7 +197,7 @@ The groups can be nested.
 
 
 
-<h2>Step 6. Period and Phase</h2>
+<h2 id="period-and-phase">Step 6. Period and Phase</h2>
 
 <span class="fixed">"period"</span> and <span class="fixed">"phase"</span> parameters can be used to adjust each WaveLane.
 
@@ -429,7 +429,7 @@ foot: {text:
 
 <a href="https://wavedrom.com/editor.html?%7Bsignal%3A%20%5B%0A%20%20%7Bname%3A'clk'%2C%20wave%3A%20'p.....PPPPp....'%20%7D%2C%0A%20%20%7Bname%3A'dat'%2C%20wave%3A%20'x....2345x.....'%2C%20data%3A%20'a%20b%20c%20d'%20%7D%2C%0A%20%20%7Bname%3A'req'%2C%20wave%3A%20'0....1...0.....'%20%7D%0A%5D%2C%0Ahead%3A%20%7Btext%3A%0A%20%20%5B'tspan'%2C%0A%20%20%20%20%5B'tspan'%2C%20%7Bclass%3A'error%20h1'%7D%2C%20'error%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7Bclass%3A'warning%20h2'%7D%2C%20'warning%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7Bclass%3A'info%20h3'%7D%2C%20'info%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7Bclass%3A'success%20h4'%7D%2C%20'success%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7Bclass%3A'muted%20h5'%7D%2C%20'muted%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7Bclass%3A'h6'%7D%2C%20'h6%20'%5D%2C%0A%20%20%20%20'default%20'%2C%0A%20%20%20%20%5B'tspan'%2C%20%7Bfill%3A'pink'%2C%20'font-weight'%3A'bold'%2C%20'font-style'%3A'italic'%7D%2C%20'pink-bold-italic'%5D%0A%20%20%5D%0A%7D%2C%0Afoot%3A%20%7Btext%3A%0A%20%20%5B'tspan'%2C%20'E%3Dmc'%2C%0A%20%20%20%20%5B'tspan'%2C%20%7Bdy%3A'-5'%7D%2C%20'2'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7Bdy%3A%20'5'%7D%2C%20'.%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7B'font-size'%3A'25'%7D%2C%20'B%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7B'text-decoration'%3A'overline'%7D%2C'over%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7B'text-decoration'%3A'underline'%7D%2C'under%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7B'baseline-shift'%3A'sub'%7D%2C%20'sub%20'%5D%2C%0A%20%20%20%20%5B'tspan'%2C%20%7B'baseline-shift'%3A'super'%7D%2C%20'super%20'%5D%0A%20%20%5D%2Ctock%3A-5%0A%7D%0A%7D%0A">Edit Me &gt;&gt;</a>
 
-<h2>Step 8. Arrows</h2>
+<h2 id="arrows">Step 8. Arrows</h2>
 
 <h3>Splines</h3>
 
@@ -510,7 +510,7 @@ foot: {text:
 
 <a href="https://wavedrom.com/editor.html?%7B%20signal%3A%20%5B%0A%20%20%7B%20name%3A%20'A'%2C%20wave%3A%20'01..0..'%2C%20%20node%3A%20'.a..e..'%20%7D%2C%0A%20%20%7B%20name%3A%20'B'%2C%20wave%3A%20'0.1..0.'%2C%20%20node%3A%20'..b..d.'%2C%20phase%3A0.5%20%7D%2C%0A%20%20%7B%20name%3A%20'C'%2C%20wave%3A%20'0..1..0'%2C%20%20node%3A%20'...c..f'%20%7D%2C%0A%20%20%7B%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20node%3A%20'...g..h'%20%7D%0A%5D%2C%0A%20%20edge%3A%20%5B'b-%7Ca%20t1'%2C%20'a-%7Cc%20t2'%2C%20'b-%7C-c%20t3'%2C%20'c-%7C-%3Ee%20t4'%2C%20'e-%7C%3Ef%20more%20text'%2C%20'e%7C-%3Ed%20t6'%2C%20'c-g'%2C%20'f-h'%2C%20'g%3C-%3Eh%203%20ms'%5D%0A%7D%0A">Edit Me &gt;&gt;</a>
 
-<h2>Step 9. Some code</h2>
+<h2 id="some-code">Step 9. Some code</h2>
 
 <pre class="brush: js" type="WaveDrom">
 (function (bits, ticks) {
