@@ -1,6 +1,7 @@
 #!/bin/bash
 cp node_modules/wavedrom/wavedrom.min.js WaveDrom.js
 cp node_modules/wavedrom/wavedrom.min.js wavedrom.min.js
+cp node_modules/wavedrom/skins/*.js skins
 
 mkdir src
 rm -rf src/*
@@ -20,7 +21,7 @@ cp node_modules/wavedrom/wavedrom.min.js src/
 cp images/ic_*.png src/images/
 cp images/favicon.ico src/images
 cp images/logo.png src/images
-cp skins/* src/skins
+cp node_modules/wavedrom/skins/* src/skins
 cp css/* src/css
 cp scripts/* src/scripts
 

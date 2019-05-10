@@ -28,8 +28,8 @@
   "devDependencies": {
     "codemirror": "^5.42.1",
     "eslint": "^5.14.1",
-    "@drom/eslint-config": "^0.9.0",
-    "wavedrom": "^1.9.2"
+    "@drom/eslint-config": "^0.10.0",
+    "wavedrom": "^2.0.3"
   },
   "eslintConfig": {
     "extends": "@drom/eslint-config/eslint4/node4"
