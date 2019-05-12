@@ -26,10 +26,10 @@
   },
   "homepage": "http://wavedrom.com",
   "devDependencies": {
-    "codemirror": "^5.42.1",
-    "eslint": "^5.14.1",
+    "codemirror": "^5.46.0",
+    "eslint": "^5.16.0",
     "@drom/eslint-config": "^0.10.0",
-    "wavedrom": "^2.0.3"
+    "wavedrom": "^2.0.4"
   },
   "eslintConfig": {
     "extends": "@drom/eslint-config/eslint4/node4"
