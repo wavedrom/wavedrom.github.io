@@ -25,6 +25,6 @@ cp node_modules/wavedrom/skins/* src/skins
 cp css/* src/css
 cp scripts/* src/scripts
 
-wget https://raw.githubusercontent.com/drom/simple-nwjs-app/master/build.sh -O build.sh
+curl https://raw.githubusercontent.com/drom/simple-nwjs-app/master/build.sh -o build.sh
 
-bash build.sh --name wavedrom-editor --version v1.9.2
+bash build.sh --name wavedrom-editor --version v2.1.0
