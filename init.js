@@ -119,8 +119,6 @@
         function c () {
             var v = cmm.getValue();
             e.value = v;
-            localStorage.waveform = v;
-
             var scroller = document.getElementById('SVGScroll');
             var state = {
                 left: scroller.scrollLeft,
@@ -129,6 +127,7 @@
             WaveDrom.EditorRefresh();
             scroller.scrollTop = state.top;
             scroller.scrollLeft = state.left;
+            localStorage.waveform = v;
         }
         setTimeout(c, 750);
     });
