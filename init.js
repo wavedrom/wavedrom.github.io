@@ -140,6 +140,8 @@
         }
     });
 
+    document.getElementById('version').innerHTML = 'v' + WaveDrom.version;
+
 })();
 
 /* eslint-env browser */
