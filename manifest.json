@@ -1,0 +1,20 @@
+{
+  "name": "WaveDrom Editor",
+  "short_name": "WaveDromEditor",
+  "description": "WaveDrom Editor -- PWA",
+  "start_url": "./editor.html",
+  "display": "standalone",
+  "theme_color": "#eee",
+  "background_color": "#333",
+  "icons": [{
+    "src": "./images/logo-512-maskable.png",
+    "sizes": "512x512",
+    "type": "image/png",
+    "purpose": "maskable any"
+  }, {
+    "src": "./images/logo-128-maskable.png",
+    "sizes": "128x128",
+    "type": "image/png",
+    "purpose": "maskable any"
+  }]
+}
