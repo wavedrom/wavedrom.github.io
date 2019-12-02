@@ -2,6 +2,21 @@
 
 (function () {
 
+    var BASE64_MARKER = ';base64,';
+
+    function convertDataURIToBinary(dataURI) {
+        var base64Index = dataURI.indexOf(BASE64_MARKER) + BASE64_MARKER.length;
+        var base64 = dataURI.substring(base64Index);
+        var raw = window.atob(base64);
+        var rawLength = raw.length;
+        var array = new Uint8Array(new ArrayBuffer(rawLength));
+        var i;
+        for (i = 0; i < rawLength; i++) {
+            array[i] = raw.charCodeAt(i);
+        }
+        return array;
+    }
+
     function delta (root, name) {
         if (root && root[name]) {
             var res = Number(root[name]);
@@ -140,6 +155,20 @@
 
         if (typeof process === 'object') { // nodewebkit detection
             chooseFile('#fileDialogLoad');
+        } else {
+            var cfse = window.chooseFileSystemEntries;
+            if (cfse !== undefined) {
+                // PWA: https://web.dev/native-file-system/#read-file
+                cfse().then(function (fh) {
+                    if (fh.isFile === true) {
+                        fh.getFile().then(function (file) {
+                            file.text().then(function (content) {
+                                WaveDrom.cm.setValue(content);
+                            });
+                        });
+                    }
+                });
+            }
         }
     }
 
@@ -171,13 +200,32 @@
         if (typeof process === 'object') { // nodewebkit detection
             chooseFile('#fileDialogSave');
         } else {
-            a = document.createElement('a');
-            a.href = 'data:text/json;base64,' + btoa(sjson());
-            a.download = 'wavedrom.json';
-            var theEvent = document.createEvent('MouseEvent');
-            theEvent.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-            a.dispatchEvent(theEvent);
-            a.click();
+            var cfse = window.chooseFileSystemEntries;
+            if (cfse !== undefined) {
+                // PWA: https://web.dev/native-file-system/#write-file
+                cfse({
+                    type: 'saveFile',
+                    accepts: [{
+                        description: 'JSON file',
+                        extensions: ['json', 'js', 'json5'],
+                        mimeType: ['application/json', 'text/javascript', 'text/json5']
+                    }]
+                }).then(function (fh) {
+                    fh.createWriter().then(function (writer) {
+                        writer.write(0, sjson()).then(function () {
+                            writer.close();
+                        });
+                    });
+                });
+            } else {
+                a = document.createElement('a');
+                a.href = 'data:text/json;base64,' + btoa(sjson());
+                a.download = 'wavedrom.json';
+                var theEvent = document.createEvent('MouseEvent');
+                theEvent.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+                a.dispatchEvent(theEvent);
+                a.click();
+            }
         }
     }
 
@@ -215,13 +263,32 @@
         if (typeof process === 'object') { // nodewebkit detection
             chooseFile('#fileDialogSVG');
         } else {
-            a = document.createElement('a');
-            a.href = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(ssvg())));
-            a.download = 'wavedrom.svg';
-            var theEvent = document.createEvent('MouseEvent');
-            theEvent.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-            a.dispatchEvent(theEvent);
-            // a.click();
+            var cfse = window.chooseFileSystemEntries;
+            if (cfse !== undefined) {
+                // PWA: https://web.dev/native-file-system/#write-file
+                cfse({
+                    type: 'saveFile',
+                    accepts: [{
+                        description: 'SVG file',
+                        extensions: ['svg'],
+                        mimeType: ['image/svg+xml']
+                    }]
+                }).then(function (fh) {
+                    fh.createWriter().then(function (writer) {
+                        writer.write(0, ssvg()).then(function () {
+                            writer.close();
+                        });
+                    });
+                });
+            } else {
+                a = document.createElement('a');
+                a.href = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(ssvg())));
+                a.download = 'wavedrom.svg';
+                var theEvent = document.createEvent('MouseEvent');
+                theEvent.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+                a.dispatchEvent(theEvent);
+                // a.click();
+            }
         }
     }
 
@@ -277,15 +344,37 @@
         if (typeof process === 'object') { // nodewebkit detection
             chooseFile('#fileDialogPNG');
         } else {
-            a = document.createElement('a');
-            pngdata(function (res) {
-                a.href = res;
-                a.download = 'wavedrom.png';
-                var theEvent = document.createEvent('MouseEvent');
-                theEvent.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-                a.dispatchEvent(theEvent);
-                // a.click();
-            });
+            var cfse = window.chooseFileSystemEntries;
+            if (cfse !== undefined) {
+                // PWA: https://web.dev/native-file-system/#write-file
+                cfse({
+                    type: 'saveFile',
+                    accepts: [{
+                        description: 'PNG file',
+                        extensions: ['png'],
+                        mimeType: ['image/png']
+                    }]
+                }).then(function (fh) {
+                    fh.createWriter().then(function (writer) {
+                        pngdata(function (uri) {
+                            writer.write(0, convertDataURIToBinary(uri))
+                                .then(function () {
+                                    writer.close();
+                                });
+                        });
+                    });
+                });
+            } else {
+                a = document.createElement('a');
+                pngdata(function (res) {
+                    a.href = res;
+                    a.download = 'wavedrom.png';
+                    var theEvent = document.createEvent('MouseEvent');
+                    theEvent.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+                    a.dispatchEvent(theEvent);
+                    // a.click();
+                });
+            }
         }
     }
 
