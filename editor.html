@@ -63,5 +63,14 @@
             ga('create', 'UA-21660728-3', 'auto');
             ga('send', 'pageview');
         </script>
+        <script>
+            // define a handler to catch keyboard shortcuts
+            document.onkeyup = function(e) {
+                // key cpde 83 = 's'
+                if (e.ctrlKey && e.which == 83) {
+                    WaveDrom.saveJSON();
+                }
+            };
+        </script>
     </body>
 </html>
