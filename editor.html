@@ -66,9 +66,13 @@
         <script>
             // define a handler to catch keyboard shortcuts
             document.onkeyup = function(e) {
-                // key cpde 83 = 's'
+                // key code 83 = 's'
                 if (e.ctrlKey && e.which == 83) {
                     WaveDrom.saveJSON();
+                }
+                // key code 79 = 'o'
+                else if (e.ctrlKey && e.which == 79) {
+                    WaveDrom.loadJSON();
                 }
             };
         </script>
