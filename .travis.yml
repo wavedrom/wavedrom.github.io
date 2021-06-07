@@ -7,7 +7,6 @@ env:
   - TRAVIS_NODE_VERSION="16"
   - TRAVIS_NODE_VERSION="14"
   - TRAVIS_NODE_VERSION="12"
-  - TRAVIS_NODE_VERSION="10"
 install:
   - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm install $TRAVIS_NODE_VERSION
   - npm --version

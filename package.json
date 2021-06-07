@@ -1,7 +1,7 @@
 {
   "name": "wavedrom-editor",
   "description": "WaveDrom editor",
-  "version": "2.6.6",
+  "version": "2.7.0",
   "main": "index.js",
   "directories": {
     "doc": "doc"
@@ -27,9 +27,9 @@
   "homepage": "http://wavedrom.com",
   "devDependencies": {
     "@drom/eslint-config": "^0.10.0",
-    "codemirror": "^5.52.2",
-    "eslint": "^6.8.0",
-    "wavedrom": "^2.6.6"
+    "codemirror": "^5.61.1",
+    "eslint": "^2.13.1",
+    "wavedrom": "^2.7.0"
   },
   "eslintConfig": {
     "extends": "@drom/eslint-config/eslint4/node4"

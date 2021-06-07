@@ -26,4 +26,4 @@ cp scripts/* src/scripts
 
 curl https://raw.githubusercontent.com/drom/simple-nwjs-app/master/build.sh -o build.sh
 
-bash build.sh --name wavedrom-editor --version v2.6.6
+bash build.sh --name wavedrom-editor --version v2.7.0
