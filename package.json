@@ -27,9 +27,9 @@
   "homepage": "http://wavedrom.com",
   "devDependencies": {
     "@drom/eslint-config": "^0.10.0",
-    "codemirror": "^5.61.1",
+    "codemirror": "^5.63",
     "eslint": "^2.13.1",
-    "wavedrom": "^2.7.0"
+    "wavedrom": "^2.8.2"
   },
   "eslintConfig": {
     "extends": "@drom/eslint-config/eslint4/node4"
