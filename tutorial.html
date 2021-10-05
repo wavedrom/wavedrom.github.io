@@ -304,6 +304,9 @@ The property works only inside the first timing diagram on the page.
 <h4>text</h4>
 -adds title / caption text.
 
+<h4>every</h4>
+-render ticks and tocks only once every N cycle
+
 <pre class="brush: js">
 {signal: [
   {name:'clk',         wave: 'p....' },
@@ -313,6 +316,7 @@ The property works only inside the first timing diagram on the page.
  head:{
    text:'WaveDrom example',
    tick:0,
+   every:2
  },
  foot:{
    text:'Figure 100',
@@ -330,6 +334,7 @@ The property works only inside the first timing diagram on the page.
  head:{
    text:'WaveDrom example',
    tick:0,
+   every:2
  },
  foot:{
    text:'Figure 100',
