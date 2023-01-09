@@ -29,7 +29,7 @@
     "@drom/eslint-config": "^0.10.0",
     "codemirror": "^5.63",
     "eslint": "^2.13.1",
-    "wavedrom": "^3.0.0"
+    "wavedrom": "^3.0.1"
   },
   "eslintConfig": {
     "extends": "@drom/eslint-config/eslint4/node4"
