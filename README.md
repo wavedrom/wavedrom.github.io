@@ -75,7 +75,7 @@ Update both values when bumping versions.
      build/wavedrom-editor-v3.7.0-*.tar.gz \
      build/wavedrom-editor-v3.7.0-*.zip \
      --title "v3.7.0" \
-     --notes "Release notes here"
+     --notes-file TMP_RELEASE_NOTES.md
    ```
 
 ## Community
