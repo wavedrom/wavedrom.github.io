@@ -4,3 +4,4 @@ build
 src
 package-lock.json
 build.sh
+TMP_RELEASE_NOTES.md
