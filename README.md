@@ -16,10 +16,6 @@ See [Tutorial](http://wavedrom.com/tutorial.html) for more examples.
 
 [Download editor](https://github.com/wavedrom/wavedrom.github.io/releases)  (Windows, Mac, Linux)
 
-## Builds
-
-[![Build Status](https://travis-ci.org/wavedrom/wavedrom.github.io.svg?branch=master)](https://travis-ci.org/wavedrom/wavedrom.github.io)
-
 ## Development
 
 * Install `nodejs` (v18+ recommended) from https://nodejs.org/ or via [nvm](https://github.com/nvm-sh/nvm)
